@@ -476,7 +476,8 @@ const normalizeListingRecord = (
 
 	return {
 		bodyType: trimmedValue(input.bodyType) || existing?.bodyType || 'On request',
-		brand: trimmedValue(input.brand) || existing?.brand || title.split(/\s+/)[0] || 'Day Night Auto',
+		brand:
+			trimmedValue(input.brand) || existing?.brand || title.split(/\s+/)[0] || 'Day Night Auto',
 		color: trimmedValue(input.color) || existing?.color || 'On request',
 		createdAt,
 		description:

@@ -133,22 +133,22 @@
 
 	.daynight-action-card--import {
 		background: var(--bc-accent);
-		color: #ffffff;
+		color: var(--bc-white);
 	}
 
 	.daynight-action-card--import:focus-visible {
 		background: var(--bc-accent);
-		color: #ffffff;
+		color: var(--bc-white);
 	}
 
 	.daynight-action-card--consultation {
-		background: linear-gradient(135deg, #1c1c1c 0%, #050505 100%);
-		color: #ffffff;
+		background: linear-gradient(135deg, var(--bc-ink) 0%, var(--bc-showcase-dark-panel) 100%);
+		color: var(--bc-white);
 	}
 
 	.daynight-action-card--consultation:focus-visible {
-		background: linear-gradient(135deg, #1c1c1c 0%, #050505 100%);
-		color: #ffffff;
+		background: linear-gradient(135deg, var(--bc-ink) 0%, var(--bc-showcase-dark-panel) 100%);
+		color: var(--bc-white);
 	}
 
 	@media (hover: hover) and (pointer: fine) {
@@ -159,12 +159,12 @@
 
 		.daynight-action-card--import:hover {
 			background: var(--bc-accent);
-			color: #ffffff;
+			color: var(--bc-white);
 		}
 
 		.daynight-action-card--consultation:hover {
-			background: linear-gradient(135deg, #1c1c1c 0%, #050505 100%);
-			color: #ffffff;
+			background: linear-gradient(135deg, var(--bc-ink) 0%, var(--bc-showcase-dark-panel) 100%);
+			color: var(--bc-white);
 		}
 	}
 
@@ -223,24 +223,24 @@
 	}
 
 	.daynight-action-card--import .daynight-action-card__cta {
-		background: #ffffff;
-		color: #101010;
+		background: var(--bc-white);
+		color: var(--bc-ink);
 	}
 
 	.daynight-action-card--consultation .daynight-action-card__cta {
 		background: var(--bc-accent);
-		color: #ffffff;
+		color: var(--bc-white);
 	}
 
 	@media (hover: hover) and (pointer: fine) {
 		.daynight-action-card--import:hover .daynight-action-card__cta {
-			background: #f0f0f0;
-			color: #101010;
+			background: var(--bc-surface);
+			color: var(--bc-ink);
 		}
 
 		.daynight-action-card--consultation:hover .daynight-action-card__cta {
 			background: var(--bc-accent-hover);
-			color: #ffffff;
+			color: var(--bc-white);
 		}
 	}
 
@@ -318,53 +318,67 @@
 
 	@media (max-width: 767px) {
 		.daynight-action-band {
-			padding-top: 18px;
-			padding-bottom: 22px;
+			padding-top: 0;
+			padding-bottom: 0;
 		}
 
 		.daynight-action-grid {
-			gap: 14px;
+			gap: 12px;
 		}
 	}
 
 	@media (max-width: 575px) {
 		.daynight-action-card {
-			min-height: 204px;
-			padding: 20px 22px;
-			border-radius: 8px;
+			min-height: 136px;
+			padding: 16px 18px;
+			border: 1px solid rgb(255 255 255 / 0.08);
+			border-radius: 12px;
 		}
 
 		/* Title runs full width across the top; only the sub-copy sits in a
 		   left column so the car can take the whole right side of the card. */
 		.daynight-action-card__copy {
 			width: auto;
-			max-width: 100%;
-			gap: 7px;
+			max-width: 68%;
+			gap: 0;
 		}
 
 		.daynight-action-card--consultation .daynight-action-card__copy {
 			width: auto;
-			max-width: 100%;
+			max-width: 68%;
 		}
 
 		.daynight-action-card__title {
-			max-width: 220px;
-			font-size: 28px;
+			max-width: 100%;
+			color: var(--bc-white);
+			font-size: clamp(19.5px, 5.4vw, 22px);
+			line-height: 1.1;
+			white-space: nowrap;
 		}
 
 		.daynight-action-card__body {
-			max-width: 52%;
-			font-size: 16px;
+			display: none;
 		}
 
 		.daynight-action-card__cta {
 			width: max-content;
-			min-width: 184px;
-			height: 54px;
-			min-height: 54px;
-			margin-top: 14px;
-			padding: 0 20px;
-			font-size: 16px;
+			min-width: 142px;
+			height: 44px;
+			min-height: 44px;
+			margin-top: 18px;
+			padding: 0 15px;
+			border-radius: 10px;
+			font-size: 14px;
+		}
+
+		.daynight-action-card--import .daynight-action-card__cta {
+			background: var(--bc-showcase-dark-panel);
+			color: var(--bc-white);
+		}
+
+		.daynight-action-card--consultation .daynight-action-card__cta {
+			background: var(--bc-accent);
+			color: var(--bc-white);
 		}
 
 		/* Large cutout anchored into the bottom-right corner (clipped by the
@@ -459,10 +473,23 @@
 
 	@media (max-width: 575px) {
 		.daynight-action-card .daynight-action-card__img {
-			top: auto;
-			bottom: 0;
-			right: -16px;
-			height: 68%;
+			top: 0;
+			right: 0;
+			bottom: auto;
+			width: 92%;
+			height: 100%;
+			object-fit: cover;
+			object-position: right center;
+			-webkit-mask-image: linear-gradient(
+				to right,
+				transparent 0 36%,
+				var(--bc-showcase-dark-panel) 58% 100%
+			);
+			mask-image: linear-gradient(
+				to right,
+				transparent 0 36%,
+				var(--bc-showcase-dark-panel) 58% 100%
+			);
 		}
 	}
 </style>

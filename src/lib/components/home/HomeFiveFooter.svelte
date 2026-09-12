@@ -248,8 +248,8 @@
 		}
 		.dn-footer {
 			display: block;
-			background: #1c1c1c;
-			color: #f7f7f7;
+			background: var(--bc-footer-bg);
+			color: var(--bc-footer-ink);
 			border-radius: 30px 30px 0 0;
 			padding: 40px 32px 24px;
 		}
@@ -262,7 +262,7 @@
 			align-items: start;
 		}
 		.dn-footer a {
-			color: #ccd0d5;
+			color: var(--bc-footer-link);
 			text-decoration: none;
 		}
 		.dn-footer a:hover {
@@ -287,7 +287,7 @@
 			line-height: 1.65;
 		}
 		.dn-footer .dn-footer__muted {
-			color: #b5bac2;
+			color: var(--bc-footer-muted);
 			margin-bottom: 8px;
 		}
 		.dn-footer h2 {
@@ -309,9 +309,9 @@
 			font-size: 15px;
 		}
 		.dn-footer__contact {
-			border: 1px solid #3b3b3e;
+			border: 1px solid var(--bc-footer-border);
 			border-radius: 16px;
-			background: #242426;
+			background: var(--bc-footer-panel);
 			padding: 16px;
 		}
 		.dn-footer__contact > a {
@@ -335,14 +335,14 @@
 			display: flex;
 			flex-wrap: wrap;
 			gap: 8px;
-			border-top: 1px solid #3b3b3e;
+			border-top: 1px solid var(--bc-footer-border);
 			padding-top: 12px;
 			margin-top: 12px;
 		}
 		.dn-footer__socials a {
 			width: 40px;
 			height: 40px;
-			border: 1px solid #49494e;
+			border: 1px solid var(--bc-footer-icon-border);
 			border-radius: 8px;
 			display: grid;
 			place-items: center;
@@ -350,12 +350,12 @@
 		.dn-footer__bottom {
 			max-width: 1320px;
 			margin: 32px auto 0;
-			border-top: 1px solid #3b3b3e;
+			border-top: 1px solid var(--bc-footer-border);
 			padding-top: 22px;
 			display: flex;
 			justify-content: space-between;
 			gap: 20px;
-			color: #b5bac2;
+			color: var(--bc-footer-muted);
 		}
 		.dn-footer__bottom p,
 		.dn-footer__bottom a {
@@ -420,11 +420,20 @@
 			margin-top: 16px;
 		}
 
+		.footer :global(.footer-contact a.h7),
+		.footer :global(.widget-links li a) {
+			display: flex;
+			min-height: 44px;
+			align-items: center;
+		}
+
 		.footer :global(.widget-socical li:not(:last-child)) {
 			margin-bottom: 0;
 		}
 
 		.footer :global(.widget-socical li a) {
+			width: 44px;
+			height: 44px;
 			border-color: rgb(255 255 255 / 0.24);
 			background: rgb(255 255 255 / 0.06);
 		}
@@ -435,7 +444,7 @@
 		}
 
 		.footer :global(.widget-socical li a svg path) {
-			fill: #ffffff;
+			fill: var(--bc-white);
 		}
 
 		.footer :global(.footer-bottom) {
@@ -460,4 +469,3 @@
 		}
 	}
 </style>
-

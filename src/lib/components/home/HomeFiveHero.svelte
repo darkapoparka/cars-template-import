@@ -418,9 +418,6 @@
 							type="button"
 							class="daynight-mobile-hero__search-label"
 							aria-haspopup="dialog"
-							aria-controls={mobileMode === 'buy' && hero?.inventorySearch
-								? 'daynight-inventory-mobile-filter-drawer'
-								: 'daynight-mobile-search-panel'}
 							aria-expanded={mobileSearchOpen || inventorySearchOpen}
 							onclick={openMobileSearch}
 						>
@@ -430,9 +427,6 @@
 							type="button"
 							class="daynight-mobile-hero__search-action"
 							aria-label={hero.searchSubmitPrefix}
-							aria-controls={mobileMode === 'buy' && hero?.inventorySearch
-								? 'daynight-inventory-mobile-filter-drawer'
-								: 'daynight-mobile-search-panel'}
 							aria-expanded={mobileSearchOpen || inventorySearchOpen}
 							onclick={openMobileSearch}
 						>
@@ -637,9 +631,6 @@
 							type="button"
 							class="daynight-mobile-home-quick__filter"
 							aria-haspopup="dialog"
-							aria-controls={mobileMode === 'buy' && hero?.inventorySearch
-								? 'daynight-inventory-mobile-filter-drawer'
-								: 'daynight-mobile-search-panel'}
 							aria-expanded={mobileSearchOpen || inventorySearchOpen}
 							aria-label={isEnglish ? 'Open filters' : 'Отвори филтри'}
 							onclick={openMobileSearch}
@@ -915,11 +906,11 @@
 		gap: 12px;
 		flex: 1;
 		min-width: 0;
-		border: 1px solid #505353;
+		border: 1px solid var(--bc-hero-control-border);
 		border-radius: 10px;
 		padding: 5px 5px 5px 16px;
-		background: #fff;
-		color: #697078;
+		background: var(--bc-white);
+		color: var(--bc-muted);
 	}
 	.hero-keyword input {
 		flex: 1;
@@ -930,11 +921,11 @@
 		border: 0 !important;
 		background: transparent !important;
 		box-shadow: none !important;
-		color: #202326 !important;
+		color: var(--bc-dark-border) !important;
 		font-size: 16px;
 	}
 	.hero-keyword:focus-within {
-		outline: 2px solid #df1026;
+		outline: 2px solid var(--bc-focus);
 		outline-offset: 2px;
 	}
 	.hero-keyword input:focus {
@@ -962,7 +953,7 @@
 		background: var(--bc-accent-hover);
 	}
 	.hero-keyword-submit:focus-visible {
-		outline: 2px solid #202326;
+		outline: 2px solid var(--bc-dark-border);
 		outline-offset: 2px;
 	}
 
@@ -972,7 +963,12 @@
 		align-items: center;
 		padding-top: 30px !important;
 		padding-bottom: 30px !important;
-		background: linear-gradient(120deg, #1b1d1d 0%, #111313 58%, #090a0a 100%);
+		background: linear-gradient(
+			120deg,
+			var(--bc-dark-surface) 0%,
+			var(--bc-dark-surface) 58%,
+			var(--bc-mobile-dark) 100%
+		);
 	}
 
 	/* Let the hero collapse to its real content height (the template swiper
@@ -1044,7 +1040,7 @@
 	:global(.page-title.page-title-style-4 .search-cars__title),
 	:global(.page-title.page-title-style-4 .search-cars .h7),
 	:global(.page-title.page-title-style-4 .menu-tab-style1 .font-weight-600) {
-		color: #ffffff !important;
+		color: var(--bc-white) !important;
 		text-shadow: 0 4px 22px rgb(0 0 0 / 0.4);
 	}
 
@@ -1105,7 +1101,7 @@
 			padding: 0 20px 20px;
 			border: 1px solid rgba(255, 255, 255, 0.18);
 			border-radius: 16px;
-			background: #1c1e1e;
+			background: var(--bc-dark-surface);
 		}
 
 		:global(.page-title.page-title-style-4 .sw-single-thumb) {
@@ -1133,7 +1129,7 @@
 			min-height: 52px;
 			font-size: 20px !important;
 			font-weight: 650;
-			color: #bdc1c1;
+			color: var(--bc-muted-on-dark);
 			border-radius: 0;
 			border-bottom: 2px solid transparent;
 			background: transparent;
@@ -1149,13 +1145,13 @@
 				.daynight-intent-switch__item.active
 				.daynight-intent-switch__link:hover
 		) {
-			border-bottom-color: #ffffff;
-			color: #fff;
+			border-bottom-color: var(--bc-white);
+			color: var(--bc-white);
 			background: rgb(255 255 255 / 0.05);
 		}
 
 		:global(.page-title.page-title-style-4 .daynight-intent-switch__link:focus-visible) {
-			outline: 2px solid #ffffff;
+			outline: 2px solid var(--bc-white);
 			outline-offset: -5px;
 		}
 
@@ -1174,7 +1170,7 @@
 		:global(.page-title.page-title-style-4 .hfp__value) {
 			font-size: 16px !important;
 			line-height: 22px;
-			color: #292d31;
+			color: var(--bc-ink);
 		}
 		:global(.page-title.page-title-style-4 .hfp__label) {
 			font-size: 12px;
@@ -1314,7 +1310,7 @@
 		position: static;
 		max-width: 100%;
 		overflow: hidden;
-		color: #5f5f5f;
+		color: var(--bc-copy);
 		font-size: var(--bc-text-meta);
 		font-weight: 600;
 		line-height: 1.15;
@@ -1337,7 +1333,7 @@
 		align-content: center;
 		gap: 4px;
 		border-radius: 8px;
-		background: #ffffff;
+		background: var(--bc-white);
 		padding: 9px 18px;
 	}
 
@@ -1347,7 +1343,7 @@
 	}
 
 	.search-cars__intent-field span {
-		color: #5f5f5f;
+		color: var(--bc-copy);
 		font-size: 12px;
 		font-weight: 700;
 		line-height: 1.15;
@@ -1359,7 +1355,7 @@
 		border: 0 !important;
 		background: transparent !important;
 		box-shadow: none !important;
-		color: #1c1c1c;
+		color: var(--bc-ink);
 		font-size: 16px;
 		font-weight: 700;
 		line-height: 1.2;
@@ -1368,7 +1364,7 @@
 	}
 
 	.search-cars__intent-field input::placeholder {
-		color: #858585;
+		color: var(--bc-muted-light);
 		opacity: 1;
 	}
 
@@ -1428,18 +1424,18 @@
 
 	@media (max-width: 767.98px) {
 		:global(body.auxero-template-home-05-html.auxero-template-home-05-html) {
-			--daynight-mobile-hero-top: #090a0b;
-			--daynight-mobile-hero-bg: #090a0b;
-			--daynight-mobile-hero-bottom: #090a0b;
-			--daynight-mobile-hero-fill: #090a0b;
-			--daynight-mobile-ink: #ffffff;
+			--daynight-mobile-hero-top: var(--bc-mobile-dark);
+			--daynight-mobile-hero-bg: var(--bc-mobile-dark);
+			--daynight-mobile-hero-bottom: var(--bc-mobile-dark);
+			--daynight-mobile-hero-fill: var(--bc-mobile-dark);
+			--daynight-mobile-ink: var(--bc-white);
 			--daynight-mobile-ink-muted: rgb(255 255 255 / 0.72);
-			--daynight-mobile-ink-strong: #ffffff;
-			--daynight-mobile-cta: #f5f5f3;
-			--daynight-mobile-cta-ink: #111111;
-			--daynight-mobile-action: #111315;
-			--daynight-mobile-action-focus: #25282b;
-			--daynight-mobile-surface: #fbfcf7;
+			--daynight-mobile-ink-strong: var(--bc-white);
+			--daynight-mobile-cta: var(--bc-surface-soft);
+			--daynight-mobile-cta-ink: var(--bc-ink);
+			--daynight-mobile-action: var(--bc-dark-surface);
+			--daynight-mobile-action-focus: var(--bc-dark-hover);
+			--daynight-mobile-surface: var(--bc-bg);
 			background: var(--daynight-mobile-hero-top) !important;
 			background-color: var(--daynight-mobile-hero-top) !important;
 		}
@@ -1459,7 +1455,7 @@
 				--daynight-mobile-hero-fill,
 				var(--daynight-mobile-hero-bg, var(--bc-accent))
 			);
-			color: var(--daynight-mobile-ink, #ffffff);
+			color: var(--daynight-mobile-ink, var(--bc-white));
 		}
 
 		.daynight-mobile-location-toggle {
@@ -1541,10 +1537,10 @@
 				'Segoe UI',
 				Arial,
 				sans-serif;
-			font-size: 17px;
+			font-size: 19px;
 			font-weight: 600;
 			letter-spacing: 0;
-			line-height: 22px;
+			line-height: 24px;
 			text-align: center;
 			text-decoration: none;
 			cursor: pointer;
@@ -1555,7 +1551,7 @@
 		.daynight-mobile-hero__tab.active {
 			background: transparent;
 			box-shadow: none;
-			color: #ffffff;
+			color: var(--bc-white);
 			font-weight: 700;
 		}
 
@@ -1563,7 +1559,7 @@
 			position: absolute;
 			inset: auto 0 -1px;
 			height: 2px;
-			background: #ffffff;
+			background: var(--bc-white);
 			content: '';
 		}
 
@@ -1590,8 +1586,8 @@
 			padding: 6px 6px 6px 20px;
 			border: 0;
 			border-radius: 999px;
-			background: var(--daynight-mobile-surface, #ffffff);
-			color: #1c1c1c;
+			background: var(--daynight-mobile-surface, var(--bc-white));
+			color: var(--bc-ink);
 			box-shadow: none;
 		}
 
@@ -1609,7 +1605,7 @@
 			align-items: center;
 			border: 0;
 			background: transparent;
-			color: #1c1c1c;
+			color: var(--bc-ink);
 			cursor: pointer;
 			padding: 0;
 			text-align: left;
@@ -1618,7 +1614,7 @@
 		.daynight-mobile-hero__search-label span {
 			min-width: 0;
 			overflow: hidden;
-			color: #1c1c1c;
+			color: var(--bc-ink);
 			font-size: 16px;
 			font-weight: 400;
 			line-height: 22px;
@@ -1637,14 +1633,14 @@
 			border-radius: 999px;
 			background: var(--daynight-mobile-action, var(--bc-accent));
 			box-shadow: none !important;
-			color: #ffffff;
+			color: var(--bc-white);
 			cursor: pointer;
 			padding: 0;
 		}
 
 		.daynight-mobile-hero__search-action:focus-visible {
-			background: var(--daynight-mobile-action-focus, #1c1c1c);
-			color: #ffffff;
+			background: var(--daynight-mobile-action-focus, var(--bc-ink));
+			color: var(--bc-white);
 			outline: 0;
 		}
 
@@ -1652,8 +1648,8 @@
 		.daynight-mobile-hero__search-action :global(path),
 		.daynight-mobile-hero__search-action :global(circle),
 		.daynight-mobile-hero__search-action :global(line) {
-			color: #ffffff;
-			stroke: #ffffff !important;
+			color: var(--bc-white);
+			stroke: var(--bc-white) !important;
 		}
 
 		.daynight-mobile-hero__all-row {
@@ -1667,7 +1663,7 @@
 
 		.daynight-mobile-hero__all {
 			display: inline-flex;
-			min-height: 38px;
+			min-height: var(--bc-control-height-standard);
 			min-width: 0;
 			max-width: 100%;
 			align-items: center;
@@ -1688,20 +1684,20 @@
 		.daynight-mobile-hero__all span {
 			min-width: 0;
 			overflow: hidden;
-			color: var(--daynight-mobile-cta-ink, #ffffff);
+			color: var(--daynight-mobile-cta-ink, var(--bc-white));
 			text-overflow: ellipsis;
 			white-space: nowrap;
 		}
 
 		.daynight-mobile-hero__all:focus-visible {
-			background: #ffffff;
-			color: #1c1c1c !important;
+			background: var(--bc-white);
+			color: var(--bc-ink) !important;
 			outline: 2px solid rgba(28, 28, 28, 0.72);
 			outline-offset: 2px;
 		}
 
 		.daynight-mobile-hero__all:focus-visible span {
-			color: var(--daynight-mobile-cta-ink, #ffffff);
+			color: var(--daynight-mobile-cta-ink, var(--bc-white));
 		}
 
 		.daynight-mobile-hero__all :global(svg),
@@ -1709,8 +1705,8 @@
 		.daynight-mobile-hero__all :global(line),
 		.daynight-mobile-hero__all :global(polyline) {
 			flex: 0 0 auto;
-			color: var(--daynight-mobile-cta-ink, #ffffff) !important;
-			stroke: var(--daynight-mobile-cta-ink, #ffffff) !important;
+			color: var(--daynight-mobile-cta-ink, var(--bc-white)) !important;
+			stroke: var(--daynight-mobile-cta-ink, var(--bc-white)) !important;
 		}
 
 		.daynight-mobile-hero__all :global(svg) {
@@ -1746,7 +1742,7 @@
 			background: var(--bc-bg);
 			padding: 10px 16px max(20px, env(safe-area-inset-bottom));
 			box-shadow: none;
-			color: #111111;
+			color: var(--bc-ink);
 			transform: translateY(var(--daynight-mobile-location-drag-y, 0px));
 		}
 
@@ -1787,7 +1783,7 @@
 		}
 
 		.daynight-mobile-location-sheet__panel header h2 {
-			color: #111111;
+			color: var(--bc-ink);
 			font-size: 20px;
 			font-weight: 700;
 			line-height: 26px;
@@ -1803,7 +1799,7 @@
 			border: 0;
 			border-radius: 999px;
 			background: var(--bc-surface);
-			color: #111111;
+			color: var(--bc-ink);
 			cursor: pointer;
 			padding: 0;
 		}
@@ -1813,7 +1809,8 @@
 			min-height: 156px;
 			overflow: hidden;
 			border-radius: 12px;
-			background: linear-gradient(135deg, rgb(185 22 28 / 0.16), rgb(5 5 5 / 0.08)), #f3f4f6;
+			background:
+				linear-gradient(135deg, rgb(185 22 28 / 0.16), rgb(5 5 5 / 0.08)), var(--bc-surface);
 		}
 
 		.daynight-mobile-location-map::before,
@@ -1881,7 +1878,7 @@
 			justify-content: center;
 			border-radius: 999px;
 			background: var(--bc-accent);
-			color: #ffffff;
+			color: var(--bc-white);
 			transform: translate(-50%, -50%);
 			box-shadow: none;
 		}
@@ -1896,9 +1893,9 @@
 			right: 12px;
 			bottom: 12px;
 			border-radius: 999px;
-			background: #ffffff;
+			background: var(--bc-white);
 			padding: 7px 11px;
-			color: #111111;
+			color: var(--bc-ink);
 			font-size: 12px;
 			font-weight: 700;
 			line-height: 14px;
@@ -1914,7 +1911,7 @@
 		}
 
 		.daynight-mobile-location-address span {
-			color: #6b7280;
+			color: var(--bc-muted);
 			font-size: 12px;
 			font-weight: 700;
 			line-height: 14px;
@@ -1922,7 +1919,7 @@
 		}
 
 		.daynight-mobile-location-address strong {
-			color: #111111;
+			color: var(--bc-ink);
 			font-size: 16px;
 			font-weight: 700;
 			line-height: 21px;
@@ -1930,7 +1927,7 @@
 
 		.daynight-mobile-location-address p {
 			margin: 0;
-			color: #4b5563;
+			color: var(--bc-copy);
 			font-size: 14px;
 			font-weight: 700;
 			line-height: 18px;
@@ -1949,9 +1946,9 @@
 			justify-content: center;
 			gap: 8px;
 			border-radius: 8px;
-			background: #111111;
+			background: var(--bc-ink);
 			padding: 0 12px;
-			color: #ffffff;
+			color: var(--bc-white);
 			font-size: 14px;
 			font-weight: 700;
 			line-height: 18px;
@@ -1961,7 +1958,7 @@
 
 		.daynight-mobile-location-actions a:first-child {
 			background: var(--bc-accent);
-			color: #ffffff;
+			color: var(--bc-white);
 		}
 
 		.daynight-mobile-location-actions :global(svg) {
@@ -1980,7 +1977,7 @@
 			display: grid;
 			grid-template-rows: max-content minmax(0, 1fr);
 			background: var(--bc-bg);
-			color: #111111;
+			color: var(--bc-ink);
 		}
 
 		.daynight-home-search-overlay__bar {
@@ -2001,7 +1998,7 @@
 			border: 0;
 			border-radius: 999px;
 			background: var(--bc-surface);
-			color: #111111;
+			color: var(--bc-ink);
 			cursor: pointer;
 			padding: 0;
 		}
@@ -2030,7 +2027,7 @@
 		.daynight-home-search-drawer__title {
 			display: block;
 			margin: 0;
-			color: #111111;
+			color: var(--bc-ink);
 			font-size: 19px;
 			font-weight: 800;
 			letter-spacing: 0;
@@ -2057,7 +2054,7 @@
 			border-radius: 999px;
 			background: var(--bc-surface);
 			padding: 0 13px;
-			color: #111111;
+			color: var(--bc-ink);
 		}
 
 		.daynight-home-search-drawer__field input {
@@ -2069,7 +2066,7 @@
 			border-radius: 0 !important;
 			background: transparent !important;
 			box-shadow: none !important;
-			color: #111111;
+			color: var(--bc-ink);
 			/* >=16px stops iOS Safari from auto-zooming (and shifting the sheet) on focus. */
 			font-size: 16px;
 			font-weight: 700;
@@ -2104,7 +2101,7 @@
 
 		.daynight-home-search-drawer__group p {
 			margin: 0;
-			color: #728093;
+			color: var(--bc-muted);
 			font-size: 12px;
 			font-weight: 700;
 			line-height: 14px;
@@ -2136,7 +2133,7 @@
 			border-radius: 8px;
 			background: var(--bc-surface);
 			padding: 0 12px;
-			color: #111111;
+			color: var(--bc-ink);
 			font-size: 14px;
 			font-weight: 700;
 			line-height: 18px;
@@ -2179,8 +2176,8 @@
 		}
 
 		.daynight-home-search-drawer__group a:focus-visible {
-			background: #f3f4f6;
-			color: #111111;
+			background: var(--bc-surface);
+			color: var(--bc-ink);
 			outline: 0;
 		}
 
@@ -2189,7 +2186,7 @@
 			border-radius: 12px;
 			background: var(--bc-surface);
 			padding: 12px 13px;
-			color: #4b5563;
+			color: var(--bc-copy);
 			font-size: 14px;
 			font-weight: 700;
 			line-height: 20px;
@@ -2216,7 +2213,7 @@
 			border-radius: 12px;
 			background: var(--bc-surface);
 			padding: 0 12px;
-			color: #1c1c1c;
+			color: var(--bc-ink);
 			font-size: 15px;
 			font-weight: 800;
 			line-height: 18px;
@@ -2227,7 +2224,7 @@
 
 		.daynight-home-search-drawer__actions button {
 			background: var(--bc-accent);
-			color: #ffffff;
+			color: var(--bc-white);
 			cursor: pointer;
 		}
 
@@ -2243,7 +2240,9 @@
 		.daynight-mobile-home-quick__scroller {
 			display: flex;
 			gap: 8px;
+			width: calc(100% + 24px);
 			overflow-x: auto;
+			padding-right: 24px;
 			padding-bottom: 2px;
 			scrollbar-width: none;
 			-webkit-overflow-scrolling: touch;
@@ -2257,7 +2256,7 @@
 		.daynight-mobile-home-quick__scroller button {
 			display: inline-flex;
 			min-width: max-content;
-			min-height: var(--bc-control-height-chip);
+			min-height: var(--bc-control-height-standard);
 			align-items: center;
 			justify-content: center;
 			gap: 8px;
@@ -2265,9 +2264,9 @@
 			padding: 0 12px;
 			border: 0;
 			border-radius: 10px;
-			background: #f3f4f6;
+			background: var(--bc-surface);
 			box-shadow: none;
-			color: #1c1c1c;
+			color: var(--bc-ink);
 			cursor: pointer;
 			font-size: 14px;
 			font-weight: 700;
@@ -2284,9 +2283,9 @@
 
 		.daynight-mobile-home-quick__scroller a:focus-visible,
 		.daynight-mobile-home-quick__scroller button:focus-visible {
-			background: #dfe9c7;
+			background: var(--bc-surface-hover);
 			box-shadow: none;
-			color: #1c1c1c;
+			color: var(--bc-ink);
 		}
 
 		.daynight-mobile-home-quick__scroller a:focus-visible,
@@ -2335,7 +2334,7 @@
 		:global(body.auxero-template-home-05-html .header-wrapper-style-4 .daynight-mobile-map) {
 			border-color: rgb(255 255 255 / 0.3);
 			background: rgb(255 255 255 / 0.08);
-			color: #ffffff;
+			color: var(--bc-white);
 		}
 
 		:global(body.auxero-template-home-05-html .header-wrapper-style-4 .logo a) {

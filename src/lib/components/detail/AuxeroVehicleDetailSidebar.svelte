@@ -78,7 +78,7 @@
 {/snippet}
 
 <div class="listing-details--sidebar">
-	<div class="listing-details--sidebar-box mb-40">
+	<div class="listing-details--sidebar-box daynight-buybox-card mb-40">
 		<div class="flat-tabs">
 			<div class="mb-15 overflow-x-auto">
 				<ul
@@ -235,7 +235,7 @@
 
 			<a
 				{...directHref(detail.contact.viberHref)}
-				class="btn btn-medium btn-primary-4 font-weight-600 gap-5"
+				class="btn btn-medium btn-primary-4 daynight-viber-action font-weight-600 gap-5"
 				rel="noreferrer"
 			>
 				<img src="/assets/icons/ChatCircleDots.svg" alt="" aria-hidden="true" />
@@ -254,7 +254,7 @@
 					<input
 						aria-label={detail.copy.name}
 						autocomplete="name"
-						class="active input-large"
+						class="input-large"
 						id="SendInquiryname"
 						name="SendInquiryname"
 						type="text"

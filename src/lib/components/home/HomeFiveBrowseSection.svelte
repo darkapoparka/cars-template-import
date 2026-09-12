@@ -104,7 +104,8 @@
 							<span class="daynight-type-card__image">
 								<img
 									src={typeCard.image}
-									alt={typeCard.label}
+									alt=""
+									aria-hidden="true"
 									width="360"
 									height="220"
 									loading="lazy"
@@ -150,13 +151,18 @@
 		overflow: hidden;
 		border: 1px solid rgba(255, 255, 255, 0.1);
 		border-radius: 8px;
-		background: linear-gradient(135deg, #1c1c1c 0%, #101010 58%, #050505 100%);
+		background: linear-gradient(
+			135deg,
+			var(--bc-ink) 0%,
+			var(--bc-ink) 58%,
+			var(--bc-showcase-dark-panel) 100%
+		);
 		box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
 		padding: 24px 28px;
 	}
 
 	.daynight-section-banner h2 {
-		color: #ffffff;
+		color: var(--bc-white);
 		font-size: 42px;
 		font-weight: 650;
 		letter-spacing: -0.025em;
@@ -171,7 +177,7 @@
 	}
 
 	.daynight-title-desktop {
-		color: #ffffff;
+		color: var(--bc-white);
 	}
 
 	.daynight-title-mobile {
@@ -247,7 +253,7 @@
 	}
 
 	.daynight-browse-section :global(.out-brand-2.active) {
-		background-color: #ffffff !important;
+		background-color: var(--bc-white) !important;
 		border-color: var(--bc-accent) !important;
 		box-shadow: none !important;
 	}
@@ -258,7 +264,7 @@
 	}
 
 	.daynight-browse-section :global(.out-brand-2:focus-visible .h5) {
-		color: #1c1c1c !important;
+		color: var(--bc-ink) !important;
 	}
 
 	.daynight-browse-section :global(.out-brand-2:focus-visible .text-muted) {
@@ -267,13 +273,13 @@
 
 	@media (hover: hover) and (pointer: fine) {
 		.daynight-browse-section :global(.out-brand-2:hover) {
-			background-color: #ffffff !important;
+			background-color: var(--bc-white) !important;
 			border-color: var(--bc-accent) !important;
 			box-shadow: none !important;
 		}
 
 		.daynight-browse-section :global(.out-brand-2:hover .h5) {
-			color: #1c1c1c !important;
+			color: var(--bc-ink) !important;
 		}
 
 		.daynight-browse-section :global(.out-brand-2:hover .text-muted) {
@@ -298,7 +304,7 @@
 	.daynight-type-card {
 		align-items: center;
 		background: var(--bc-surface);
-		color: #1c1c1c;
+		color: var(--bc-ink);
 		display: flex;
 		flex-direction: column;
 		min-height: 218px;
@@ -312,24 +318,24 @@
 	}
 
 	.daynight-type-card:focus-visible {
-		background-color: #f4f4f4;
-		color: #1c1c1c;
+		background-color: var(--bc-surface-hover);
+		color: var(--bc-ink);
 		transform: none;
 	}
 
 	.daynight-type-card:focus-visible .daynight-type-card__label {
-		color: #1c1c1c;
+		color: var(--bc-ink);
 	}
 
 	@media (hover: hover) and (pointer: fine) {
 		.daynight-type-card:hover {
-			background-color: #f4f4f4;
-			color: #1c1c1c;
+			background-color: var(--bc-surface-hover);
+			color: var(--bc-ink);
 			transform: none;
 		}
 
 		.daynight-type-card:hover .daynight-type-card__label {
-			color: #1c1c1c;
+			color: var(--bc-ink);
 		}
 	}
 
@@ -411,13 +417,13 @@
 		}
 
 		.daynight-section-banner h2 {
-			color: #1c1c1c;
+			color: var(--bc-ink);
 		}
 
 		.daynight-mobile-title-swap {
 			width: 100%;
 			margin: 0;
-			color: #1c1c1c;
+			color: var(--bc-ink);
 			font-size: 28px;
 			font-weight: 650;
 			letter-spacing: -0.02em;

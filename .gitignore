@@ -64,3 +64,5 @@ dev*.log
 
 # Local preview/demo render artifacts (not used by the app)
 static/_previews/
+
+.vercel

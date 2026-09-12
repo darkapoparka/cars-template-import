@@ -93,11 +93,16 @@
 				{@render closeIcon()}
 			</button>
 
-			<p class="daynight-search-modal__eyebrow mb-4 text-sm font-bold tracking-wide text-bc-muted uppercase">
+			<p
+				class="daynight-search-modal__eyebrow mb-4 text-sm font-bold tracking-wide text-bc-muted uppercase"
+			>
 				Какво търсиш?
 			</p>
 
-			<form class="daynight-search-modal__form grid grid-cols-[1fr_auto] gap-3" onsubmit={submitSearch}>
+			<form
+				class="daynight-search-modal__form grid grid-cols-[1fr_auto] gap-3"
+				onsubmit={submitSearch}
+			>
 				<input
 					bind:this={inputEl}
 					bind:value={query}

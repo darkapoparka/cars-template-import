@@ -135,7 +135,12 @@
 		overflow: hidden;
 		border: 1px solid rgba(255, 255, 255, 0.1);
 		border-radius: 8px;
-		background: linear-gradient(135deg, #1c1c1c 0%, #101010 58%, #050505 100%);
+		background: linear-gradient(
+			135deg,
+			var(--bc-ink) 0%,
+			var(--bc-ink) 58%,
+			var(--bc-showcase-dark-panel) 100%
+		);
 		box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
 		padding: 24px 28px;
 	}
@@ -145,7 +150,7 @@
 		align-items: center;
 		flex-wrap: wrap;
 		gap: 14px;
-		color: #ffffff;
+		color: var(--bc-white);
 		margin: 0;
 	}
 
@@ -176,7 +181,7 @@
 	.daynight-news-card {
 		aspect-ratio: 3 / 2;
 		border-radius: 16px;
-		color: #ffffff;
+		color: var(--bc-white);
 		display: flex;
 		isolation: isolate;
 		overflow: hidden;
@@ -197,7 +202,7 @@
 	}
 
 	.daynight-news-card:hover {
-		color: #ffffff;
+		color: var(--bc-white);
 	}
 
 	/* Tactile press feedback (instant translateY, matching the hero/PDP idiom). */
@@ -222,7 +227,7 @@
 		backdrop-filter: blur(6px);
 		border: 1px solid rgba(255, 255, 255, 0.26);
 		border-radius: 999px;
-		color: #ffffff;
+		color: var(--bc-white);
 		font-size: 11px;
 		font-weight: 600;
 		left: 18px;
@@ -246,7 +251,7 @@
 
 	.daynight-news-card__meta {
 		align-items: center;
-		color: #ffffff;
+		color: var(--bc-white);
 		display: flex;
 		font-size: 13px;
 		font-weight: 600;
@@ -256,11 +261,11 @@
 
 	/* The inner spans inherit a near-black template colour otherwise */
 	.daynight-news-card__meta span {
-		color: #ffffff;
+		color: var(--bc-white);
 	}
 
 	.daynight-news-card__title {
-		color: #ffffff;
+		color: var(--bc-white);
 		display: block;
 		font-size: 18px;
 		font-weight: 700;
@@ -273,7 +278,7 @@
 		width: fit-content;
 		border-radius: 999px;
 		background: var(--bc-accent);
-		color: #ffffff;
+		color: var(--bc-white);
 		display: inline-flex;
 		font-size: 14px;
 		font-weight: 700;
@@ -288,7 +293,7 @@
 	.daynight-news-card:hover .daynight-news-card__cta,
 	.daynight-news-card:focus-visible .daynight-news-card__cta {
 		background: var(--bc-accent-hover);
-		color: #ffffff;
+		color: var(--bc-white);
 	}
 
 	.daynight-news-card__cta :global(svg) {
@@ -302,16 +307,16 @@
 		align-items: center;
 		justify-content: center;
 		border-radius: 50%;
-		background: #1c1c1c;
-		color: #ffffff;
+		background: var(--bc-ink);
+		color: var(--bc-white);
 	}
 
 	.daynight-news-card__icon :global(svg),
 	.daynight-news-card__icon :global(path),
 	.daynight-news-card__icon :global(line),
 	.daynight-news-card__icon :global(polyline) {
-		color: #ffffff !important;
-		stroke: #ffffff !important;
+		color: var(--bc-white) !important;
+		stroke: var(--bc-white) !important;
 	}
 
 	.daynight-news-all-card {
@@ -354,7 +359,7 @@
 
 		.daynight-news-section :global(.title-section h2) {
 			gap: 9px;
-			color: #1c1c1c;
+			color: var(--bc-ink);
 			margin: 0;
 			font-size: 24px;
 			font-weight: 700;
@@ -369,46 +374,62 @@
 		}
 
 		.daynight-news-grid {
-			gap: 18px;
+			gap: 14px;
 		}
 
 		.daynight-news-card {
+			display: block;
 			aspect-ratio: auto;
+			min-height: 0;
+			border: 1px solid var(--bc-dark-border);
 			border-radius: 14px;
-			min-height: clamp(240px, 72vw, 300px);
+			background: var(--bc-dark-surface);
 		}
 
 		.daynight-news-card::after {
-			background: linear-gradient(
-				180deg,
-				rgb(12 15 18 / 0.06) 0%,
-				rgb(12 15 18 / 0.52) 34%,
-				rgb(12 15 18 / 0.98) 74%
-			);
+			display: none;
+		}
+
+		.daynight-news-card__img {
+			position: relative;
+			top: auto;
+			left: auto;
+			display: block;
+			width: 100%;
+			height: 144px;
+			object-fit: cover;
 		}
 
 		.daynight-news-card__category {
-			left: 18px;
-			top: 14px;
-			font-size: 12px;
-			line-height: 16px;
-			padding: 5px 11px;
+			left: 12px;
+			top: 12px;
+			background: rgb(16 17 19 / 0.82);
+			font-size: 11px;
+			line-height: 15px;
+			padding: 5px 10px;
 		}
 
 		.daynight-news-card__content {
-			gap: 4px;
-			margin-top: auto;
-			padding: 0 20px 13px;
+			gap: 6px;
+			margin-top: 0;
+			padding: 13px 16px 15px;
+			background: var(--bc-dark-surface);
 		}
 
 		.daynight-news-card__meta {
-			font-size: 14px;
-			line-height: 18px;
+			font-size: 12px;
+			line-height: 16px;
+			opacity: 0.82;
 		}
 
 		.daynight-news-card__title {
-			font-size: 18px;
-			line-height: 24px;
+			display: -webkit-box;
+			overflow: hidden;
+			font-size: 17px;
+			line-height: 22px;
+			-webkit-box-orient: vertical;
+			-webkit-line-clamp: 2;
+			line-clamp: 2;
 		}
 
 		.daynight-news-card__cta {
@@ -429,7 +450,7 @@
 			border-radius: 16px;
 			background:
 				linear-gradient(135deg, rgba(255, 255, 255, 0.34), transparent 34%), var(--bc-accent);
-			color: #ffffff;
+			color: var(--bc-white);
 			padding: 20px;
 			position: relative;
 			isolation: isolate;
@@ -449,7 +470,7 @@
 		.daynight-news-all-card:hover {
 			background:
 				linear-gradient(135deg, rgba(255, 255, 255, 0.34), transparent 34%), var(--bc-accent);
-			color: #ffffff;
+			color: var(--bc-white);
 			transform: none;
 		}
 
@@ -497,8 +518,8 @@
 			gap: 9px;
 			margin-top: 4px;
 			border-radius: 999px;
-			background: #1c1c1c;
-			color: #ffffff;
+			background: var(--bc-ink);
+			color: var(--bc-white);
 			font-size: 14px;
 			font-weight: 700;
 			line-height: 20px;
@@ -510,8 +531,8 @@
 
 		.daynight-news-all-card:hover .daynight-news-all-card__cta,
 		.daynight-news-all-card:focus-visible .daynight-news-all-card__cta {
-			background: #ffffff;
-			color: #1c1c1c;
+			background: var(--bc-white);
+			color: var(--bc-ink);
 		}
 
 		.daynight-news-all-card__cta span {
@@ -525,16 +546,16 @@
 			align-items: center;
 			justify-content: center;
 			border-radius: 50%;
-			background: #ffffff;
-			color: #1c1c1c;
+			background: var(--bc-white);
+			color: var(--bc-ink);
 		}
 
 		.daynight-news-all-card__icon :global(svg),
 		.daynight-news-all-card__icon :global(path),
 		.daynight-news-all-card__icon :global(line),
 		.daynight-news-all-card__icon :global(polyline) {
-			color: #1c1c1c !important;
-			stroke: #1c1c1c !important;
+			color: var(--bc-ink) !important;
+			stroke: var(--bc-ink) !important;
 		}
 	}
 
