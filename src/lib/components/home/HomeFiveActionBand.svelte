@@ -59,6 +59,7 @@
 			{#if variant !== 'consultation'}
 				<a
 					class="daynight-action-card daynight-action-card--import"
+					class:daynight-action-card--photo={!ownership}
 					href={resolve(ownership ? '/sell-your-car' : '/services')}
 				>
 					<div class="daynight-action-card__copy">
@@ -73,10 +74,10 @@
 						class="daynight-action-card__img daynight-action-card__img--specialist"
 						src={ownership
 							? '/assets/daynight/banners/home-gclass-v1.png'
-							: '/assets/daynight/banners/home-kristian-selection-v1.png'}
+							: '/assets/daynight/banners/home-selection-v2.webp'}
 						alt=""
-						width={ownership ? 1881 : 1774}
-						height={ownership ? 836 : 887}
+						width={ownership ? 1881 : 1536}
+						height={ownership ? 836 : 512}
 						loading="lazy"
 						decoding="async"
 					/>
@@ -85,6 +86,7 @@
 			{#if variant !== 'selection'}
 				<a
 					class="daynight-action-card daynight-action-card--consultation"
+					class:daynight-action-card--photo={!ownership}
 					href={resolve(ownership ? '/financing' : '/contact')}
 				>
 					<div class="daynight-action-card__copy">
@@ -99,10 +101,10 @@
 						class="daynight-action-card__img daynight-action-card__img--consultant"
 						src={ownership
 							? '/assets/daynight/banners/home-urus-v1.png'
-							: '/assets/daynight/banners/home-kristian-consultation-v1.png'}
+							: '/assets/daynight/banners/home-consultation-v2.webp'}
 						alt=""
-						width={ownership ? 2172 : 1774}
-						height={ownership ? 724 : 887}
+						width={ownership ? 2172 : 1536}
+						height={ownership ? 724 : 512}
 						loading="lazy"
 						decoding="async"
 					/>
@@ -479,20 +481,6 @@
 				linear-gradient(to bottom, transparent, black 12%, black 96%, transparent);
 			mask-composite: intersect;
 		}
-
-		.daynight-action-band:not(.daynight-action-band--ownership)
-			.daynight-action-card--import
-			.daynight-action-card__img {
-			top: auto;
-			bottom: 0;
-			height: 94%;
-		}
-
-		.daynight-action-band:not(.daynight-action-band--ownership)
-			.daynight-action-card--consultation
-			.daynight-action-card__img {
-			top: 6%;
-		}
 	}
 
 	@media (max-width: 575px) {
@@ -514,6 +502,65 @@
 				transparent 0 36%,
 				var(--bc-showcase-dark-panel) 58% 100%
 			);
+		}
+	}
+
+	.daynight-action-card.daynight-action-card--photo {
+		background: var(--bc-ink);
+		border: 0;
+		border-radius: var(--bc-radius-card);
+	}
+	.daynight-action-card--photo .daynight-action-card__img {
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center;
+		mask-image: none;
+		-webkit-mask-image: none;
+	}
+	.daynight-action-card--photo .daynight-action-card__copy {
+		width: 56%;
+		max-width: 56%;
+		align-content: center;
+		gap: 12px;
+	}
+	.daynight-action-card--photo .daynight-action-card__title {
+		white-space: normal;
+		text-wrap: balance;
+	}
+	.daynight-action-card--photo .daynight-action-card__body {
+		display: none;
+	}
+	.daynight-action-card--photo .daynight-action-card__cta,
+	.daynight-action-card--photo:hover .daynight-action-card__cta {
+		background: transparent;
+		color: var(--bc-white);
+		padding: 0;
+		min-width: 0;
+		width: fit-content;
+		justify-content: start;
+		font-size: 16px;
+		height: auto;
+		min-height: 0;
+		margin-top: 0;
+	}
+	@media (max-width: 767px) {
+		.daynight-action-card.daynight-action-card--photo {
+			min-height: 144px;
+			padding: 20px;
+		}
+		.daynight-action-card--photo .daynight-action-card__copy {
+			width: 56%;
+			max-width: 56%;
+		}
+		.daynight-action-card--photo .daynight-action-card__title {
+			font-size: 22px;
+			line-height: 25px;
+		}
+		.daynight-action-card--photo .daynight-action-card__cta {
+			font-size: 14px;
+			gap: 8px;
 		}
 	}
 </style>
