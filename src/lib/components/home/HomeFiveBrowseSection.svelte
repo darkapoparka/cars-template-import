@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
+	import type { Snippet } from 'svelte';
 	import type { HomeFiveBrandCard, HomeFiveTypeCard } from '$lib/auxero/home-five';
 	import type { HomePageCopy } from '$lib/i18n/messages';
 	import HomeSectionCta from './HomeSectionCta.svelte';
@@ -7,11 +8,13 @@
 	let {
 		brandCards,
 		copy,
-		typeCards
+		typeCards,
+		betweenGroups
 	}: {
 		brandCards: HomeFiveBrandCard[];
 		copy: HomePageCopy;
 		typeCards: HomeFiveTypeCard[];
+		betweenGroups?: Snippet;
 	} = $props();
 
 	const mobileBrandTitle = $derived(copy.brandTitle === 'Explore Our Brands' ? 'Brands' : 'Марки');
@@ -81,6 +84,9 @@
 				</div>
 			</div>
 
+			{#if betweenGroups}
+				<div class="daynight-browse-interlude">{@render betweenGroups()}</div>
+			{/if}
 			<div class="daynight-type-gallery">
 				<div
 					class="title-section daynight-section-banner daynight-section-banner--type wow fadeInDown mb-42"
@@ -122,6 +128,19 @@
 </section>
 
 <style>
+	.daynight-browse-interlude {
+		display: none;
+	}
+	@media (max-width: 767px) {
+		.daynight-browse-interlude {
+			display: block;
+			margin-block: 24px;
+		}
+		.daynight-browse-interlude :global(.container) {
+			width: 100%;
+			padding-inline: 0;
+		}
+	}
 	.daynight-browse-section {
 		overflow: hidden;
 		background-color: var(--bc-bg) !important;

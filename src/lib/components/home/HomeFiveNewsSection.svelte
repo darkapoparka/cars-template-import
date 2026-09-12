@@ -80,7 +80,6 @@
 								<span>{post.date}</span>
 							</span>
 							<span class="daynight-news-card__title">{post.title}</span>
-							<span class="daynight-news-card__mobile-date">{post.date}</span>
 							<span class="daynight-news-card__cta">
 								{copy.readMore}
 								<span class="daynight-news-card__icon" aria-hidden="true">
@@ -91,8 +90,24 @@
 					</a>
 				{/each}
 				<a href={resolve('/blog')} class="daynight-news-all-card">
-					<span>{readAllBlogTitle}</span>
-					<ArrowRight size={18} aria-hidden="true" />
+					<span class="daynight-news-all-card__preview" aria-hidden="true">
+						{#each cards as post (post.slug)}
+							<img
+								src={post.image}
+								alt=""
+								width="120"
+								height="144"
+								loading="lazy"
+								decoding="async"
+							/>
+						{/each}
+					</span>
+					<span class="daynight-news-card__content">
+						<span class="daynight-news-all-card__title">{readAllBlogTitle}</span>
+						<span class="daynight-news-card__cta">
+							{copy.commonCta}<ArrowRight size={16} aria-hidden="true" />
+						</span>
+					</span>
 				</a>
 			</div>
 		</div>
@@ -298,8 +313,7 @@
 		stroke: var(--bc-white) !important;
 	}
 
-	.daynight-news-all-card,
-	.daynight-news-card__mobile-date {
+	.daynight-news-all-card {
 		display: none;
 	}
 
@@ -360,68 +374,83 @@
 		}
 
 		.daynight-news-grid {
-			gap: 12px;
+			display: flex;
+			gap: 14px;
 			max-width: none;
+			margin-inline: -15px;
+			padding: 6px 15px;
+			overflow-x: auto;
+			scroll-snap-type: x proximity;
+			scroll-padding-inline: 15px;
+			scrollbar-width: none;
 		}
 
-		.daynight-news-card {
-			display: grid;
-			grid-template-columns: 96px minmax(0, 1fr);
-			align-items: center;
-			gap: 14px;
+		.daynight-news-grid::-webkit-scrollbar {
+			display: none;
+		}
+
+		.daynight-news-card,
+		.daynight-news-all-card {
+			display: flex;
+			flex: 0 0 min(82vw, 320px);
+			flex-direction: column;
 			aspect-ratio: auto;
-			min-height: 136px;
-			padding: 12px;
+			min-height: 0;
 			border-radius: var(--bc-radius-card);
 			background: var(--bc-card-bg);
 			color: var(--bc-ink);
+			overflow: hidden;
+			scroll-snap-align: start;
 		}
 
 		.daynight-news-card::after,
 		.daynight-news-card__category,
-		.daynight-news-card__meta,
-		.daynight-news-card__mobile-date {
+		.daynight-news-card__meta {
 			display: none;
 		}
 
 		.daynight-news-card__img {
 			position: static;
 			display: block;
-			width: 96px;
-			height: 112px;
-			border-radius: var(--bc-radius-md);
+			width: 100%;
+			height: 144px;
 			object-fit: cover;
 		}
 
 		.daynight-news-card__content {
-			gap: 6px;
+			flex: 1;
+			gap: 12px;
 			margin: 0;
-			padding: 0;
+			padding: 14px;
 			min-width: 0;
 		}
 
-		.daynight-news-card__title {
+		.daynight-news-card__title,
+		.daynight-news-all-card__title {
 			display: -webkit-box;
+			min-height: 44px;
 			overflow: hidden;
 			color: var(--bc-ink);
 			font-size: 17px;
+			font-weight: 700;
 			line-height: 22px;
 			-webkit-box-orient: vertical;
-			-webkit-line-clamp: 3;
-			line-clamp: 3;
+			-webkit-line-clamp: 2;
+			line-clamp: 2;
 		}
 
 		.daynight-news-card__cta {
 			display: inline-flex;
-			min-height: 36px;
-			margin-top: 2px;
-			padding: 6px 10px;
-			border-radius: var(--bc-radius-md);
+			justify-content: center;
+			min-height: 44px;
+			margin-top: auto;
+			padding: 10px 14px;
+			border-radius: var(--bc-radius-control);
 			background: var(--bc-ink);
 			color: var(--bc-white);
-			font-size: 13px;
-			line-height: 18px;
-			gap: 8px;
+			font-size: 14px;
+			line-height: 20px;
+			gap: 10px;
 		}
 
 		.daynight-news-card__icon {
@@ -430,32 +459,22 @@
 			height: 16px;
 		}
 
-		.daynight-news-card:hover .daynight-news-card__title {
-			color: var(--bc-accent);
+		.daynight-news-all-card__preview {
+			display: grid;
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+			gap: 4px;
+			height: 144px;
 		}
 
-		.daynight-news-all-card {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			gap: 10px;
-			min-height: 48px;
-			margin-top: 4px;
-			padding: 12px 18px;
-			border-radius: var(--bc-radius-control);
-			background: var(--bc-ink);
-			color: var(--bc-white);
-			font-size: 16px;
-			font-weight: 700;
+		.daynight-news-all-card__preview img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
 		}
 
-		.daynight-news-all-card span {
-			color: inherit;
-		}
-
-		.daynight-news-all-card:hover {
+		.daynight-news-all-card:hover .daynight-news-card__cta,
+		.daynight-news-all-card:focus-visible .daynight-news-card__cta {
 			background: var(--bc-accent);
-			color: var(--bc-white);
 		}
 	}
 

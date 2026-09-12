@@ -3,7 +3,10 @@
 	import type { HomePageCopy } from '$lib/i18n/messages';
 	import { ArrowRight } from '@lucide/svelte';
 
-	let { copy, variant = 'guidance' }: { copy: HomePageCopy; variant?: 'guidance' | 'ownership' } =
+	let {
+		copy,
+		variant = 'guidance'
+	}: { copy: HomePageCopy; variant?: 'guidance' | 'ownership' | 'selection' | 'consultation' } =
 		$props();
 	const ownership = $derived(variant === 'ownership');
 	const english = $derived(copy.actionBand.importTitle === 'Import From Europe');
@@ -42,67 +45,88 @@
 <section
 	class="daynight-action-band py-100"
 	class:daynight-action-band--ownership={ownership}
+	class:daynight-action-band--guidance={variant === 'guidance'}
+	class:daynight-action-band--selection={variant === 'selection'}
+	class:daynight-action-band--consultation={variant === 'consultation'}
 	aria-labelledby={`daynight-action-band-${variant}-title`}
 >
 	<h2 id={`daynight-action-band-${variant}-title`} class="sr-only">
-		{firstTitle} · {secondTitle}
+		{#if variant === 'selection'}{firstTitle}{:else if variant === 'consultation'}{secondTitle}{:else}{firstTitle}
+			· {secondTitle}{/if}
 	</h2>
 	<div class="container">
 		<div class="daynight-action-grid wow fadeInUp" data-wow-delay="0.1s">
-			<a
-				class="daynight-action-card daynight-action-card--import"
-				href={resolve(ownership ? '/sell-your-car' : '/services')}
-			>
-				<div class="daynight-action-card__copy">
-					<h3 class="daynight-action-card__title">{firstTitle}</h3>
-					<p class="daynight-action-card__body">{firstBody}</p>
-					<span class="daynight-action-card__cta">
-						{firstCta}
-						<ArrowRight size={18} strokeWidth={2.4} aria-hidden="true" />
-					</span>
-				</div>
-				<img
-					class="daynight-action-card__img daynight-action-card__img--specialist"
-					src={ownership
-						? '/assets/daynight/banners/home-gclass-v1.png'
-						: '/assets/daynight/banners/home-kristian-selection-v1.png'}
-					alt=""
-					width={ownership ? 1881 : 1774}
-					height={ownership ? 836 : 887}
-					loading="lazy"
-					decoding="async"
-				/>
-			</a>
-
-			<a
-				class="daynight-action-card daynight-action-card--consultation"
-				href={resolve(ownership ? '/financing' : '/contact')}
-			>
-				<div class="daynight-action-card__copy">
-					<h3 class="daynight-action-card__title">{secondTitle}</h3>
-					<p class="daynight-action-card__body">{secondBody}</p>
-					<span class="daynight-action-card__cta">
-						{secondCta}
-						<ArrowRight size={18} strokeWidth={2.4} aria-hidden="true" />
-					</span>
-				</div>
-				<img
-					class="daynight-action-card__img daynight-action-card__img--consultant"
-					src={ownership
-						? '/assets/daynight/banners/home-urus-v1.png'
-						: '/assets/daynight/banners/home-kristian-consultation-v1.png'}
-					alt=""
-					width={ownership ? 2172 : 1774}
-					height={ownership ? 724 : 887}
-					loading="lazy"
-					decoding="async"
-				/>
-			</a>
+			{#if variant !== 'consultation'}
+				<a
+					class="daynight-action-card daynight-action-card--import"
+					href={resolve(ownership ? '/sell-your-car' : '/services')}
+				>
+					<div class="daynight-action-card__copy">
+						<h3 class="daynight-action-card__title">{firstTitle}</h3>
+						<p class="daynight-action-card__body">{firstBody}</p>
+						<span class="daynight-action-card__cta">
+							{firstCta}
+							<ArrowRight size={18} strokeWidth={2.4} aria-hidden="true" />
+						</span>
+					</div>
+					<img
+						class="daynight-action-card__img daynight-action-card__img--specialist"
+						src={ownership
+							? '/assets/daynight/banners/home-gclass-v1.png'
+							: '/assets/daynight/banners/home-kristian-selection-v1.png'}
+						alt=""
+						width={ownership ? 1881 : 1774}
+						height={ownership ? 836 : 887}
+						loading="lazy"
+						decoding="async"
+					/>
+				</a>
+			{/if}
+			{#if variant !== 'selection'}
+				<a
+					class="daynight-action-card daynight-action-card--consultation"
+					href={resolve(ownership ? '/financing' : '/contact')}
+				>
+					<div class="daynight-action-card__copy">
+						<h3 class="daynight-action-card__title">{secondTitle}</h3>
+						<p class="daynight-action-card__body">{secondBody}</p>
+						<span class="daynight-action-card__cta">
+							{secondCta}
+							<ArrowRight size={18} strokeWidth={2.4} aria-hidden="true" />
+						</span>
+					</div>
+					<img
+						class="daynight-action-card__img daynight-action-card__img--consultant"
+						src={ownership
+							? '/assets/daynight/banners/home-urus-v1.png'
+							: '/assets/daynight/banners/home-kristian-consultation-v1.png'}
+						alt=""
+						width={ownership ? 2172 : 1774}
+						height={ownership ? 724 : 887}
+						loading="lazy"
+						decoding="async"
+					/>
+				</a>
+			{/if}
 		</div>
 	</div>
 </section>
 
 <style>
+	.daynight-action-band--selection,
+	.daynight-action-band--consultation {
+		display: none;
+	}
+	@media (max-width: 767px) {
+		.daynight-action-band--selection,
+		.daynight-action-band--consultation {
+			display: block;
+		}
+		.daynight-action-band--selection .daynight-action-grid,
+		.daynight-action-band--consultation .daynight-action-grid {
+			grid-template-columns: minmax(0, 1fr);
+		}
+	}
 	.daynight-action-band {
 		background: var(--bc-bg);
 		padding-top: 38px;
