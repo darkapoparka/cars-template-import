@@ -3,7 +3,7 @@
 ## Identity
 - Repository: `darkapoparka/cars-template-import`
 - Key: `import`
-- Portfolio role: **optional**
+- Role: Design 2 option in an Import trio
 - Design position: import/sourcing specialist for dealers that actively sell the import journey
 - Stack: SvelteKit + Vite (Auxero-derived)
 - Primary entry: `/`
@@ -40,12 +40,14 @@ Do not assume these are the only identity consumers. Search every retained route
 - `npm run build`
 
 ## Current constraints
-Use as a fourth variant only when import, sourcing, transport or order-from-Europe is a real part of the dealer's offer. It overlaps with the showroom/Auxero family, so do not add it mechanically.
+Use Import as Design 2 in the intentional Auto Best / Import / Carwow trio when it fits the dealer’s real offer.
 
-For `modern`, local preview also requires the environment documented in `docs/QA.md`; provider services remain unconfigured unless a lead task explicitly wires them. For `carwow`, use direct Vite for a selectable port because the inherited source dev wrapper fixes port 6517.
+
 
 ## Source lineage
 Split on 2026-09-10 from the live working tree at `J:/cars/templates/import`. The split deliberately captured local working-tree changes, including changes newer than the `cars` repository HEAD. Historical root instructions were archived under `docs/legacy/from-cars-2026-09-10/`; use them only for provenance, never as current operating instructions.
 
 ## Portfolio policy
-Standard showroom lead = three variants: `auto-best`, `carwow`, `modern`. Add `import` only when the dealer's real offer includes sourcing/import/transport/order-from-Europe or equivalent. Do not add a fourth design merely to increase the count.
+Cars owns portfolio choices: standard Auto Best / Modern / Carwow, or Auto Best / Import / Carwow. See [Cars integration](docs/CARS-INTEGRATION.md).
+
+Current cross-repository ownership, approved releases, dealer-copy workflow and standalone/mounted limits: [Cars integration](docs/CARS-INTEGRATION.md).
