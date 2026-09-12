@@ -12,11 +12,6 @@
 	const readAllBlogTitle = $derived(
 		copy.newsTitle === 'Day Night Auto notes' ? 'Read all blog posts' : 'Виж всички статии'
 	);
-	const readAllBlogCopy = $derived(
-		copy.newsTitle === 'Day Night Auto notes'
-			? 'Import, registration, and selling guides in one place.'
-			: 'Съвети за внос, регистрация и продажба на автомобил.'
-	);
 	const brandedNewsTitle = $derived(/daynight/i.test(copy.newsTitle));
 	const brandFirstNewsTitle = $derived(copy.newsTitle.toLowerCase().startsWith('daynight'));
 	const newsTitleWithoutBrand = $derived(copy.newsTitle.replace(/daynight/i, '').trim());
@@ -71,7 +66,7 @@
 						<img
 							class="daynight-news-card__img"
 							src={post.image}
-							alt={post.title}
+							alt=""
 							width="760"
 							height="500"
 							loading="lazy"
@@ -85,6 +80,7 @@
 								<span>{post.date}</span>
 							</span>
 							<span class="daynight-news-card__title">{post.title}</span>
+							<span class="daynight-news-card__mobile-date">{post.date}</span>
 							<span class="daynight-news-card__cta">
 								{copy.readMore}
 								<span class="daynight-news-card__icon" aria-hidden="true">
@@ -95,25 +91,8 @@
 					</a>
 				{/each}
 				<a href={resolve('/blog')} class="daynight-news-all-card">
-					<span class="daynight-news-all-card__topline">
-						<img
-							class="daynight-news-all-card__brand"
-							src={daynightAssets.logoLight}
-							alt="Day Night Auto"
-							width="220"
-							height="58"
-							loading="lazy"
-							decoding="async"
-						/>
-					</span>
-					<span class="daynight-news-all-card__title">{readAllBlogTitle}</span>
-					<span class="daynight-news-all-card__copy">{readAllBlogCopy}</span>
-					<span class="daynight-news-all-card__cta">
-						<span>{copy.readMore}</span>
-						<span class="daynight-news-all-card__icon" aria-hidden="true">
-							<ArrowRight size={15} strokeWidth={2.7} />
-						</span>
-					</span>
+					<span>{readAllBlogTitle}</span>
+					<ArrowRight size={18} aria-hidden="true" />
 				</a>
 			</div>
 		</div>
@@ -319,8 +298,15 @@
 		stroke: var(--bc-white) !important;
 	}
 
-	.daynight-news-all-card {
+	.daynight-news-all-card,
+	.daynight-news-card__mobile-date {
 		display: none;
+	}
+
+	.daynight-news-card:focus-visible,
+	.daynight-news-all-card:focus-visible {
+		outline: 2px solid var(--bc-focus);
+		outline-offset: 4px;
 	}
 
 	@media (max-width: 991px) {
@@ -374,188 +360,102 @@
 		}
 
 		.daynight-news-grid {
-			gap: 14px;
+			gap: 12px;
+			max-width: none;
 		}
 
 		.daynight-news-card {
-			display: block;
+			display: grid;
+			grid-template-columns: 96px minmax(0, 1fr);
+			align-items: center;
+			gap: 14px;
 			aspect-ratio: auto;
-			min-height: 0;
-			border: 1px solid var(--bc-dark-border);
-			border-radius: 14px;
-			background: var(--bc-dark-surface);
+			min-height: 136px;
+			padding: 12px;
+			border-radius: var(--bc-radius-card);
+			background: var(--bc-card-bg);
+			color: var(--bc-ink);
 		}
 
-		.daynight-news-card::after {
+		.daynight-news-card::after,
+		.daynight-news-card__category,
+		.daynight-news-card__meta,
+		.daynight-news-card__mobile-date {
 			display: none;
 		}
 
 		.daynight-news-card__img {
-			position: relative;
-			top: auto;
-			left: auto;
+			position: static;
 			display: block;
-			width: 100%;
-			height: 144px;
+			width: 96px;
+			height: 112px;
+			border-radius: var(--bc-radius-md);
 			object-fit: cover;
-		}
-
-		.daynight-news-card__category {
-			left: 12px;
-			top: 12px;
-			background: rgb(16 17 19 / 0.82);
-			font-size: 11px;
-			line-height: 15px;
-			padding: 5px 10px;
 		}
 
 		.daynight-news-card__content {
 			gap: 6px;
-			margin-top: 0;
-			padding: 13px 16px 15px;
-			background: var(--bc-dark-surface);
-		}
-
-		.daynight-news-card__meta {
-			font-size: 12px;
-			line-height: 16px;
-			opacity: 0.82;
+			margin: 0;
+			padding: 0;
+			min-width: 0;
 		}
 
 		.daynight-news-card__title {
 			display: -webkit-box;
 			overflow: hidden;
+			color: var(--bc-ink);
 			font-size: 17px;
 			line-height: 22px;
 			-webkit-box-orient: vertical;
-			-webkit-line-clamp: 2;
-			line-clamp: 2;
+			-webkit-line-clamp: 3;
+			line-clamp: 3;
 		}
 
 		.daynight-news-card__cta {
+			display: inline-flex;
+			min-height: 36px;
 			margin-top: 2px;
+			padding: 6px 10px;
+			border-radius: var(--bc-radius-md);
+			background: var(--bc-ink);
+			color: var(--bc-white);
+			font-size: 13px;
+			line-height: 18px;
 			gap: 8px;
-			font-size: 14px;
-			line-height: 20px;
-			padding: 6px 8px 6px 13px;
+		}
+
+		.daynight-news-card__icon {
+			background: transparent;
+			width: 16px;
+			height: 16px;
+		}
+
+		.daynight-news-card:hover .daynight-news-card__title {
+			color: var(--bc-accent);
 		}
 
 		.daynight-news-all-card {
 			display: flex;
-			min-height: 184px;
-			aspect-ratio: auto;
-			flex-direction: column;
-			gap: 8px;
-			overflow: hidden;
-			border-radius: 16px;
-			background:
-				linear-gradient(135deg, rgba(255, 255, 255, 0.34), transparent 34%), var(--bc-accent);
-			color: var(--bc-white);
-			padding: 20px;
-			position: relative;
-			isolation: isolate;
-		}
-
-		.daynight-news-all-card::after {
-			position: absolute;
-			inset: 0;
-			background-image: linear-gradient(135deg, rgba(28, 28, 28, 0.12) 1px, transparent 1px);
-			background-size: 18px 18px;
-			content: '';
-			opacity: 0.22;
-			pointer-events: none;
-			z-index: -1;
-		}
-
-		.daynight-news-all-card:hover {
-			background:
-				linear-gradient(135deg, rgba(255, 255, 255, 0.34), transparent 34%), var(--bc-accent);
-			color: var(--bc-white);
-			transform: none;
-		}
-
-		.daynight-news-all-card__topline {
-			display: flex;
-			align-items: flex-start;
-			justify-content: flex-start;
-		}
-
-		.daynight-news-all-card__brand {
-			display: block;
-			width: 134px;
-			max-width: 52%;
-			height: auto;
-			box-sizing: border-box;
-			border-radius: 999px;
-			background: rgb(255 255 255 / 0.86);
-			padding: 6px 9px;
-		}
-
-		.daynight-news-all-card__title {
-			display: block;
-			max-width: 260px;
-			margin-top: 8px;
-			font-size: 24px;
-			font-weight: 700;
-			letter-spacing: 0;
-			line-height: 28px;
-		}
-
-		.daynight-news-all-card__copy {
-			display: block;
-			max-width: 290px;
-			color: rgb(255 255 255 / 0.9);
-			font-size: 14px;
-			font-weight: 600;
-			line-height: 20px;
-		}
-
-		.daynight-news-all-card__cta {
-			display: inline-flex;
-			width: fit-content;
 			align-items: center;
 			justify-content: center;
-			gap: 9px;
+			gap: 10px;
+			min-height: 48px;
 			margin-top: 4px;
-			border-radius: 999px;
+			padding: 12px 18px;
+			border-radius: var(--bc-radius-control);
 			background: var(--bc-ink);
 			color: var(--bc-white);
-			font-size: 14px;
+			font-size: 16px;
 			font-weight: 700;
-			line-height: 20px;
-			padding: 8px 10px 8px 16px;
-			transition:
-				background-color 0.18s ease,
-				color 0.18s ease;
 		}
 
-		.daynight-news-all-card:hover .daynight-news-all-card__cta,
-		.daynight-news-all-card:focus-visible .daynight-news-all-card__cta {
-			background: var(--bc-white);
-			color: var(--bc-ink);
-		}
-
-		.daynight-news-all-card__cta span {
+		.daynight-news-all-card span {
 			color: inherit;
 		}
 
-		.daynight-news-all-card__icon {
-			display: inline-flex;
-			width: 24px;
-			height: 24px;
-			align-items: center;
-			justify-content: center;
-			border-radius: 50%;
-			background: var(--bc-white);
-			color: var(--bc-ink);
-		}
-
-		.daynight-news-all-card__icon :global(svg),
-		.daynight-news-all-card__icon :global(path),
-		.daynight-news-all-card__icon :global(line),
-		.daynight-news-all-card__icon :global(polyline) {
-			color: var(--bc-ink) !important;
-			stroke: var(--bc-ink) !important;
+		.daynight-news-all-card:hover {
+			background: var(--bc-accent);
+			color: var(--bc-white);
 		}
 	}
 
