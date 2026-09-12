@@ -72,9 +72,7 @@ const cookieToken = (request: Request) => {
 };
 
 const sessionTokenFromRequest = (request: Request) =>
-	request.headers.get('x-daynight-session')?.trim() ??
-	bearerToken(request) ??
-	cookieToken(request);
+	request.headers.get('x-daynight-session')?.trim() ?? bearerToken(request) ?? cookieToken(request);
 
 const roleFromRequestSearch = (request: Request): DayNightRole | undefined => {
 	try {
