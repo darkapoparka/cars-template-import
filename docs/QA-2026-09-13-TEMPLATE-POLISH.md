@@ -106,6 +106,12 @@ Scope: article reading layouts, compact mobile inventory cards, currency display
 - Visually inspected inventory at 390px and 360px. DOM measurements confirmed the 6px top inset, 8px search-to-pills gap, 20px icons, 44px controls and no document-width overflow. This geometry-only change does not repeat the preceding production build or full type check.
 - Scoped Prettier, ESLint and diff checks passed; Svelte autofixer reported no issues, with existing effect and element-binding suggestions retained.
 
+## Mobile sell guide layout follow-up
+
+- Centered the selling-guide heading and introduction. Step numbers are plain accent text beside left-aligned headings, with descriptions spanning the full row beneath. Removed the VIN tip card background and inset; its description starts beneath the icon. Retained the existing 14px page gutter and typography roles.
+- Inspected `/sell-your-car` at 390px and 360px, including scrolling to the complete VIN note above the bottom navigation. Confirmed description/number alignment, transparent number/tip backgrounds and no horizontal overflow. Desktop inspected at 1440px; browser console reported no warnings/errors. Scoped formatting, ESLint and diff checks passed; Svelte autofixer reported no issues or suggestions.
+- `npm run check` passed with zero errors/warnings and `npm run build` passed. Restored the owned dev server on port 6464 after the build.
+
 ## Limits
 
 This is standalone local template evidence, not owner visual acceptance, mounted Cars release qualification, or a dealer deployment. No messages were sent to a dealer. Sell-car submissions and unrelated CMS/account features remain temporary prototypes. Real dealer collection still needs its own private database, identity and notification configuration, hosting-specific validation, and final dealer content/policy review. Repository-wide lint and the full legacy end-to-end suite were not used as a release claim; checks were scoped to this implementation and browser flows above.

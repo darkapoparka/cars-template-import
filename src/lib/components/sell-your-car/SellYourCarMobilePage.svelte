@@ -163,22 +163,18 @@
 					{#each guideSteps as step, index (step.title)}
 						<li>
 							<span class="sell-guide__number" aria-hidden="true">{index + 1}</span>
-							<div>
-								<h3>{step.title}</h3>
-								<p>{step.text}</p>
-							</div>
+							<h3>{step.title}</h3>
+							<p>{step.text}</p>
 						</li>
 					{/each}
 				</ol>
 				<div class="sell-guide__tip">
 					<ScanLine size={22} strokeWidth={1.8} aria-hidden="true" />
-					<div>
-						<h3>VIN не е задължителен</h3>
-						<p>
-							Избери „Нямам VIN“ и въведи марка и модел. Годината и пробегът помагат за по-точна
-							оценка.
-						</p>
-					</div>
+					<h3>VIN не е задължителен</h3>
+					<p>
+						Избери „Нямам VIN“ и въведи марка и модел. Годината и пробегът помагат за по-точна
+						оценка.
+					</p>
 				</div>
 			</section>
 		{/snippet}
@@ -272,6 +268,8 @@
 
 	.sell-guide h2 {
 		margin: 0;
+		text-align: center;
+		text-wrap: balance;
 		font-size: var(--bc-mobile-section-title);
 		font-weight: var(--bc-weight-heading);
 		line-height: var(--bc-mobile-section-title-leading);
@@ -279,6 +277,8 @@
 	}
 	.sell-guide__intro {
 		margin: 8px 0 24px;
+		text-align: center;
+		text-wrap: balance;
 		color: var(--bc-copy);
 		font-size: var(--bc-mobile-body);
 		line-height: var(--bc-mobile-body-leading);
@@ -286,7 +286,7 @@
 	}
 	.sell-guide__steps {
 		display: grid;
-		gap: 22px;
+		gap: var(--bc-space-6);
 		margin: 0;
 		padding: 0;
 		list-style: none;
@@ -294,23 +294,18 @@
 	.sell-guide__steps li,
 	.sell-guide__tip {
 		display: grid;
-		grid-template-columns: 36px minmax(0, 1fr);
-		align-items: start;
-		gap: 12px;
+		grid-template-columns: 22px minmax(0, 1fr);
+		align-items: center;
+		gap: var(--bc-space-1) var(--bc-space-2);
 	}
 	.sell-guide__number {
-		display: grid;
-		width: 36px;
-		height: 36px;
-		place-items: center;
-		border-radius: var(--bc-radius-pill);
-		background: var(--bc-white);
 		color: var(--bc-accent);
-		font-size: 15px;
-		font-weight: 700;
+		font-size: var(--bc-mobile-card-title);
+		line-height: var(--bc-mobile-card-title-leading);
+		font-weight: var(--bc-weight-heading);
 	}
 	.sell-guide h3 {
-		margin: 0 0 4px;
+		margin: 0;
 		font-size: var(--bc-mobile-card-title);
 		line-height: var(--bc-mobile-card-title-leading);
 		font-weight: var(--bc-weight-heading);
@@ -318,6 +313,7 @@
 	}
 	.sell-guide__steps p,
 	.sell-guide__tip p {
+		grid-column: 1 / -1;
 		margin: 0;
 		font-size: var(--bc-mobile-body);
 		line-height: var(--bc-mobile-body-leading);
@@ -325,11 +321,7 @@
 		font-weight: var(--bc-weight-body);
 	}
 	.sell-guide__tip {
-		grid-template-columns: 22px minmax(0, 1fr);
-		margin-top: 24px;
-		padding: 16px;
-		border-radius: var(--bc-radius-card);
-		background: var(--bc-white);
+		margin-top: var(--bc-space-7);
 	}
 	.sell-guide__tip :global(svg) {
 		color: var(--bc-accent);
