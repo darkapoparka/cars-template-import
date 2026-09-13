@@ -497,7 +497,7 @@
 			min-height: 132px;
 			border: 0 !important;
 			border-radius: 8px;
-			background-color: var(--bc-surface) !important;
+			background-color: var(--bc-card-bg) !important;
 			padding: 12px 8px !important;
 		}
 
@@ -562,7 +562,7 @@
 			min-height: 118px;
 			align-items: flex-start;
 			border-radius: 8px;
-			background: var(--bc-surface);
+			background: var(--bc-card-bg);
 			padding: 12px;
 			text-align: left;
 		}

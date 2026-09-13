@@ -1435,7 +1435,7 @@
 			--daynight-mobile-cta-ink: var(--bc-ink);
 			--daynight-mobile-action: var(--bc-dark-surface);
 			--daynight-mobile-action-focus: var(--bc-dark-hover);
-			--daynight-mobile-surface: var(--bc-bg);
+			--daynight-mobile-surface: var(--bc-white);
 			background: var(--daynight-mobile-hero-top) !important;
 			background-color: var(--daynight-mobile-hero-top) !important;
 		}
@@ -2274,7 +2274,7 @@
 			padding: 0 12px;
 			border: 0;
 			border-radius: 10px;
-			background: var(--bc-surface);
+			background: var(--bc-card-bg);
 			box-shadow: none;
 			color: var(--bc-ink);
 			cursor: pointer;

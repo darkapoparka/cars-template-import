@@ -460,7 +460,7 @@
 			overflow: hidden;
 			border: 0;
 			border-radius: 10px;
-			background: var(--bc-surface);
+			background: var(--bc-card-bg);
 			box-shadow: none !important;
 		}
 
@@ -478,12 +478,12 @@
 		}
 
 		.daynight-card-soft-hover .content {
-			background: var(--bc-surface);
+			background: var(--bc-card-bg);
 		}
 
 		@media (hover: hover) and (pointer: fine) {
 			.daynight-card-soft-hover:hover .content {
-				background: var(--bc-surface);
+				background: var(--bc-card-bg);
 			}
 		}
 
@@ -585,8 +585,8 @@
 			min-height: 32px;
 			font-size: 12px;
 			line-height: 16px;
-			/* Inner chips stay white so they remain visible against the standard soft card surface. */
-			background: var(--bc-white);
+			/* Inset specs use a soft fill within the white mobile card. */
+			background: var(--bc-surface-soft);
 			border-color: var(--bc-border);
 		}
 

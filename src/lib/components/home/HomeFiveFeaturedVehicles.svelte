@@ -1155,7 +1155,7 @@
 			padding: 14px;
 			border-radius: 8px;
 			border: 1px solid var(--bc-border);
-			background: var(--bc-surface);
+			background: var(--bc-card-bg);
 			color: #1c1c1c;
 			font-size: 18px;
 			font-weight: 600;

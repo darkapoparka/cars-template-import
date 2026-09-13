@@ -718,7 +718,7 @@
 			align-items: center;
 			gap: var(--bc-space-3);
 			border-radius: var(--bc-radius-control);
-			background: var(--bc-surface);
+			background: var(--bc-card-bg);
 			padding: 0 13px;
 			color: var(--bc-ink);
 			font-size: var(--bc-text-control);

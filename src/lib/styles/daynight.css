@@ -336,6 +336,12 @@ body::-webkit-scrollbar-thumb:hover {
 }
 
 @media (max-width: 767.98px) {
+	:root {
+		/* Mobile pages share one grey canvas with white cards above it. */
+		--bc-bg: var(--bc-bg-strong);
+		--bc-card-bg: var(--bc-white);
+	}
+
 	html,
 	body {
 		scrollbar-width: none;

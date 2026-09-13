@@ -150,6 +150,13 @@ Scope: article reading layouts, compact mobile inventory cards, currency display
 - Matched the mobile Home content transition to Sell/Import: 24px rounded top corners, 20px overlap, 38px centered decorative handle and grey background continuing from quick pills through featured cars. Added hero bottom clearance so the all-cars control keeps its space. The section remains ordinary scrolling content.
 - Visually inspected Home at 390px and 360px with no document overflow; the quick filter button opened and closed the existing full-height filter overlay. Desktop inspected at 1440px and retained its layout. Browser console reported no warnings/errors. Formatting, Svelte autofixer (no issues) and diff checks passed. Full build/type/lint checks were not repeated for this CSS-only change.
 
+## Consistent mobile page surfaces
+
+- Below 768px, shared background/card tokens now use the existing light grey canvas and white card colours. Home brand, body-type, vehicle, review and view-all cards plus quick controls follow those tokens; vehicle specs keep a subtle inset fill. Inventory uses the shared canvas, and menu rows use the shared card colour. Home hero search remains white.
+- Visually inspected Home sections through articles/footer, Inventory, Import, Sell and the menu at 390px. Confirmed white vehicle/review/article cards against the grey canvas. At 360px, Home document width matched the viewport; at 1440px, desktop retained its white canvas and soft grey cards. Dark heroes, banner artwork and footer retain their existing colours.
+- Type checking passed with zero errors/warnings. Scoped ESLint, Prettier and diff checks passed. Svelte autofixer reported no issues across all seven affected components; existing effect/attachment suggestions were outside this colour-only change.
+- Production build passed. The owned development server was restored on port 6464 afterward.
+
 ## Limits
 
 This is standalone local template evidence, not owner visual acceptance, mounted Cars release qualification, or a dealer deployment. No messages were sent to a dealer. Sell-car submissions and unrelated CMS/account features remain temporary prototypes. Real dealer collection still needs its own private database, identity and notification configuration, hosting-specific validation, and final dealer content/policy review. Repository-wide lint and the full legacy end-to-end suite were not used as a release claim; checks were scoped to this implementation and browser flows above.

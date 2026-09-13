@@ -1051,7 +1051,7 @@
 		max-width: 100vw;
 		overflow-x: hidden;
 		min-height: 100vh;
-		background: var(--bc-surface);
+		background: var(--bc-bg);
 		color: var(--bc-ink);
 	}
 
