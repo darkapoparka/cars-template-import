@@ -92,6 +92,14 @@ Scope: article reading layouts, compact mobile inventory cards, currency display
 - Mobile homepage search is 48px high. Its search button retains a 44px hit target with a 36px painted circle and 20px magnifier. The centered all-cars link uses a 40px painted pill within a 44px hit target, tighter padding and 18px regular text.
 - Browser checks at 390px and 360px confirmed sizing and no narrow-width overflow. Search opened the existing filter/search drawer; the all-cars pill navigated to inventory. Desktop homepage inspected at 1440px. Scoped ESLint, Prettier, Svelte autofixer (no issues) and diff checks passed; the prior full build/type check were not repeated for this geometry-only follow-up.
 
+## Mobile overlays and menu follow-up
+
+- The mobile menu keeps touch scrolling but hides its styled scrollbar. At 390px, its content was 792px within a 759px panel; scrolling reached the final account link.
+- Homepage search/filter entry opens a full-height overlay from y=0. The search input is a fixed grid row at y=89 while filter choices scroll below; its keyboard inset uses the existing viewport tracker. Removed the redundant accent-colored filter/sort eyebrow from drawer headers.
+- Import Link/VIN entry is now an overlay trigger like manual entry. The listing field precedes country selection; the wizard and sheet account for the keyboard inset with Vaul input repositioning disabled.
+- Browser checks: menu, homepage overlay and both import entry modes at 360–390px; homepage and import overlays at a reduced 480px height; inventory filter drawer at 390px; desktop import at 1440px. A synthetic VIN advanced locally to step two without submission. Type check passed with zero errors/warnings, scoped ESLint/Prettier/diff checks passed, and all four changed Svelte components reported no autofixer issues. Physical iPhone keyboard behavior and external delivery were not tested.
+- Production build passed. The owned dev server was restored on port 6464 and the homepage was rendered again in a fresh browser tab.
+
 ## Limits
 
 This is standalone local template evidence, not owner visual acceptance, mounted Cars release qualification, or a dealer deployment. No messages were sent to a dealer. Sell-car submissions and unrelated CMS/account features remain temporary prototypes. Real dealer collection still needs its own private database, identity and notification configuration, hosting-specific validation, and final dealer content/policy review. Repository-wide lint and the full legacy end-to-end suite were not used as a release claim; checks were scoped to this implementation and browser flows above.

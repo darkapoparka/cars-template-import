@@ -176,6 +176,18 @@
 				</div>
 
 				<div class="bc-import-wizard__fields">
+					{#if intent === 'listing'}
+						<label class="bc-import-wizard__field--wide" for="import-wizard-vehicle">
+							<span>Линк към обява или VIN *</span>
+							<input
+								id="import-wizard-vehicle"
+								type="text"
+								placeholder="mobile.de, AutoScout24 или VIN"
+								required
+								bind:value={vehicle}
+							/>
+						</label>
+					{/if}
 					<fieldset class="bc-import-wizard__field--wide">
 						<legend>Пазар за покупка</legend>
 						<div class="bc-import-wizard__country-grid">
@@ -197,18 +209,7 @@
 							{/each}
 						</div>
 					</fieldset>
-					{#if intent === 'listing'}
-						<label class="bc-import-wizard__field--wide" for="import-wizard-vehicle">
-							<span>Линк към обява или VIN *</span>
-							<input
-								id="import-wizard-vehicle"
-								type="text"
-								placeholder="mobile.de, AutoScout24 или VIN"
-								required
-								bind:value={vehicle}
-							/>
-						</label>
-					{:else}
+					{#if intent === 'source'}
 						<label for="import-wizard-make">
 							<span>Марка</span>
 							<input
@@ -388,7 +389,7 @@
 	.bc-import-wizard {
 		display: grid;
 		grid-template-rows: max-content max-content minmax(0, 1fr) max-content;
-		height: 100dvh;
+		height: calc(100dvh - var(--bc-kb-inset, 0px));
 		min-height: 0;
 		gap: var(--bc-space-3);
 		background: var(--bc-bg-strong);

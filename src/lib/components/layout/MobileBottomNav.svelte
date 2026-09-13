@@ -467,6 +467,8 @@
 			width: 100%;
 			max-height: min(90dvh, 760px);
 			overflow-y: auto;
+			scrollbar-width: none;
+			overscroll-behavior: contain;
 			margin: 0;
 			padding: var(--bc-space-2) var(--bc-mobile-gutter)
 				calc(var(--bc-space-4) + env(safe-area-inset-bottom));
@@ -477,6 +479,10 @@
 			box-shadow: none;
 			transform: translateY(var(--mobile-menu-panel-y));
 			transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+		}
+
+		.mobile-menu-sheet__panel::-webkit-scrollbar {
+			display: none;
 		}
 
 		.mobile-bottom-nav:has(#mobile-bottom-menu-toggle:checked)

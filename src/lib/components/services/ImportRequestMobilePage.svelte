@@ -10,6 +10,7 @@
 	import MobileServiceManualEntry from '$lib/components/services/MobileServiceManualEntry.svelte';
 	import { ArrowRight, Link2 } from '@lucide/svelte';
 	import { Drawer } from 'vaul-svelte';
+	import { trackKeyboardInset } from '$lib/utils/keyboard-inset';
 	import ImportRequestWizard from './ImportRequestWizard.svelte';
 
 	type ImportIntent = 'listing' | 'source';
@@ -19,9 +20,7 @@
 		serviceVehicles
 	}: { form: AuxeroServiceFormData; serviceVehicles: HomeFiveVehicleCardData[] } = $props();
 
-	// The route supplies the initial listing value once; the user owns it after hydration.
-	// svelte-ignore state_referenced_locally
-	let vehicle = $state(form.vehicleField.value ?? '');
+	const vehicle = $derived(form.vehicleField.value ?? '');
 	let entryMode = $state<ImportIntent>('listing');
 	let wizardOpen = $state(false);
 	let wizardIntent = $state<ImportIntent>('listing');
@@ -34,10 +33,10 @@
 		wizardOpen = true;
 	};
 
-	const handleVehicleSubmit = (event: SubmitEvent) => {
-		event.preventDefault();
-		openWizard('listing');
-	};
+	$effect(() => {
+		if (!wizardOpen) return;
+		return trackKeyboardInset();
+	});
 </script>
 
 <div class="daynight-import-mobile">
@@ -74,30 +73,26 @@
 		{/snippet}
 		{#snippet entry()}
 			{#if entryMode === 'listing'}
-				<form onsubmit={handleVehicleSubmit}>
-					<label for="import-mobile-vehicle">Линк към обява или VIN</label>
-					<div class="service-input">
-						<Link2 size={21} strokeWidth={2.15} aria-hidden="true" />
-						<input
-							id="import-mobile-vehicle"
-							name={form.vehicleField.name}
-							type={form.vehicleField.type}
-							placeholder="Линк към обява или VIN"
-							required
-							bind:value={vehicle}
-						/>
-						<button type="submit" aria-label="Провери автомобила">
-							<ArrowRight size={21} strokeWidth={2.35} aria-hidden="true" />
-						</button>
-					</div>
-				</form>
+				<button
+					type="button"
+					class="service-input service-manual-entry"
+					aria-haspopup="dialog"
+					aria-expanded={wizardOpen && wizardIntent === 'listing'}
+					onclick={() => openWizard('listing')}
+				>
+					<Link2 size={21} strokeWidth={2.15} aria-hidden="true" />
+					<span class="service-input__text">{vehicle || 'Линк към обява или VIN'}</span>
+					<span class="service-input__go" aria-hidden="true">
+						<ArrowRight size={21} strokeWidth={2.35} />
+					</span>
+				</button>
 			{:else}
 				<MobileServiceManualEntry onclick={() => openWizard('source')} />
 			{/if}
 		{/snippet}
 	</MobileServiceEntry>
 
-	<Drawer.Root bind:open={wizardOpen} direction="bottom" fixed={true}>
+	<Drawer.Root bind:open={wizardOpen} direction="bottom" fixed={true} repositionInputs={false}>
 		<Drawer.Overlay class="daynight-import-wizard-drawer__backdrop">
 			<span>Затвори</span>
 		</Drawer.Overlay>
@@ -209,7 +204,7 @@
 		inset: 0;
 		z-index: 1201;
 		display: block;
-		height: 100dvh;
+		height: calc(100dvh - var(--bc-kb-inset, 0px));
 		overflow: hidden;
 		overscroll-behavior: contain;
 		border-radius: 0;

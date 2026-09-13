@@ -204,9 +204,6 @@
 	const filterDrawerHasActions = $derived(
 		filterDrawerMode === 'all' || filterDrawerMode === 'brand' || filterDrawerMode === 'model'
 	);
-	const filterDrawerKicker = $derived(
-		filterDrawerMode === 'sort' ? mobile.sortLabel : mobile.filterLabel
-	);
 	const filterDrawerTitle = $derived.by(() => {
 		if (filterDrawerMode === 'body') return mobile.bodyLabel;
 		if (filterDrawerMode === 'brand') return mobile.brandLabel;
@@ -735,12 +732,11 @@
 		</Drawer.Overlay>
 		<Drawer.Content
 			id={filterDrawerId}
-			class={`daynight-inventory-mobile-drawer__sheet daynight-inventory-mobile-drawer__sheet--filters ${filterDrawerMode === 'all' ? 'daynight-inventory-mobile-drawer__sheet--full' : ''} ${filterDrawerHasActions ? 'daynight-inventory-mobile-drawer__sheet--with-actions' : ''}`}
+			class={`daynight-inventory-mobile-drawer__sheet daynight-inventory-mobile-drawer__sheet--filters ${filtersOnly ? 'daynight-inventory-mobile-drawer__sheet--fullscreen' : ''} ${filterDrawerMode === 'all' ? 'daynight-inventory-mobile-drawer__sheet--full' : ''} ${filterDrawerHasActions ? 'daynight-inventory-mobile-drawer__sheet--with-actions' : ''}`}
 		>
-			<Drawer.Handle class="daynight-inventory-mobile-drawer__handle" />
+			{#if !filtersOnly}<Drawer.Handle class="daynight-inventory-mobile-drawer__handle" />{/if}
 			<header>
 				<div>
-					<p>{filterDrawerKicker}</p>
 					<Drawer.Title>
 						<span class="daynight-inventory-mobile-drawer__title">
 							{filterDrawerTitle}
@@ -756,26 +752,26 @@
 					{mobile.countLabel}
 				</span>
 			</Drawer.Description>
+			{#if filterDrawerMode === 'all'}
+				<form
+					onsubmit={(event) => {
+						event.preventDefault();
+						applyFilterDraft();
+					}}
+				>
+					<label class="daynight-inventory-mobile-drawer__search-box">
+						<Search size={19} strokeWidth={2.15} aria-hidden="true" />
+						<input
+							type="search"
+							bind:value={filterDraft.model}
+							placeholder={mobile.searchPlaceholder}
+							aria-label={mobile.searchPlaceholder}
+							enterkeyhint="search"
+						/>
+					</label>
+				</form>
+			{/if}
 			<div class="daynight-inventory-mobile-drawer__body" data-vaul-no-drag>
-				{#if filterDrawerMode === 'all'}
-					<form
-						onsubmit={(event) => {
-							event.preventDefault();
-							applyFilterDraft();
-						}}
-					>
-						<label class="daynight-inventory-mobile-drawer__search-box">
-							<Search size={19} strokeWidth={2.15} aria-hidden="true" />
-							<input
-								type="search"
-								bind:value={filterDraft.model}
-								placeholder={mobile.searchPlaceholder}
-								aria-label={mobile.searchPlaceholder}
-								enterkeyhint="search"
-							/>
-						</label>
-					</form>
-				{/if}
 				{#if filterDrawerMode === 'brand'}
 					<div class="daynight-inventory-mobile-drawer__group">
 						<label class="daynight-inventory-mobile-drawer__search-box">
@@ -1413,6 +1409,18 @@
 		grid-template-rows: max-content max-content max-content minmax(0, 1fr) max-content;
 	}
 
+	:global(.daynight-inventory-mobile-drawer__sheet--full[data-vaul-drawer]) {
+		grid-template-rows: max-content max-content max-content max-content minmax(0, 1fr) max-content;
+	}
+	:global(.daynight-inventory-mobile-drawer__sheet--fullscreen[data-vaul-drawer]) {
+		top: 0;
+		height: calc(100dvh - var(--bc-kb-inset, 0px));
+		max-height: calc(100dvh - var(--bc-kb-inset, 0px));
+		border-radius: 0;
+		padding-top: max(var(--bc-space-3), env(safe-area-inset-top));
+		grid-template-rows: max-content max-content max-content minmax(0, 1fr) max-content;
+	}
+
 	:global(.daynight-inventory-mobile-drawer__sheet[data-vaul-drawer]::-webkit-scrollbar) {
 		display: none;
 	}
@@ -1460,15 +1468,6 @@
 
 	:global(.daynight-inventory-mobile-drawer__sheet header div) {
 		min-width: 0;
-	}
-
-	:global(.daynight-inventory-mobile-drawer__sheet header p) {
-		margin: 0 0 2px;
-		color: var(--bc-accent);
-		font-size: var(--bc-mobile-label);
-		font-weight: var(--bc-weight-heading);
-		line-height: var(--bc-mobile-label-leading);
-		text-transform: uppercase;
 	}
 
 	.daynight-inventory-mobile-drawer__title {
