@@ -34,6 +34,8 @@
 	   Use only the 400/600/700 weights shipped by the Sofia Sans font assets. */
 	--bc-text-control: 1rem;
 	--bc-leading-control: 1.375;
+	--bc-text-filter: 1.125rem;
+	--bc-leading-filter: 1.333333;
 	--bc-text-search: 1.0625rem;
 	--bc-leading-search: 1.412;
 	--bc-text-prose: 1.125rem;

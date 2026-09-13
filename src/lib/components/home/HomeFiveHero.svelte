@@ -2260,9 +2260,9 @@
 			box-shadow: none;
 			color: var(--bc-ink);
 			cursor: pointer;
-			font-size: var(--bc-text-control);
+			font-size: var(--bc-text-filter);
 			font-weight: var(--bc-weight-control);
-			line-height: var(--bc-leading-control);
+			line-height: var(--bc-leading-filter);
 			text-decoration: none;
 			white-space: nowrap;
 		}

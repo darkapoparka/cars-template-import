@@ -10,8 +10,9 @@ Source of truth: `src/lib/styles/daynight.css`. Tailwind heading utilities in
 
 | Role                 | Size / leading     | Weight  | Use                                                                  |
 | -------------------- | ------------------ | ------- | -------------------------------------------------------------------- |
+| Quick filter         | 18px / 24px        | 400     | Homepage and inventory horizontal filter pills                       |
 | Search               | 17px / 24px        | 400     | Search triggers, inputs, VIN/link entry and manual-entry label       |
-| Control              | 16px / 22px        | 400     | Filter pills, options, tabs, editable form values                    |
+| Control              | 16px / 22px        | 400     | Filter options, tabs, editable form values                           |
 | Primary action       | 16px / 22px        | 600     | Submit, continue and main CTA labels                                 |
 | Body                 | 16px / 24px mobile | 400     | Instructions, descriptions and supporting copy                       |
 | Article prose        | 18px / 1.65        | 400     | Long-form reading, maximum measure 68ch                              |

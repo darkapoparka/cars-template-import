@@ -1180,9 +1180,9 @@
 		appearance: none;
 		color: var(--bc-ink);
 		cursor: pointer;
-		font-size: var(--bc-text-control);
+		font-size: var(--bc-text-filter);
 		font-weight: var(--bc-weight-control);
-		line-height: var(--bc-leading-control);
+		line-height: var(--bc-leading-filter);
 		text-decoration: none;
 		white-space: nowrap;
 	}
@@ -1213,16 +1213,16 @@
 
 	.daynight-inventory-mobile__tool-choice span {
 		color: var(--bc-ink);
-		font-size: var(--bc-text-control);
+		font-size: var(--bc-text-filter);
 		font-weight: var(--bc-weight-control);
-		line-height: var(--bc-leading-control);
+		line-height: var(--bc-leading-filter);
 	}
 
 	.daynight-inventory-mobile__tool-choice.active span {
 		color: var(--bc-white);
-		font-size: var(--bc-text-control);
+		font-size: var(--bc-text-filter);
 		font-weight: var(--bc-weight-control);
-		line-height: var(--bc-leading-control);
+		line-height: var(--bc-leading-filter);
 		text-transform: none;
 	}
 
@@ -1232,9 +1232,9 @@
 		max-width: min(42vw, 138px);
 		overflow: hidden;
 		color: var(--bc-ink);
-		font-size: var(--bc-text-control);
+		font-size: var(--bc-text-filter);
 		font-weight: var(--bc-weight-control);
-		line-height: var(--bc-leading-control);
+		line-height: var(--bc-leading-filter);
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
@@ -1248,8 +1248,8 @@
 		border: 0;
 		border-radius: var(--bc-radius-control);
 		background: var(--bc-white);
-		font-size: var(--bc-text-control);
-		line-height: var(--bc-leading-control);
+		font-size: var(--bc-text-filter);
+		line-height: var(--bc-leading-filter);
 		font-weight: var(--bc-weight-control);
 	}
 
