@@ -54,6 +54,13 @@ Scope: article reading layouts, compact mobile inventory cards, currency display
 - Renamed the mobile import inventory heading to the shared default "Налични автомобили". Both entry pages now use a centered 36px pill button for "Как работи", with 12px between input/button and button/lower panel. The response note is retained inside the help drawer.
 - Visually inspected sell at 390px and import at 360px; measured horizontal centering and both 12px gaps. Both help drawers opened and closed, and import had no horizontal overflow or console errors. This markup/CSS follow-up uses scoped formatting, lint, Svelte autofixer, and diff checks; the preceding full build and unit suite were not repeated.
 
+## Shared manual-entry field follow-up
+
+- Replaced separate sell/import manual-entry markup and CSS with `MobileServiceManualEntry`. Both use the input grid, a leading vehicle icon, one "Опиши автомобила" line, and the same arrow control. Typography, color, and sizing use the shared field rules and existing tokens instead of separate page overrides.
+- In-app browser checks on import at 390px and sell at 360px: input and manual text both start at x=60 and use the same font family, 17px size, 400 weight, and 22px line height. Manual text is one 22px line, with the same muted placeholder color; the field stays 56px tall. Both manual controls opened the correct overlay; sell manual mode still has no VIN field. No horizontal overflow or console errors observed.
+- Country-filter design remains a proposal: the existing `importCountries` data already serves the request wizard, while the displayed inventory does not have import-origin data. No country-filter behavior or listing classification was fabricated.
+- `npm run check` (zero errors/warnings), `npm run build`, scoped Prettier/ESLint and `git diff --check` passed. The dev server was restored on port 6464. No submissions were sent and the unit/full end-to-end suites were not repeated for this shared control refactor.
+
 ## Limits
 
 This is standalone local template evidence, not owner visual acceptance, mounted Cars release qualification, or a dealer deployment. No messages were sent to a dealer. Sell-car submissions and unrelated CMS/account features remain temporary prototypes. Real dealer collection still needs its own private database, identity and notification configuration, hosting-specific validation, and final dealer content/policy review. Repository-wide lint and the full legacy end-to-end suite were not used as a release claim; checks were scoped to this implementation and browser flows above.

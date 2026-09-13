@@ -7,6 +7,7 @@
 	import { importRequestMobileCopy, importRequestSteps } from '$lib/auxero/services';
 	import MobileAppbar from '$lib/components/layout/MobileAppbar.svelte';
 	import MobileServiceEntry from '$lib/components/services/MobileServiceEntry.svelte';
+	import MobileServiceManualEntry from '$lib/components/services/MobileServiceManualEntry.svelte';
 	import { ArrowRight, Link2 } from '@lucide/svelte';
 	import { Drawer } from 'vaul-svelte';
 	import ImportRequestWizard from './ImportRequestWizard.svelte';
@@ -91,15 +92,7 @@
 					</div>
 				</form>
 			{:else}
-				<button class="import-manual-entry" type="button" onclick={() => openWizard('source')}>
-					<span class="import-manual-entry__copy">
-						<strong>Опиши автомобила</strong>
-						<small>Марка, модел, бюджет</small>
-					</span>
-					<span class="import-manual-entry__go" aria-hidden="true">
-						<ArrowRight size={20} strokeWidth={2.35} />
-					</span>
-				</button>
+				<MobileServiceManualEntry onclick={() => openWizard('source')} />
 			{/if}
 		{/snippet}
 	</MobileServiceEntry>
@@ -199,51 +192,6 @@
 	.import-mode-tabs button:focus-visible {
 		outline: 2px solid rgb(255 255 255 / 0.72);
 		outline-offset: -3px;
-	}
-
-	.daynight-import-mobile :global(.mobile-service-entry__field .import-manual-entry) {
-		display: grid;
-		grid-template-columns: minmax(0, 1fr) 48px;
-		width: 100%;
-		height: auto;
-		min-height: 56px;
-		align-items: center;
-		gap: 10px;
-		border: 0;
-		border-radius: var(--bc-radius-pill);
-		background: var(--bc-surface-soft);
-		color: var(--bc-ink);
-		padding: 4px 4px 4px 17px;
-		cursor: pointer;
-		text-align: left;
-	}
-
-	.import-manual-entry__copy {
-		display: grid;
-		gap: 2px;
-	}
-
-	.import-manual-entry__copy strong {
-		font-size: 15px;
-		font-weight: 700;
-		line-height: 1.2;
-	}
-
-	.import-manual-entry__copy small {
-		color: var(--bc-muted);
-		font-size: 12px;
-		font-weight: 500;
-		line-height: 1.2;
-	}
-
-	.import-manual-entry__go {
-		display: grid;
-		width: 48px;
-		height: 48px;
-		place-items: center;
-		border-radius: 50%;
-		background: var(--bc-accent);
-		color: var(--bc-white);
 	}
 
 	:global(.daynight-import-wizard-drawer__backdrop) {
