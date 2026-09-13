@@ -36,8 +36,8 @@
 	--bc-leading-control: 1.375;
 	--bc-text-filter: 1.125rem;
 	--bc-leading-filter: 1.333333;
-	--bc-text-search: 1.0625rem;
-	--bc-leading-search: 1.412;
+	--bc-text-search: 1.125rem;
+	--bc-leading-search: 1.333333;
 	--bc-text-prose: 1.125rem;
 	--bc-leading-prose: 1.65;
 	--bc-weight-body: 400;
@@ -48,7 +48,7 @@
 	--bc-text-body-lg: 18px;
 	--bc-leading-body-lg: 1.55;
 	--bc-text-cta: 18px;
-	--bc-leading-cta: 1.2;
+	--bc-leading-cta: 1.333333;
 	--bc-text-meta: 13px;
 	--bc-leading-meta: 1.4;
 	--bc-text-label: 14px;

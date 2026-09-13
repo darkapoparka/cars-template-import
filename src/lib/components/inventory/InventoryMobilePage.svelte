@@ -21,7 +21,8 @@
 		| 'mileage'
 		| 'body'
 		| 'price'
-		| 'extras';
+		| 'extras'
+		| 'year';
 	type FilterDraft = {
 		body: string;
 		brand: string;
@@ -61,7 +62,8 @@
 		mileage: 'daynight-inventory-mobile-mileage-drawer',
 		model: 'daynight-inventory-mobile-model-drawer',
 		price: 'daynight-inventory-mobile-price-drawer',
-		sort: 'daynight-inventory-mobile-sort-drawer'
+		sort: 'daynight-inventory-mobile-sort-drawer',
+		year: 'daynight-inventory-mobile-year-drawer'
 	} as const;
 	const activeOptionValue = (options: InventoryMobileData['brandOptions']) =>
 		options.find((option) => option.active)?.value ?? '';
@@ -188,19 +190,7 @@
 	const priceSelected = $derived(
 		mobile.priceOptions.some((option) => option.active && option.value)
 	);
-	const transmissionSelected = $derived(
-		mobile.transmissionOptions.some((option) => option.active && option.value)
-	);
 	const yearSelected = $derived(mobile.yearOptions.some((option) => option.active && option.value));
-	const drawerFilterSelected = $derived(
-		bodySelected ||
-			extrasSelected ||
-			fuelSelected ||
-			mileageSelected ||
-			priceSelected ||
-			transmissionSelected ||
-			yearSelected
-	);
 	const sortSelected = $derived(
 		mobile.sortOptions.some((option) => option.active && option.value !== 'best-match')
 	);
@@ -226,6 +216,7 @@
 		if (filterDrawerMode === 'model') return mobile.modelLabel;
 		if (filterDrawerMode === 'price') return mobile.priceLabel;
 		if (filterDrawerMode === 'sort') return mobile.sortLabel;
+		if (filterDrawerMode === 'year') return mobile.yearLabel;
 
 		return mobile.drawerTitle;
 	});
@@ -432,16 +423,48 @@
 		<main class="daynight-inventory-mobile__main">
 			<h1 class="sr-only">{inventoryHeading}</h1>
 			<div class="daynight-inventory-mobile__search">
+				<button
+					type="button"
+					class="daynight-inventory-mobile__header-action"
+					class:active={hasActiveFilters}
+					aria-haspopup="dialog"
+					aria-expanded={filterDrawerOpen && filterDrawerMode === 'all'}
+					onclick={() => openFilterDrawer('all')}
+				>
+					<SlidersHorizontal size={22} strokeWidth={2.2} aria-hidden="true" />
+					<span class="sr-only">{mobile.filterLabel}</span>
+					{#if hasActiveFilters}
+						<span class="daynight-inventory-mobile__filter-count"
+							>{mobile.activeFilters.length}</span
+						>
+					{/if}
+				</button>
+				<button
+					type="button"
+					class="daynight-inventory-mobile__header-action"
+					class:active={sortSelected}
+					aria-label={`${mobile.sortLabel}: ${mobile.sortValue}`}
+					aria-haspopup="dialog"
+					aria-expanded={filterDrawerOpen && filterDrawerMode === 'sort'}
+					onclick={() => openFilterDrawer('sort')}
+				>
+					<ArrowUpDown size={22} strokeWidth={2.2} aria-hidden="true" />
+
+					{#if sortSelected}
+						<span class="daynight-inventory-mobile__sort-dot" aria-hidden="true"></span>
+					{/if}
+				</button>
 				<div class="daynight-inventory-mobile__search-field">
 					<button
 						type="button"
 						class="daynight-inventory-mobile__search-label"
+						aria-label={mobile.searchDisplayValue || mobile.searchPlaceholder}
 						aria-haspopup="dialog"
 						aria-expanded={searchDrawerOpen}
 						onclick={openSearchDrawer}
 					>
 						<span class:active={Boolean(mobile.searchValue)}>
-							{mobile.searchDisplayValue || mobile.searchPlaceholder}
+							{mobile.searchDisplayValue || mobile.searchLabel}
 						</span>
 					</button>
 					<button
@@ -457,35 +480,6 @@
 			</div>
 
 			<nav class="daynight-inventory-mobile__tools" aria-label={mobile.filterLabel}>
-				<button
-					type="button"
-					class="daynight-inventory-mobile__tool-choice"
-					class:active={drawerFilterSelected}
-					aria-haspopup="dialog"
-					aria-expanded={filterDrawerOpen && filterDrawerMode === 'all'}
-					onclick={() => openFilterDrawer('all')}
-				>
-					<SlidersHorizontal size={18} strokeWidth={2.2} aria-hidden="true" />
-					<span>{mobile.filterLabel}</span>
-					{#if hasActiveFilters}
-						<strong>{mobile.activeFilters.length}</strong>
-					{/if}
-				</button>
-				<button
-					type="button"
-					class="daynight-inventory-mobile__tool-choice"
-					class:active={sortSelected}
-					aria-label={`${mobile.sortLabel}: ${mobile.sortValue}`}
-					aria-haspopup="dialog"
-					aria-expanded={filterDrawerOpen && filterDrawerMode === 'sort'}
-					onclick={() => openFilterDrawer('sort')}
-				>
-					<ArrowUpDown size={18} strokeWidth={2.2} aria-hidden="true" />
-					<span>{mobile.sortLabel}</span>
-					{#if sortSelected}
-						<strong>{mobile.sortValue}</strong>
-					{/if}
-				</button>
 				<button
 					type="button"
 					class="daynight-inventory-mobile__tool-choice"
@@ -513,6 +507,36 @@
 					<span>{mobile.modelLabel}</span>
 					{#if modelSelected}
 						<strong>{mobile.modelValue}</strong>
+					{/if}
+					<ChevronDown size={17} strokeWidth={2.1} aria-hidden="true" />
+				</button>
+				<button
+					type="button"
+					class="daynight-inventory-mobile__tool-choice"
+					class:active={priceSelected}
+					aria-label={`${mobile.priceLabel}: ${mobile.priceValue}`}
+					aria-haspopup="dialog"
+					aria-expanded={filterDrawerOpen && filterDrawerMode === 'price'}
+					onclick={() => openFilterDrawer('price')}
+				>
+					<span>{mobile.priceLabel}</span>
+					{#if priceSelected}
+						<strong>{mobile.priceValue}</strong>
+					{/if}
+					<ChevronDown size={17} strokeWidth={2.1} aria-hidden="true" />
+				</button>
+				<button
+					type="button"
+					class="daynight-inventory-mobile__tool-choice"
+					class:active={yearSelected}
+					aria-label={`${mobile.yearLabel}: ${mobile.yearValue}`}
+					aria-haspopup="dialog"
+					aria-expanded={filterDrawerOpen && filterDrawerMode === 'year'}
+					onclick={() => openFilterDrawer('year')}
+				>
+					<span>{mobile.yearLabel}</span>
+					{#if yearSelected}
+						<strong>{mobile.yearValue}</strong>
 					{/if}
 					<ChevronDown size={17} strokeWidth={2.1} aria-hidden="true" />
 				</button>
@@ -558,21 +582,6 @@
 					<span>{mobile.bodyRailLabel}</span>
 					{#if bodySelected}
 						<strong>{bodyValue}</strong>
-					{/if}
-					<ChevronDown size={17} strokeWidth={2.1} aria-hidden="true" />
-				</button>
-				<button
-					type="button"
-					class="daynight-inventory-mobile__tool-choice"
-					class:active={priceSelected}
-					aria-label={`${mobile.priceLabel}: ${mobile.priceValue}`}
-					aria-haspopup="dialog"
-					aria-expanded={filterDrawerOpen && filterDrawerMode === 'price'}
-					onclick={() => openFilterDrawer('price')}
-				>
-					<span>{mobile.priceLabel}</span>
-					{#if priceSelected}
-						<strong>{mobile.priceValue}</strong>
 					{/if}
 					<ChevronDown size={17} strokeWidth={2.1} aria-hidden="true" />
 				</button>
@@ -964,7 +973,7 @@
 						</div>
 					</div>
 				{/if}
-				{#if filterDrawerMode === 'all'}
+				{#if filterDrawerMode === 'all' || filterDrawerMode === 'year'}
 					<div class="daynight-inventory-mobile-drawer__group">
 						<p>{mobile.yearLabel}</p>
 						<div>
@@ -983,6 +992,8 @@
 							{/each}
 						</div>
 					</div>
+				{/if}
+				{#if filterDrawerMode === 'all'}
 					<div class="daynight-inventory-mobile-drawer__group">
 						<p>{mobile.transmissionLabel}</p>
 						<div>
@@ -1071,8 +1082,57 @@
 	}
 
 	.daynight-inventory-mobile__search {
-		display: block;
+		display: grid;
+		grid-template-columns: repeat(2, var(--bc-control-height-standard)) minmax(0, 1fr);
+		align-items: center;
+		gap: var(--bc-space-2);
 		min-width: 0;
+	}
+
+	.daynight-inventory-mobile__header-action {
+		position: relative;
+		display: grid;
+		place-items: center;
+		width: var(--bc-control-height-standard);
+		height: var(--bc-control-height-standard);
+		padding: 0;
+		border: 0;
+		border-radius: var(--bc-radius-control);
+		background: var(--bc-white);
+		color: var(--bc-ink);
+		cursor: pointer;
+	}
+	.daynight-inventory-mobile__header-action.active {
+		background: var(--bc-accent);
+		color: var(--bc-white);
+	}
+	.daynight-inventory-mobile__header-action:focus-visible {
+		outline: 2px solid var(--bc-accent);
+		outline-offset: 2px;
+	}
+	.daynight-inventory-mobile__filter-count {
+		position: absolute;
+		top: -3px;
+		right: -3px;
+		display: grid;
+		place-items: center;
+		min-width: 18px;
+		height: 18px;
+		padding: 0 3px;
+		border-radius: var(--bc-radius-pill);
+		background: var(--bc-ink);
+		color: var(--bc-white);
+		font-size: var(--bc-mobile-stat);
+		line-height: 1;
+	}
+	.daynight-inventory-mobile__sort-dot {
+		position: absolute;
+		top: 6px;
+		right: 6px;
+		width: 5px;
+		height: 5px;
+		border-radius: 50%;
+		background: currentColor;
 	}
 
 	.daynight-inventory-mobile__search-field {
@@ -1777,8 +1837,8 @@
 		appearance: none;
 		color: var(--bc-white);
 		cursor: pointer;
-		font-size: var(--bc-text-control);
+		font-size: var(--bc-text-cta);
 		font-weight: var(--bc-weight-heading);
-		line-height: var(--bc-leading-control);
+		line-height: var(--bc-leading-cta);
 	}
 </style>

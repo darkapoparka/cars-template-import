@@ -269,10 +269,10 @@
 		border-radius: var(--bc-radius-pill);
 		background: rgb(255 255 255 / 0.08);
 		color: var(--bc-white);
-		font-size: var(--bc-mobile-label);
+		font-size: var(--bc-text-control);
 		font-weight: var(--bc-weight-control);
 		cursor: pointer;
-		line-height: var(--bc-mobile-label-leading);
+		line-height: var(--bc-leading-control);
 	}
 	.mobile-service-entry__browse {
 		position: relative;

@@ -497,10 +497,10 @@
 		justify-content: center;
 		gap: 6px;
 		border-radius: 12px;
-		font-size: var(--bc-text-control);
+		font-size: var(--bc-text-cta);
 		font-weight: var(--bc-weight-heading);
 		cursor: pointer;
-		line-height: var(--bc-leading-control);
+		line-height: var(--bc-leading-cta);
 	}
 	.sell-flow__back {
 		border: 0;

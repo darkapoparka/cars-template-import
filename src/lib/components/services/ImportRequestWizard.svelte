@@ -687,9 +687,9 @@
 		gap: 6px;
 		border-radius: var(--bc-radius-control);
 		cursor: pointer;
-		font-size: var(--bc-text-control);
+		font-size: var(--bc-text-cta);
 		font-weight: var(--bc-weight-heading);
-		line-height: var(--bc-leading-control);
+		line-height: var(--bc-leading-cta);
 	}
 
 	.bc-import-wizard__back {

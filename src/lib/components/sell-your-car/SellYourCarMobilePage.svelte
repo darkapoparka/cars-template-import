@@ -361,7 +361,7 @@
 		color: rgb(255 255 255 / 0.72);
 		font-family: var(--bc-font-body);
 		font-size: var(--bc-mobile-card-title);
-		font-weight: var(--bc-weight-heading);
+		font-weight: var(--bc-weight-control);
 		letter-spacing: 0;
 		line-height: 24px;
 		text-align: center;
@@ -375,7 +375,7 @@
 		background: transparent;
 		box-shadow: none;
 		color: var(--bc-white);
-		font-weight: 700;
+		font-weight: var(--bc-weight-heading);
 	}
 
 	.sell-mode-tabs button.active::after {

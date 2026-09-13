@@ -1528,7 +1528,7 @@
 			color: rgb(255 255 255 / 0.72);
 			font-family: var(--bc-font-body);
 			font-size: var(--bc-mobile-card-title);
-			font-weight: var(--bc-weight-heading);
+			font-weight: var(--bc-weight-control);
 			letter-spacing: 0;
 			line-height: 24px;
 			text-align: center;
@@ -1542,7 +1542,7 @@
 			background: transparent;
 			box-shadow: none;
 			color: var(--bc-white);
-			font-weight: 700;
+			font-weight: var(--bc-weight-heading);
 		}
 
 		.daynight-mobile-hero__tab.active::after {
@@ -1665,9 +1665,9 @@
 			box-shadow: none;
 			padding: 0 16px;
 			color: var(--bc-accent-contrast) !important;
-			font-size: var(--bc-text-control);
+			font-size: var(--bc-text-cta);
 			font-weight: var(--bc-weight-heading);
-			line-height: var(--bc-leading-control);
+			line-height: var(--bc-leading-cta);
 			text-decoration: none;
 		}
 
@@ -1939,9 +1939,9 @@
 			background: var(--bc-ink);
 			padding: 0 12px;
 			color: var(--bc-white);
-			font-size: var(--bc-text-control);
+			font-size: var(--bc-text-cta);
 			font-weight: var(--bc-weight-heading);
-			line-height: var(--bc-leading-control);
+			line-height: var(--bc-leading-cta);
 			text-align: center;
 			text-decoration: none;
 		}
@@ -2206,9 +2206,9 @@
 			background: var(--bc-surface);
 			padding: 0 12px;
 			color: var(--bc-ink);
-			font-size: var(--bc-text-control);
+			font-size: var(--bc-text-cta);
 			font-weight: var(--bc-weight-heading);
-			line-height: var(--bc-leading-control);
+			line-height: var(--bc-leading-cta);
 			text-align: center;
 			text-decoration: none;
 			white-space: nowrap;
