@@ -134,6 +134,12 @@ Scope: article reading layouts, compact mobile inventory cards, currency display
 - Type checking passed with zero errors/warnings. Scoped ESLint, formatting and diff checks passed; Svelte autofixer reported no issues or suggestions.
 - Production build passed; restored the owned dev server on port 6464 afterward. No form submission was sent.
 
+## Mobile document scrollbar and Home tabs
+
+- The right-edge strip came from the global desktop document scrollbar and stable gutter, not the menu panel. Below 768px, hide the document scrollbar and remove its reserved gutter while retaining normal scrolling. Desktop keeps its existing scrollbar styling.
+- Home Buy/Import tabs use the existing 20px heading token, with text aligned closer to the underline and 6px bottom padding inside the retained 44px tap area.
+- At 390px and 360px, document width matched viewport width without the former 8px strip; page scrolling remained functional. The menu scrolled to its final account link without a scrollbar. Confirmed the 20px/44px tab sizing and working Import mode switch. At 1440px, desktop retained its 8px stable gutter and was visually inspected. Formatting, Svelte autofixer (no issues) and diff checks passed. Full build/type/lint checks were not repeated for this CSS-only correction.
+
 ## Limits
 
 This is standalone local template evidence, not owner visual acceptance, mounted Cars release qualification, or a dealer deployment. No messages were sent to a dealer. Sell-car submissions and unrelated CMS/account features remain temporary prototypes. Real dealer collection still needs its own private database, identity and notification configuration, hosting-specific validation, and final dealer content/policy review. Repository-wide lint and the full legacy end-to-end suite were not used as a release claim; checks were scoped to this implementation and browser flows above.

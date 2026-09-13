@@ -1520,14 +1520,15 @@
 			display: flex;
 			min-height: 44px;
 			width: 100%;
-			align-items: center;
+			align-items: flex-end;
 			justify-content: center;
+			padding: 0 0 6px;
 			border: 0;
 			border-radius: 0;
 			background: transparent;
 			color: rgb(255 255 255 / 0.72);
 			font-family: var(--bc-font-body);
-			font-size: var(--bc-mobile-card-title);
+			font-size: var(--bc-text-h5);
 			font-weight: var(--bc-weight-control);
 			letter-spacing: 0;
 			line-height: 24px;
