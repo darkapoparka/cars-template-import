@@ -54,8 +54,8 @@
 			<span>©2026 {daynightBrand.name}. Всички права запазени.</span>
 			<div>
 				<a href={resolve('/terms')}>Общи условия</a>
-				<a href={resolve('/terms')}>Поверителност</a>
-				<a href={resolve('/terms')}>Бисквитки</a>
+				<a href={resolve('/privacy')}>Поверителност</a>
+				<a href={resolve('/cookies')}>Бисквитки</a>
 			</div>
 		</div>
 	</div>

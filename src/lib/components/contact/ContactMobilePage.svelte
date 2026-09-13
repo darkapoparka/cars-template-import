@@ -201,7 +201,6 @@
 					idPrefix="mobile-contact"
 					showEmptyStatus={false}
 					statusClass="daynight-contact-mobile-form__status"
-					statusMessage="Съобщението е подготвено локално за Day Night Auto."
 					submitLabel={form.submitLabel}
 				/>
 			</div>

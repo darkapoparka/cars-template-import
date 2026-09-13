@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { HomeFiveVehicleCardData } from '$lib/auxero/home-five';
 	import { page } from '$app/state';
+	import { templateInquiryCopy } from '$lib/data/template-settings';
 	import { importCriteriaFromParams } from '$lib/data/import-criteria';
 	import type { AuxeroServiceFormData } from '$lib/auxero/services';
 	import { importRequestMobileCopy, importRequestSteps } from '$lib/auxero/services';
@@ -48,7 +49,7 @@
 		title={importRequestMobileCopy.title}
 		intro={importRequestMobileCopy.intro}
 		meta="3 стъпки · Без ангажимент"
-		response="Отговор до 24 ч."
+		response={templateInquiryCopy.response}
 		steps={importRequestSteps.map((step, index) =>
 			index === 0 ? { ...step, text: 'Изпращаш линк към обявата или директно VIN номера.' } : step
 		)}

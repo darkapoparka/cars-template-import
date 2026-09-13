@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { ArrowRight, Check, ChevronLeft, Link2, Search, X } from '@lucide/svelte';
 	import { resolve } from '$app/paths';
+	import { templateInquiryCopy } from '$lib/data/template-settings';
 	import {
 		emptyImportCriteria,
 		importCountries,
@@ -75,7 +76,7 @@
 				? vehicle.trim().length > 3
 				: Boolean(origin) || make.trim().length > 1 || model.trim().length > 1
 			: step === 2
-				? phone.trim().length >= 6
+				? name.trim().length >= 2 && phone.trim().length >= 6
 				: true
 	);
 
@@ -125,8 +126,7 @@
 			<span><Check size={25} strokeWidth={2.4} aria-hidden="true" /></span>
 			<h2>Заявката е получена</h2>
 			<p>
-				Запазихме данните за Day Night Auto. Екипът ще прегледа заявката и ще се свърже с теб до 24
-				часа.
+				{templateInquiryCopy.success}
 			</p>
 			<button type="button" onclick={onclose}>Затвори</button>
 		</div>
@@ -308,8 +308,8 @@
 				</div>
 			{:else}
 				<div class="bc-import-wizard__intro">
-					<h3>Къде да изпратим проверката?</h3>
-					<p>Телефонът е необходим. Името и имейлът са по желание.</p>
+					<h3>Данни за контакт</h3>
+					<p>Името и телефонът са необходими. Имейлът е по желание.</p>
 					{#if criteriaSummary}<p class="bc-import-wizard__summary">{criteriaSummary}</p>{/if}
 				</div>
 				<div class="bc-import-wizard__fields">
@@ -326,8 +326,15 @@
 						/>
 					</label>
 					<label for="import-wizard-name">
-						<span>Име</span>
-						<input id="import-wizard-name" type="text" autocomplete="name" bind:value={name} />
+						<span>Име *</span>
+						<input
+							id="import-wizard-name"
+							type="text"
+							autocomplete="name"
+							required
+							minlength="2"
+							bind:value={name}
+						/>
 					</label>
 					<label for="import-wizard-email">
 						<span>Имейл</span>
@@ -340,7 +347,7 @@
 						/>
 					</label>
 				</div>
-				<p class="bc-import-wizard__promise">Отговор до 24 ч · Без ангажимент</p>
+				<p class="bc-import-wizard__promise">{templateInquiryCopy.notice}</p>
 			{/if}
 		</div>
 

@@ -5,6 +5,7 @@
 	import type { AuxeroVehicleDetailData, AuxeroVehicleDetailDrawerTabId } from '$lib/auxero/detail';
 	import { ArrowLeft, Check, GitCompare, Heart, PhoneCall, Send, Share2, X } from '@lucide/svelte';
 	import { Drawer } from 'vaul-svelte';
+	import { templateInquiryCopy } from '$lib/data/template-settings';
 
 	let { detail }: { detail: AuxeroVehicleDetailData } = $props();
 
@@ -25,6 +26,7 @@
 	let inquiryOpen = $state(false);
 	let inquiryStatus = $state('');
 	let inquirySubmitting = $state(false);
+	let inquirySaved = $state(false);
 
 	const heroGalleryImages = $derived(Array.from(new Set(detail.galleryImages)));
 	const heroImage = $derived(heroGalleryImages[selectedImageIndex] ?? detail.image);
@@ -144,6 +146,7 @@
 		// Start each inquiry session clean so a previous success message doesn't linger
 		// under a fresh, empty form when the drawer is reopened.
 		inquiryStatus = '';
+		inquirySaved = false;
 		inquirySubmitting = false;
 		inquiryOpen = true;
 	};
@@ -154,6 +157,9 @@
 
 	const submitInquiry = async (event: SubmitEvent) => {
 		event.preventDefault();
+		if (inquirySubmitting) return;
+		inquirySaved = false;
+		inquiryStatus = '';
 
 		const form = event.currentTarget as HTMLFormElement;
 		const payload = Object.fromEntries(new FormData(form).entries());
@@ -161,7 +167,7 @@
 		inquirySubmitting = true;
 
 		try {
-			await fetch('/api/inquiries', {
+			const response = await fetch(resolve('/api/inquiries'), {
 				body: JSON.stringify({
 					...payload,
 					source: 'vehicle-detail-mobile',
@@ -170,13 +176,16 @@
 				headers: { 'content-type': 'application/json' },
 				method: 'POST'
 			});
+			const result = await response.json();
+			if (!response.ok || !result.ok || !result.data?.inquiry?.id) throw new Error('Not saved');
+			inquirySaved = true;
+			inquiryStatus = templateInquiryCopy.success;
+			form.reset();
 		} catch {
-			// The prototype still confirms local capture if the API is unavailable.
+			inquiryStatus = 'Заявката не е запазена. Провери данните и опитай отново.';
+		} finally {
+			inquirySubmitting = false;
 		}
-
-		inquirySubmitting = false;
-		inquiryStatus = detail.copy.inquirySuccess;
-		form.reset();
 	};
 
 	const openImageViewer = (index: number) => {
@@ -476,7 +485,7 @@
 			</div>
 
 			<Drawer.Description class="daynight-mobile-pdp__inquiry-description">
-				<span class="daynight-mobile-pdp__inquiry-intro">{detail.copy.inquiryIntro}</span>
+				<span class="daynight-mobile-pdp__inquiry-intro">{templateInquiryCopy.notice}</span>
 			</Drawer.Description>
 
 			<form class="daynight-mobile-pdp__inquiry-form" onsubmit={submitInquiry} data-vaul-no-drag>
@@ -511,7 +520,7 @@
 				</button>
 
 				<p class="daynight-mobile-pdp__inquiry-status" aria-live="polite">
-					{#if inquiryStatus}
+					{#if inquirySaved}
 						<Check size={16} strokeWidth={2.4} aria-hidden="true" />
 					{/if}
 					{inquiryStatus}

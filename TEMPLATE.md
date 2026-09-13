@@ -44,11 +44,13 @@ Do not assume these are the only identity consumers. Search every retained route
 - `npm run check`
 - `npm run build`
 
+## Inquiry persistence
+
+Optional Neon-backed inquiry storage and private template admin access are documented in [Inquiry database](docs/INQUIRY-DATABASE.md). Without database configuration the synthetic preview remains in memory. Saving is separate from notification delivery.
+
 ## Current constraints
 
 Use Import as Design 2 in the intentional Auto Best / Import / Carwow trio when it fits the dealer’s real offer.
-
-
 
 ## Source lineage
 

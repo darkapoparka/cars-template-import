@@ -103,7 +103,9 @@
 						.join('\n')
 				})
 			});
-			if (!response.ok) throw new Error('submission-failed');
+			const result = await response.json();
+			if (!response.ok || !result.ok || !result.data?.submission?.id)
+				throw new Error('submission-failed');
 			submitted = true;
 		} catch {
 			submitError = 'Заявката не е изпратена. Опитай отново или се свържи по телефона.';
@@ -118,7 +120,7 @@
 		<section class="sell-flow__success" role="status">
 			<span class="sell-flow__success-icon"><Check size={25} strokeWidth={2.5} /></span>
 			<h2>Заявката е приета</h2>
-			<p>Ще прегледаме данните и ще се свържем с оценка и следваща стъпка.</p>
+			<p>Демо заявката е запазена временно. Не е изпратено съобщение до търговец.</p>
 			<button type="button" onclick={() => onclose?.()}>Готово</button>
 		</section>
 	{:else}

@@ -28,8 +28,12 @@
 	};
 </script>
 
-<article class="mobile-vehicle-card">
-	<a class="mobile-vehicle-card__image" href={resolve('/inventory/[slug]', { slug: card.slug })}>
+<a
+	class="mobile-vehicle-card"
+	href={resolve('/inventory/[slug]', { slug: card.slug })}
+	aria-label={card.title}
+>
+	<div class="mobile-vehicle-card__image">
 		<img
 			src={image}
 			alt={card.title}
@@ -40,27 +44,29 @@
 			onerror={useFallbackImage}
 		/>
 		{#if card.tag}<span>{card.tag}</span>{/if}
-	</a>
+	</div>
 	<div class="mobile-vehicle-card__body">
 		<p>{card.brand}</p>
-		<h2><a href={resolve('/inventory/[slug]', { slug: card.slug })}>{card.title}</a></h2>
+		<h2>{card.title}</h2>
 		<strong>{card.priceLabel}</strong>
 		<small>{card.monthlyLabel}</small>
 		<ul>
-			<li><Gauge size={14} strokeWidth={2} aria-hidden="true" />{card.mileageLabel}</li>
-			<li><Calendar size={14} strokeWidth={2} aria-hidden="true" />{card.year}</li>
-			<li><Fuel size={14} strokeWidth={2} aria-hidden="true" />{card.fuel}</li>
-			<li><Cog size={14} strokeWidth={2} aria-hidden="true" />{card.transmission}</li>
+			<li>
+				<Gauge size={14} strokeWidth={2} aria-hidden="true" /><span>{card.mileageLabel}</span>
+			</li>
+			<li><Calendar size={14} strokeWidth={2} aria-hidden="true" /><span>{card.year}</span></li>
+			<li><Fuel size={14} strokeWidth={2} aria-hidden="true" /><span>{card.fuel}</span></li>
+			<li><Cog size={14} strokeWidth={2} aria-hidden="true" /><span>{card.transmission}</span></li>
 		</ul>
 	</div>
-</article>
+</a>
 
 <style>
 	.mobile-vehicle-card {
 		display: grid;
 		width: 100%;
 		min-width: 0;
-		grid-template-columns: clamp(96px, 32vw, 132px) minmax(0, 1fr);
+		grid-template-columns: minmax(0, 40fr) minmax(0, 60fr);
 		min-height: 154px;
 		overflow: hidden;
 		border-radius: var(--bc-radius-lg);
@@ -80,7 +86,7 @@
 		width: 100%;
 		height: 100%;
 		min-height: 154px;
-		object-fit: cover;
+		object-fit: contain;
 	}
 
 	.mobile-vehicle-card__image span {
@@ -124,17 +130,6 @@
 		overflow-wrap: anywhere;
 	}
 
-	.mobile-vehicle-card__body h2 a {
-		display: flex;
-		min-width: 0;
-		min-height: var(--bc-control-height-standard);
-		align-items: center;
-		margin-block: -11px;
-		padding-block: 11px;
-		color: inherit;
-		text-decoration: none !important;
-	}
-
 	.mobile-vehicle-card__body strong {
 		color: var(--bc-accent);
 		font-size: 20px;
@@ -152,8 +147,8 @@
 
 	.mobile-vehicle-card__body ul {
 		display: grid;
-		grid-template-columns: minmax(max-content, 1fr) minmax(0, 1fr);
-		gap: var(--bc-space-2);
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+		gap: 4px;
 		margin: 0;
 		padding: 0;
 		list-style: none;
@@ -167,7 +162,7 @@
 		gap: var(--bc-space-1);
 		border-radius: var(--bc-radius-md);
 		background: var(--bc-surface-soft);
-		padding: var(--bc-space-1) var(--bc-space-2);
+		padding: 4px;
 		color: var(--bc-copy);
 		font-size: var(--bc-mobile-stat);
 		font-weight: 600;
@@ -179,14 +174,46 @@
 	.mobile-vehicle-card__body li :global(svg) {
 		flex: 0 0 auto;
 	}
-
-	@media (max-width: 399px) {
-		.mobile-vehicle-card {
-			grid-template-columns: clamp(96px, calc(100vw - 251px), 124px) minmax(0, 1fr);
-		}
+	.mobile-vehicle-card__body li span {
+		min-width: 0;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 
 	@media (max-width: 359px) {
+		.mobile-vehicle-card__body li :global(svg) {
+			display: none;
+		}
+	}
+
+	.mobile-vehicle-card {
+		color: var(--bc-ink);
+		text-decoration: none;
+	}
+	.mobile-vehicle-card:focus-visible {
+		outline: 3px solid var(--bc-focus);
+		outline-offset: 3px;
+	}
+	.mobile-vehicle-card__image {
+		background: var(--bc-surface-soft);
+	}
+	.mobile-vehicle-card__body h2 {
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 2;
+		line-clamp: 2;
+		overflow: hidden;
+		min-height: 40px;
+		line-height: 20px;
+		margin-bottom: 4px;
+	}
+	.mobile-vehicle-card__body li {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		font-size: 11px;
+		gap: 3px;
+	}
+	@media (max-width: 374px) {
 		.mobile-vehicle-card__body li :global(svg) {
 			display: none;
 		}

@@ -80,7 +80,7 @@
 		title={copy.title}
 		intro="Въведи VIN, добави основните данни и ще се свържем с оценка до 24 ч."
 		meta="5 стъпки · Снимки по желание"
-		response="Оценка до 24 ч."
+		response="Демонстрационна оценка"
 		stepsTitle={copy.stepsTitle}
 		{steps}
 	>

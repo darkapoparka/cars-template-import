@@ -62,7 +62,7 @@
 	const formatEur = (value: number) =>
 		`${Math.round(value)
 			.toLocaleString('fr-FR')
-			.replace(/\u202f/g, ' ')} EUR`;
+			.replace(/\u202f/g, ' ')} €`;
 
 	const steps = [
 		{
