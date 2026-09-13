@@ -154,11 +154,7 @@
 			</div>
 		{/snippet}
 		{#snippet content()}
-			<section class="sell-guide" aria-labelledby="sell-guide-title">
-				<h2 id="sell-guide-title">Как протича продажбата</h2>
-				<p class="sell-guide__intro">
-					Започни с данните на автомобила. Останалото уточняваме заедно.
-				</p>
+			<section class="sell-guide" aria-label="Стъпки за продажба">
 				<ol class="sell-guide__steps">
 					{#each guideSteps as step, index (step.title)}
 						<li>
@@ -270,24 +266,6 @@
 		padding: var(--bc-space-4);
 		border-radius: var(--bc-radius-card);
 		background: var(--bc-white);
-	}
-	.sell-guide h2 {
-		margin: 0;
-		text-align: center;
-		text-wrap: balance;
-		font-size: var(--bc-mobile-section-title);
-		font-weight: var(--bc-weight-heading);
-		line-height: var(--bc-mobile-section-title-leading);
-		color: var(--bc-ink);
-	}
-	.sell-guide__intro {
-		margin: 8px 0 24px;
-		text-align: center;
-		text-wrap: balance;
-		color: var(--bc-copy);
-		font-size: var(--bc-mobile-body);
-		line-height: var(--bc-mobile-body-leading);
-		font-weight: var(--bc-weight-body);
 	}
 	.sell-guide__steps {
 		display: grid;
