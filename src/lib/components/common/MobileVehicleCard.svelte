@@ -48,8 +48,10 @@
 	<div class="mobile-vehicle-card__body">
 		<p>{card.brand}</p>
 		<h2>{card.title}</h2>
-		<strong>{card.priceLabel}</strong>
-		<small>{card.monthlyLabel}</small>
+		<div class="mobile-vehicle-card__prices">
+			<strong>{card.priceLabel}</strong>
+			<small>{card.monthlyLabel}</small>
+		</div>
 		<ul>
 			<li>
 				<Gauge size={14} strokeWidth={2} aria-hidden="true" /><span>{card.mileageLabel}</span>
@@ -137,14 +139,23 @@
 		font-size: 20px;
 		font-weight: 700;
 		line-height: var(--bc-space-6);
+		white-space: nowrap;
+	}
+	.mobile-vehicle-card__prices {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 6px;
+		margin-bottom: var(--bc-space-2);
+		min-width: 0;
 	}
 
 	.mobile-vehicle-card__body small {
-		margin-bottom: var(--bc-space-2);
 		color: var(--bc-muted);
-		font-size: var(--bc-mobile-stat);
+		font-size: 10px;
 		font-weight: 600;
 		line-height: var(--bc-mobile-stat-leading);
+		white-space: nowrap;
 	}
 
 	.mobile-vehicle-card__body ul {
@@ -194,12 +205,11 @@
 		background: var(--bc-surface-soft);
 	}
 	.mobile-vehicle-card__body h2 {
-		display: -webkit-box;
-		-webkit-box-orient: vertical;
-		-webkit-line-clamp: 2;
-		line-clamp: 2;
+		display: block;
+		white-space: nowrap;
+		text-overflow: ellipsis;
 		overflow: hidden;
-		min-height: 40px;
+		min-height: 20px;
 		line-height: 20px;
 		margin-bottom: 4px;
 	}
