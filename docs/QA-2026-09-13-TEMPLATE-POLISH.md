@@ -140,6 +140,11 @@ Scope: article reading layouts, compact mobile inventory cards, currency display
 - Home Buy/Import tabs use the existing 20px heading token, with text aligned closer to the underline and 6px bottom padding inside the retained 44px tap area.
 - At 390px and 360px, document width matched viewport width without the former 8px strip; page scrolling remained functional. The menu scrolled to its final account link without a scrollbar. Confirmed the 20px/44px tab sizing and working Import mode switch. At 1440px, desktop retained its 8px stable gutter and was visually inspected. Formatting, Svelte autofixer (no issues) and diff checks passed. Full build/type/lint checks were not repeated for this CSS-only correction.
 
+## Sell and Import tab typography follow-up
+
+- Matched Sell VIN/manual and Import Link/VIN/manual tabs to Home: existing 20px heading token, 24px line height, 6px bottom padding and retained 44px tap area. Active/inactive weights are unchanged.
+- Inspected both routes at 360px and measured all four tabs at 20px text and 44px height with matching padding. Formatting, Svelte autofixer (no issues) and diff checks passed. Full checks were not repeated for this CSS-only sizing change.
+
 ## Limits
 
 This is standalone local template evidence, not owner visual acceptance, mounted Cars release qualification, or a dealer deployment. No messages were sent to a dealer. Sell-car submissions and unrelated CMS/account features remain temporary prototypes. Real dealer collection still needs its own private database, identity and notification configuration, hosting-specific validation, and final dealer content/policy review. Repository-wide lint and the full legacy end-to-end suite were not used as a release claim; checks were scoped to this implementation and browser flows above.

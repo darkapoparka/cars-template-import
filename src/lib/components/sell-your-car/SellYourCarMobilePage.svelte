@@ -300,14 +300,14 @@
 		width: 100%;
 		height: 44px;
 		min-height: 44px;
-		align-items: center;
+		align-items: flex-end;
 		justify-content: center;
 		border: 0;
 		border-radius: 0;
 		background: transparent;
 		color: rgb(255 255 255 / 0.72);
 		font-family: var(--bc-font-body);
-		font-size: var(--bc-mobile-card-title);
+		font-size: var(--bc-text-h5);
 		font-weight: var(--bc-weight-control);
 		letter-spacing: 0;
 		line-height: 24px;
@@ -315,7 +315,7 @@
 		cursor: pointer;
 		user-select: none;
 		-webkit-user-select: none;
-		padding: 0;
+		padding: 0 0 6px;
 	}
 
 	.sell-mode-tabs button.active {
