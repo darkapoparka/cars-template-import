@@ -430,7 +430,7 @@
 							aria-expanded={mobileSearchOpen || inventorySearchOpen}
 							onclick={openMobileSearch}
 						>
-							<Search size={23} strokeWidth={2.25} aria-hidden="true" />
+							<Search size={20} strokeWidth={2.25} aria-hidden="true" />
 						</button>
 					</div>
 				</div>
@@ -1570,10 +1570,10 @@
 
 		.daynight-mobile-hero__search {
 			display: flex;
-			height: 58px;
+			height: var(--bc-control-height-primary);
 			align-items: center;
 			gap: 10px;
-			padding: 6px 6px 6px 20px;
+			padding: 2px 2px 2px 16px;
 			border: 0;
 			border-radius: 999px;
 			background: var(--daynight-mobile-surface, var(--bc-white));
@@ -1619,9 +1619,10 @@
 			align-items: center;
 			justify-content: center;
 			flex: 0 0 var(--bc-control-height-standard);
-			border: 0 !important;
+			border: 4px solid transparent !important;
 			border-radius: 999px;
 			background: var(--daynight-mobile-action, var(--bc-accent));
+			background-clip: padding-box;
 			box-shadow: none !important;
 			color: var(--bc-white);
 			cursor: pointer;
@@ -1629,7 +1630,7 @@
 		}
 
 		.daynight-mobile-hero__search-action:focus-visible {
-			background: var(--daynight-mobile-action-focus, var(--bc-ink));
+			background-color: var(--daynight-mobile-action-focus, var(--bc-ink));
 			color: var(--bc-white);
 			outline: 0;
 		}
@@ -1659,14 +1660,15 @@
 			align-items: center;
 			justify-content: center;
 			gap: 6px;
-			border-radius: var(--bc-radius-control);
+			border-radius: var(--bc-radius-pill);
 			background: var(--daynight-mobile-cta, var(--bc-surface-raised));
-			border: 0;
+			border: 2px solid transparent;
+			background-clip: padding-box;
 			box-shadow: none;
-			padding: 0 16px;
+			padding: 0 12px;
 			color: var(--bc-accent-contrast) !important;
 			font-size: var(--bc-text-cta);
-			font-weight: var(--bc-weight-heading);
+			font-weight: var(--bc-weight-control);
 			line-height: var(--bc-leading-cta);
 			text-decoration: none;
 		}
@@ -1680,7 +1682,7 @@
 		}
 
 		.daynight-mobile-hero__all:focus-visible {
-			background: var(--bc-white);
+			background-color: var(--bc-white);
 			color: var(--bc-ink) !important;
 			outline: 2px solid rgba(28, 28, 28, 0.72);
 			outline-offset: 2px;

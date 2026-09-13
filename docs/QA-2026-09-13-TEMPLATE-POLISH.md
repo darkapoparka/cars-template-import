@@ -87,6 +87,11 @@ Scope: article reading layouts, compact mobile inventory cards, currency display
 - Inventory search is now one 44px button with a plain 20px magnifier and 20px regular label in the ink color. Filter and sort follow on the right as 44px circles; their existing active states, labels and count remain. Removed the nested oversized dark search button and its redundant tab stop.
 - Inspected at 390px and 360px; the unified search and circular sort controls opened the existing drawers. This scoped markup/CSS correction uses Prettier, ESLint, Svelte autofixer and diff checks; the preceding full build and type check were not repeated.
 
+## Homepage control sizing follow-up
+
+- Mobile homepage search is 48px high. Its search button retains a 44px hit target with a 36px painted circle and 20px magnifier. The centered all-cars link uses a 40px painted pill within a 44px hit target, tighter padding and 18px regular text.
+- Browser checks at 390px and 360px confirmed sizing and no narrow-width overflow. Search opened the existing filter/search drawer; the all-cars pill navigated to inventory. Desktop homepage inspected at 1440px. Scoped ESLint, Prettier, Svelte autofixer (no issues) and diff checks passed; the prior full build/type check were not repeated for this geometry-only follow-up.
+
 ## Limits
 
 This is standalone local template evidence, not owner visual acceptance, mounted Cars release qualification, or a dealer deployment. No messages were sent to a dealer. Sell-car submissions and unrelated CMS/account features remain temporary prototypes. Real dealer collection still needs its own private database, identity and notification configuration, hosting-specific validation, and final dealer content/policy review. Repository-wide lint and the full legacy end-to-end suite were not used as a release claim; checks were scoped to this implementation and browser flows above.
