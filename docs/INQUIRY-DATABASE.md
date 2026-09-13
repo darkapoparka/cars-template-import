@@ -30,6 +30,6 @@ Run `npm run test:unit -- --run src/lib/server/inquiry-flow.spec.ts`, `npm run c
 - Empty base branch: `template-base`. Application branch: `template-demo` (`br-winter-sound-b2zyhwy1`), database `template_demo`.
 - Local connection strings and generated administrator credentials live only in the ignored `.env`. They are not part of a release or dealer copy.
 - Migration applied successfully. Synthetic vehicle, import, and contact enquiries were submitted through the browser and independently read from Neon. Authenticated admin read/update succeeded; the import status remained after an application process restart. Anonymous prototype-role access returned 401.
-- Contact, service, vehicle, and import enquiry forms use durable inquiry storage when configured. Sell-car submissions remain a separate temporary prototype; their success text explicitly states this. Other CMS/account data remains synthetic.
+- Contact, service, vehicle, and import enquiry forms use durable inquiry storage when configured. Sell-car submissions remain a separate local demo backed by the ignored `.daynight-cms/` runtime directory, not the Neon inquiry table. Their success text identifies the demo. Other CMS/account data remains synthetic.
 
 Create a new empty database for each dealer. Replace the connection strings and credentials in that dealer's environment; never point a dealer at this demonstration branch. No template enquiries are transferred. Provider publication and real notification delivery are separate verification steps.

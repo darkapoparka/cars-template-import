@@ -48,6 +48,7 @@ codex-screenshots/
 .codex-screenshots/
 .playwright-mcp/
 .bohemcars-cms/
+.daynight-cms/
 .getrich-dev-*/
 static/uploads/cms/
 .tmp/
