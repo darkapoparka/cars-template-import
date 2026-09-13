@@ -145,15 +145,17 @@
 						<h3 id="sell-flow-car-title">Кой автомобил продавате?</h3>
 						<p>
 							{manualEntry
-								? 'VIN е по желание. Марка и модел са достатъчни за начало.'
+								? 'Марка и модел са достатъчни за начало.'
 								: 'Провери VIN и добави основните данни.'}
 						</p>
 					</div>
 
-					<label class="sell-field sell-field--wide">
-						<span>VIN {manualEntry ? '(по желание)' : ''}</span>
-						<input bind:value={vin} type="text" placeholder="WBA..." autocomplete="off" />
-					</label>
+					{#if !manualEntry}
+						<label class="sell-field sell-field--wide">
+							<span>VIN</span>
+							<input bind:value={vin} type="text" placeholder="WBA..." autocomplete="off" />
+						</label>
+					{/if}
 
 					<fieldset class="sell-fieldset">
 						<legend>Марка</legend>

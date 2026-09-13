@@ -23,6 +23,7 @@
 	} = $props();
 
 	let wizardOpen = $state(false);
+	let entryMode = $state<'vin' | 'manual'>('vin');
 	let manualEntry = $state(false);
 	let wizardSession = $state(0);
 	const vinField = $derived(form.fields.find((field) => field.name === 'vin')!);
@@ -51,6 +52,21 @@
 		event.preventDefault();
 		openWizard(false);
 	};
+	const handleModeKeydown = (event: KeyboardEvent) => {
+		if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+		event.preventDefault();
+		entryMode =
+			event.key === 'Home'
+				? 'vin'
+				: event.key === 'End'
+					? 'manual'
+					: entryMode === 'vin'
+						? 'manual'
+						: 'vin';
+		(event.currentTarget as HTMLElement).parentElement
+			?.querySelector<HTMLButtonElement>(`[data-mode="${entryMode}"]`)
+			?.focus();
+	};
 	const setLocationSheetOpen = (open: boolean) => {
 		const toggle = document.getElementById(
 			'sell-mobile-location-toggle'
@@ -78,47 +94,63 @@
 
 	<MobileServiceEntry
 		title={copy.title}
-		intro="Въведи VIN, добави основните данни и ще се свържем с оценка до 24 ч."
-		meta="5 стъпки · Снимки по желание"
+		intro="Въведи VIN или опиши автомобила с марка, модел, година и пробег."
+		meta="2 стъпки · Автомобил и контакт"
 		response="Демонстрационна оценка"
 		stepsTitle={copy.stepsTitle}
 		{steps}
 	>
-		{#snippet entry()}
-			<form onsubmit={handleVinSubmit}>
-				<label for="sell-mobile-vin">VIN номер</label>
-				<div class="service-input">
-					<ScanLine size={21} strokeWidth={2.15} aria-hidden="true" />
-					<input
-						id="sell-mobile-vin"
-						name={vinField.name}
-						type={vinField.type}
-						placeholder="Въведи VIN номер"
-						required={vinField.required}
-						autocomplete={vinField.autocomplete}
-						bind:value={fieldValues.vin}
-					/>
-					<button type="submit" aria-label="Продължи с VIN">
-						<ArrowRight size={21} strokeWidth={2.35} aria-hidden="true" />
-					</button>
-				</div>
-			</form>
+		{#snippet modes()}
+			<div class="sell-mode-tabs" role="tablist" aria-label="Данни за автомобила">
+				{#each [{ value: 'vin', label: 'VIN' }, { value: 'manual', label: 'Нямам VIN' }] as mode (mode.value)}
+					<button
+						type="button"
+						id={`sell-mode-${mode.value}`}
+						data-mode={mode.value}
+						role="tab"
+						class:active={entryMode === mode.value}
+						aria-selected={entryMode === mode.value}
+						aria-controls="sell-entry-panel"
+						tabindex={entryMode === mode.value ? 0 : -1}
+						onkeydown={handleModeKeydown}
+						onclick={() => (entryMode = mode.value as 'vin' | 'manual')}>{mode.label}</button
+					>
+				{/each}
+			</div>
 		{/snippet}
-		{#snippet alternative()}
-			<button class="sell-entry-banner" type="button" onclick={() => openWizard(true)}>
-				<img
-					src={resolve('/assets/daynight/sell/sell-mobile-banner-v1.webp')}
-					alt=""
-					aria-hidden="true"
-				/>
-				<span class="sell-entry-banner__copy">
-					<strong>Нямам VIN</strong>
-					<small>Избери автомобила ръчно</small>
-				</span>
-				<span class="sell-entry-banner__go" aria-hidden="true">
-					<ArrowRight size={19} strokeWidth={2.35} />
-				</span>
-			</button>
+		{#snippet entry()}
+			<div id="sell-entry-panel" role="tabpanel" aria-labelledby={`sell-mode-${entryMode}`}>
+				{#if entryMode === 'vin'}
+					<form onsubmit={handleVinSubmit}>
+						<label for="sell-mobile-vin">VIN номер</label>
+						<div class="service-input">
+							<ScanLine size={21} strokeWidth={2.15} aria-hidden="true" />
+							<input
+								id="sell-mobile-vin"
+								name={vinField.name}
+								type={vinField.type}
+								placeholder="Въведи VIN номер"
+								required={vinField.required}
+								autocomplete={vinField.autocomplete}
+								bind:value={fieldValues.vin}
+							/>
+							<button type="submit" aria-label="Продължи с VIN">
+								<ArrowRight size={21} strokeWidth={2.35} aria-hidden="true" />
+							</button>
+						</div>
+					</form>
+				{:else}
+					<button class="sell-manual-entry" type="button" onclick={() => openWizard(true)}>
+						<span class="sell-manual-entry__copy">
+							<strong>Опиши автомобила</strong>
+							<small>Марка, модел, година и пробег</small>
+						</span>
+						<span class="sell-manual-entry__go" aria-hidden="true">
+							<ArrowRight size={20} strokeWidth={2.35} />
+						</span>
+					</button>
+				{/if}
+			</div>
 		{/snippet}
 	</MobileServiceEntry>
 
@@ -216,95 +248,124 @@
 		text-decoration: none !important;
 	}
 
+	.daynight-sell-mobile :global(.mobile-service-entry__modes) {
+		height: 44px;
+		margin: 0 0 12px;
+	}
+
 	.daynight-sell-mobile :global(.mobile-service-entry__browse) {
-		position: relative;
-		z-index: 2;
-		margin-top: -10px;
-		border-radius: 24px 24px 0 0;
-		background: #eef1f4;
-		padding: 26px var(--bc-mobile-gutter) var(--bc-space-5);
-		box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.14);
+		display: none;
 	}
-	.daynight-sell-mobile :global(.mobile-service-entry__browse)::before {
-		position: absolute;
-		top: 9px;
-		left: 50%;
-		width: 38px;
-		height: 4px;
-		border-radius: 999px;
-		background: #c3cad2;
-		content: '';
-		transform: translateX(-50%);
-	}
-	.daynight-sell-mobile :global(.mobile-service-entry__alternative) {
-		margin: 0;
-	}
-	.daynight-sell-mobile :global(.mobile-service-entry__alternative .sell-entry-banner) {
-		position: relative;
-		display: block;
-		min-height: 154px;
-		overflow: hidden;
+	.sell-mode-tabs {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 0;
+		min-height: 0;
 		border: 0;
-		border-radius: 16px;
-		background: #0b0d10;
-		padding: 0;
+		border-bottom: 1px solid rgb(255 255 255 / 0.2);
+		border-radius: 0;
+		background: transparent;
 		box-shadow: none;
+		padding: 0;
 	}
-	.daynight-sell-mobile :global(.sell-entry-banner > img) {
-		position: absolute;
-		inset: 0;
+
+	.sell-mode-tabs button {
+		position: relative;
+		display: flex;
 		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		object-position: 62% center;
-		opacity: 0.92;
+		height: 44px;
+		min-height: 44px;
+		align-items: center;
+		justify-content: center;
+		border: 0;
+		border-radius: 0;
+		background: transparent;
+		color: rgb(255 255 255 / 0.72);
+		font-family:
+			'Geist Variable',
+			'Geist',
+			'Noto Sans',
+			ui-sans-serif,
+			system-ui,
+			-apple-system,
+			BlinkMacSystemFont,
+			'Segoe UI',
+			Arial,
+			sans-serif;
+		font-size: 19px;
+		font-weight: 600;
+		letter-spacing: 0;
+		line-height: 24px;
+		text-align: center;
+		cursor: pointer;
+		user-select: none;
+		-webkit-user-select: none;
+		padding: 0;
 	}
-	.daynight-sell-mobile :global(.sell-entry-banner)::after {
+
+	.sell-mode-tabs button.active {
+		background: transparent;
+		box-shadow: none;
+		color: var(--bc-white);
+		font-weight: 700;
+	}
+
+	.sell-mode-tabs button.active::after {
 		position: absolute;
-		inset: 0;
-		background: linear-gradient(
-			90deg,
-			rgba(5, 7, 10, 0.94) 0%,
-			rgba(5, 7, 10, 0.64) 45%,
-			rgba(5, 7, 10, 0.08) 78%
-		);
+		inset: auto 0 -1px;
+		height: 2px;
+		background: var(--bc-white);
 		content: '';
 	}
-	.daynight-sell-mobile :global(.sell-entry-banner__copy) {
-		position: absolute;
-		z-index: 2;
-		top: 50%;
-		left: 18px;
+
+	.sell-mode-tabs button:focus-visible {
+		outline: 2px solid rgb(255 255 255 / 0.72);
+		outline-offset: -3px;
+	}
+
+	.daynight-sell-mobile :global(.mobile-service-entry__field .sell-manual-entry) {
 		display: grid;
-		max-width: 48%;
-		gap: 5px;
-		transform: translateY(-50%);
-		color: #fff;
+		grid-template-columns: minmax(0, 1fr) 48px;
+		width: 100%;
+		height: auto;
+		min-height: 56px;
+		align-items: center;
+		gap: 10px;
+		border: 0;
+		border-radius: var(--bc-radius-pill);
+		background: var(--bc-surface-soft);
+		color: var(--bc-ink);
+		padding: 4px 4px 4px 17px;
+		cursor: pointer;
+		text-align: left;
 	}
-	.daynight-sell-mobile :global(.sell-entry-banner__copy strong) {
-		color: #fff;
-		font-size: 21px;
-		font-weight: 750;
-		line-height: 1.1;
+
+	.sell-manual-entry__copy {
+		display: grid;
+		gap: 2px;
 	}
-	.daynight-sell-mobile :global(.sell-entry-banner__copy small) {
-		color: rgba(255, 255, 255, 0.78);
-		font-size: 13px;
+
+	.sell-manual-entry__copy strong {
+		font-size: 15px;
+		font-weight: 700;
+		line-height: 1.2;
+	}
+
+	.sell-manual-entry__copy small {
+		color: var(--bc-muted);
+		font-size: 12px;
 		font-weight: 500;
-		line-height: 1.3;
+		line-height: 1.2;
 	}
-	.daynight-sell-mobile :global(.sell-entry-banner__go) {
-		position: absolute;
-		z-index: 3;
-		right: 14px;
-		bottom: 14px;
+
+	.sell-manual-entry__go {
 		display: grid;
-		width: 40px;
-		height: 40px;
+		width: 48px;
+		height: 48px;
 		place-items: center;
 		border-radius: 50%;
-		background: #fff;
-		color: var(--bc-ink);
+		background: var(--bc-accent);
+		color: var(--bc-white);
 	}
 
 	.daynight-sell-mobile__sheet-toggle {

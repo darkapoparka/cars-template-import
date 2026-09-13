@@ -34,6 +34,14 @@ Scope: article reading layouts, compact mobile inventory cards, currency display
 - Inspected inventory at 1440px: mobile navigation remains hidden and the desktop layout has no horizontal overflow. Browser console reported no errors after the dev-server restart.
 - `npm run check`, `npm run build`, scoped Prettier/ESLint, Svelte autofixer, and `git diff --check` passed. Unit tests and the wider form/dealer matrix were not repeated for this icon and spacing change. Dev server restored on port 6464.
 
+## Sell entry tabs follow-up
+
+- Mobile sell entry now uses the import page's tab styling for VIN and "Нямам VIN". The manual-entry banner was replaced by a compact "Опиши автомобила" control. Both paths open the existing valuation overlay and continue to its shared contact step.
+- Manual mode starts with make/model/year/mileage and hides the VIN field. The VIN path carries the entered number into the overlay. Help copy now describes the actual two-step flow.
+- In-app browser checks on `/sell-your-car`: inspected both entry modes and the manual overlay at 390px and 360px; verified manual make/model progression, VIN carry-over and contact summary, closing the overlay, and arrow-key selection/focus between tabs. No horizontal overflow or browser console errors found. At 1440px the existing desktop page and VIN valuation overlay remained available.
+- No submission was sent during these entry-flow checks; persistence and notification delivery were outside this change.
+- `npm run check` (zero errors/warnings), `npm run build`, scoped Prettier/ESLint, and `git diff --check` passed. Svelte autofixer found no issues; its suggestion about the existing scroll-container binding was retained outside this scope. The dev server was restored on port 6464. Unit and full end-to-end suites were not repeated for these entry controls.
+
 ## Limits
 
 This is standalone local template evidence, not owner visual acceptance, mounted Cars release qualification, or a dealer deployment. No messages were sent to a dealer. Sell-car submissions and unrelated CMS/account features remain temporary prototypes. Real dealer collection still needs its own private database, identity and notification configuration, hosting-specific validation, and final dealer content/policy review. Repository-wide lint and the full legacy end-to-end suite were not used as a release claim; checks were scoped to this implementation and browser flows above.
