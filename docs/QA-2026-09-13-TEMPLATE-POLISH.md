@@ -61,6 +61,12 @@ Scope: article reading layouts, compact mobile inventory cards, currency display
 - Country-filter design remains a proposal: the existing `importCountries` data already serves the request wizard, while the displayed inventory does not have import-origin data. No country-filter behavior or listing classification was fabricated.
 - `npm run check` (zero errors/warnings), `npm run build`, scoped Prettier/ESLint and `git diff --check` passed. The dev server was restored on port 6464. No submissions were sent and the unit/full end-to-end suites were not repeated for this shared control refactor.
 
+## Placeholder typography correction
+
+- The previous comparison measured the input element, but missed its separately styled `::placeholder`: the visible VIN hint was 16px while the manual label was 17px. Both now use the shared `--bc-text-body` token (16px); placeholder typography explicitly inherits from the field. The manual car icon is 24px and centered in the same leading column to compensate for its smaller drawing footprint.
+- Visually compared both Sell states at 390px and both Import states at 360px. Text starts at x=60, stays on one line, and uses the same font family, size, weight, and muted color. Both manual overlays open correctly. Desktop Sell at 1440px retains its existing layout with the mobile field hidden. No document overflow or browser console errors observed.
+- Svelte autofixer, scoped Prettier/ESLint, and `git diff --check` passed. This two-component typography/icon correction does not repeat the preceding full build or form-submission suite.
+
 ## Limits
 
 This is standalone local template evidence, not owner visual acceptance, mounted Cars release qualification, or a dealer deployment. No messages were sent to a dealer. Sell-car submissions and unrelated CMS/account features remain temporary prototypes. Real dealer collection still needs its own private database, identity and notification configuration, hosting-specific validation, and final dealer content/policy review. Repository-wide lint and the full legacy end-to-end suite were not used as a release claim; checks were scoped to this implementation and browser flows above.

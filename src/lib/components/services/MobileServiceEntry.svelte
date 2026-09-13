@@ -161,7 +161,7 @@
 	.mobile-service-entry__field :global(input),
 	.mobile-service-entry__field :global(.service-input__text) {
 		font-family: var(--bc-font-body);
-		font-size: var(--bc-mobile-card-title);
+		font-size: var(--bc-text-body);
 		font-weight: 400;
 		line-height: var(--bc-mobile-card-title-leading);
 		text-align: left;
@@ -178,11 +178,16 @@
 		color: var(--bc-muted);
 	}
 	.mobile-service-entry__field :global(input::placeholder) {
+		font: inherit;
+		letter-spacing: inherit;
 		color: var(--bc-muted);
 		opacity: 1;
 	}
 	.mobile-service-entry__field :global(svg) {
 		color: var(--bc-copy);
+	}
+	.mobile-service-entry__field :global(.service-input > svg) {
+		justify-self: center;
 	}
 	.mobile-service-entry__field :global(.service-input button),
 	.mobile-service-entry__field :global(.service-input__go) {
