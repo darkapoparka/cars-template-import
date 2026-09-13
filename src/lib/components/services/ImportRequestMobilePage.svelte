@@ -135,41 +135,6 @@
 		text-decoration: none !important;
 	}
 
-	.daynight-import-mobile :global(.mobile-service-entry__browse) {
-		position: relative;
-		z-index: 2;
-		margin-top: -20px;
-		border-radius: 24px 24px 0 0;
-		background: #eef1f4;
-		padding: 26px var(--bc-mobile-gutter) var(--bc-space-6);
-		box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.14);
-	}
-
-	.daynight-import-mobile :global(.mobile-service-entry__browse)::before {
-		position: absolute;
-		top: 9px;
-		left: 50%;
-		width: 38px;
-		height: 4px;
-		border-radius: 999px;
-		background: #c3cad2;
-		content: '';
-		transform: translateX(-50%);
-	}
-
-	.daynight-import-mobile :global(.mobile-service-entry__start) {
-		padding-top: 10px;
-	}
-
-	.daynight-import-mobile :global(.mobile-service-entry__modes) {
-		height: 44px;
-		margin: 0 0 12px;
-	}
-
-	.daynight-import-mobile :global(.mobile-service-entry__field) {
-		min-height: 56px;
-	}
-
 	.import-mode-tabs {
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));

@@ -27,6 +27,13 @@
 	let manualEntry = $state(false);
 	let wizardSession = $state(0);
 	const vinField = $derived(form.fields.find((field) => field.name === 'vin')!);
+	const guideSteps = $derived(
+		steps.map((step, index) =>
+			index === 0
+				? { ...step, text: 'Добави VIN или марка и модел, пробег и телефон за контакт.' }
+				: step
+		)
+	);
 	/* Editable copies let the hero VIN carry into the detailed valuation. */
 	// svelte-ignore state_referenced_locally
 	let fieldValues = $state(
@@ -99,7 +106,7 @@
 		meta="2 стъпки · Автомобил и контакт"
 		response="Демонстрационна оценка"
 		stepsTitle={copy.stepsTitle}
-		{steps}
+		steps={guideSteps}
 	>
 		{#snippet modes()}
 			<div class="sell-mode-tabs" role="tablist" aria-label="Данни за автомобила">
@@ -152,6 +159,35 @@
 					</button>
 				{/if}
 			</div>
+		{/snippet}
+		{#snippet content()}
+			<section class="sell-guide" aria-labelledby="sell-guide-title">
+				<h2 id="sell-guide-title">Как протича продажбата</h2>
+				<p class="sell-guide__intro">
+					Започни с данните на автомобила. Останалото уточняваме заедно.
+				</p>
+				<ol class="sell-guide__steps">
+					{#each guideSteps as step, index (step.title)}
+						<li>
+							<span class="sell-guide__number" aria-hidden="true">{index + 1}</span>
+							<div>
+								<h3>{step.title}</h3>
+								<p>{step.text}</p>
+							</div>
+						</li>
+					{/each}
+				</ol>
+				<div class="sell-guide__tip">
+					<ScanLine size={22} strokeWidth={1.8} aria-hidden="true" />
+					<div>
+						<h3>VIN не е задължителен</h3>
+						<p>
+							Избери „Нямам VIN“ и въведи марка и модел. Годината и пробегът помагат за по-точна
+							оценка.
+						</p>
+					</div>
+				</div>
+			</section>
 		{/snippet}
 	</MobileServiceEntry>
 
@@ -237,25 +273,71 @@
 		color: var(--bc-ink);
 	}
 
-	.daynight-sell-mobile :global(.mobile-service-entry) {
-		min-height: 0;
-	}
-
 	.daynight-sell-mobile :global(a) {
 		text-decoration: none !important;
 	}
 
-	.daynight-sell-mobile :global(a) {
-		text-decoration: none !important;
+	.sell-guide h2 {
+		margin: 0;
+		font-size: var(--bc-mobile-section-title);
+		font-weight: 700;
+		line-height: var(--bc-mobile-section-title-leading);
+		color: var(--bc-ink);
 	}
-
-	.daynight-sell-mobile :global(.mobile-service-entry__modes) {
-		height: 44px;
-		margin: 0 0 12px;
+	.sell-guide__intro {
+		margin: 8px 0 24px;
+		color: var(--bc-copy);
+		font-size: 14px;
+		line-height: 1.5;
 	}
-
-	.daynight-sell-mobile :global(.mobile-service-entry__browse) {
-		display: none;
+	.sell-guide__steps {
+		display: grid;
+		gap: 22px;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	.sell-guide__steps li,
+	.sell-guide__tip {
+		display: grid;
+		grid-template-columns: 36px minmax(0, 1fr);
+		align-items: start;
+		gap: 12px;
+	}
+	.sell-guide__number {
+		display: grid;
+		width: 36px;
+		height: 36px;
+		place-items: center;
+		border-radius: var(--bc-radius-pill);
+		background: var(--bc-white);
+		color: var(--bc-accent);
+		font-size: 15px;
+		font-weight: 700;
+	}
+	.sell-guide h3 {
+		margin: 0 0 4px;
+		font-size: 15px;
+		line-height: 1.4;
+		font-weight: 700;
+		color: var(--bc-ink);
+	}
+	.sell-guide__steps p,
+	.sell-guide__tip p {
+		margin: 0;
+		font-size: 13px;
+		line-height: 1.5;
+		color: var(--bc-copy);
+	}
+	.sell-guide__tip {
+		grid-template-columns: 22px minmax(0, 1fr);
+		margin-top: 24px;
+		padding: 16px;
+		border-radius: var(--bc-radius-card);
+		background: var(--bc-white);
+	}
+	.sell-guide__tip :global(svg) {
+		color: var(--bc-accent);
 	}
 	.sell-mode-tabs {
 		display: grid;
