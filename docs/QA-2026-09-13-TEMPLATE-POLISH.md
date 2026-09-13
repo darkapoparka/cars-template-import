@@ -100,6 +100,12 @@ Scope: article reading layouts, compact mobile inventory cards, currency display
 - Browser checks: menu, homepage overlay and both import entry modes at 360–390px; homepage and import overlays at a reduced 480px height; inventory filter drawer at 390px; desktop import at 1440px. A synthetic VIN advanced locally to step two without submission. Type check passed with zero errors/warnings, scoped ESLint/Prettier/diff checks passed, and all four changed Svelte components reported no autofixer issues. Physical iPhone keyboard behavior and external delivery were not tested.
 - Production build passed. The owned dev server was restored on port 6464 and the homepage was rendered again in a fresh browser tab.
 
+## Inventory control spacing follow-up
+
+- Matched the mobile toolbar's 6px top inset to Home, retaining safe-area handling. Tightened the main row gap from 12px to the existing 8px spacing token. Filter/sort icons now match the search icon at 20px with a 2px stroke; all three controls retain 44px height.
+- Visually inspected inventory at 390px and 360px. DOM measurements confirmed the 6px top inset, 8px search-to-pills gap, 20px icons, 44px controls and no document-width overflow. This geometry-only change does not repeat the preceding production build or full type check.
+- Scoped Prettier, ESLint and diff checks passed; Svelte autofixer reported no issues, with existing effect and element-binding suggestions retained.
+
 ## Limits
 
 This is standalone local template evidence, not owner visual acceptance, mounted Cars release qualification, or a dealer deployment. No messages were sent to a dealer. Sell-car submissions and unrelated CMS/account features remain temporary prototypes. Real dealer collection still needs its own private database, identity and notification configuration, hosting-specific validation, and final dealer content/policy review. Repository-wide lint and the full legacy end-to-end suite were not used as a release claim; checks were scoped to this implementation and browser flows above.

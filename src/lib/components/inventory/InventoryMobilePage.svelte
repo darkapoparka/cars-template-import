@@ -439,7 +439,7 @@
 					aria-expanded={filterDrawerOpen && filterDrawerMode === 'all'}
 					onclick={() => openFilterDrawer('all')}
 				>
-					<SlidersHorizontal size={22} strokeWidth={2.2} aria-hidden="true" />
+					<SlidersHorizontal size={20} strokeWidth={2} aria-hidden="true" />
 					<span class="sr-only">{mobile.filterLabel}</span>
 					{#if hasActiveFilters}
 						<span class="daynight-inventory-mobile__filter-count"
@@ -456,7 +456,7 @@
 					aria-expanded={filterDrawerOpen && filterDrawerMode === 'sort'}
 					onclick={() => openFilterDrawer('sort')}
 				>
-					<ArrowUpDown size={22} strokeWidth={2.2} aria-hidden="true" />
+					<ArrowUpDown size={20} strokeWidth={2} aria-hidden="true" />
 
 					{#if sortSelected}
 						<span class="daynight-inventory-mobile__sort-dot" aria-hidden="true"></span>
@@ -1060,9 +1060,9 @@
 		width: 100%;
 		max-width: 100vw;
 		min-width: 0;
-		gap: var(--bc-space-3);
+		gap: var(--bc-space-2);
 		overflow-x: hidden;
-		padding: max(14px, env(safe-area-inset-top)) 14px 92px;
+		padding: max(6px, env(safe-area-inset-top)) 14px 92px;
 	}
 
 	.daynight-inventory-mobile__search {
