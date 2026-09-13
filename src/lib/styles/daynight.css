@@ -211,6 +211,8 @@
 	--bc-control-height-standard: 44px;
 	--bc-control-height-primary: 48px;
 	--bc-control-height-hero: 56px;
+	--bc-mobile-entry-inset: 2px;
+	--bc-mobile-entry-gap: 10px;
 
 	/* Shared responsive UI primitives. Route components consume these instead of
 	   inventing spacing, type, neutral colors, control heights and radii. */

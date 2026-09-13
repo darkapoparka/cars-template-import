@@ -114,11 +114,10 @@
 		background: var(--bc-mobile-dark);
 	}
 	.mobile-service-entry__modes {
-		height: 44px;
-		margin: 0 0 12px;
+		margin: 0 0 var(--bc-mobile-entry-gap);
 	}
 	.mobile-service-entry__field {
-		min-height: 56px;
+		min-height: var(--bc-control-height-primary);
 	}
 	header h1 {
 		margin: 0 0 var(--bc-space-4);
@@ -131,13 +130,15 @@
 	}
 	.mobile-service-entry__field :global(.service-input) {
 		display: grid;
-		grid-template-columns: 20px minmax(0, 1fr) var(--bc-control-height-primary);
+		grid-template-columns: 20px minmax(0, 1fr) var(--bc-control-height-standard);
+		height: var(--bc-control-height-primary);
 		gap: 0 var(--bc-space-2);
 		align-items: center;
-		padding: var(--bc-space-1) var(--bc-space-1) var(--bc-space-1) var(--bc-space-4);
+		padding: var(--bc-mobile-entry-inset) var(--bc-mobile-entry-inset) var(--bc-mobile-entry-inset)
+			var(--bc-space-4);
 		border: 0;
 		border-radius: var(--bc-radius-pill);
-		background: var(--bc-surface-soft);
+		background: var(--bc-white);
 	}
 	.mobile-service-entry__field :global(label) {
 		position: absolute;
@@ -150,7 +151,7 @@
 	.mobile-service-entry__field :global(input) {
 		width: 100%;
 		min-width: 0;
-		height: var(--bc-control-height-primary) !important;
+		height: var(--bc-control-height-standard) !important;
 		border: 0 !important;
 		background: transparent !important;
 		padding: 0 !important;
@@ -193,17 +194,20 @@
 	.mobile-service-entry__field :global(.service-input__go) {
 		display: grid;
 		place-items: center;
-		width: var(--bc-control-height-primary);
-		height: var(--bc-control-height-primary);
+		width: var(--bc-control-height-standard);
+		height: var(--bc-control-height-standard);
 		padding: 0;
-		border: 0;
+		border: var(--bc-space-1) solid transparent;
 		border-radius: 50%;
 		background: var(--bc-accent);
+		background-clip: padding-box;
 		color: white;
 		cursor: pointer;
 	}
 	.mobile-service-entry__field :global(.service-input button svg),
 	.mobile-service-entry__field :global(.service-input__go svg) {
+		width: 20px;
+		height: 20px;
 		color: white;
 	}
 	.mobile-service-entry__field :global(.service-input:focus-within) {

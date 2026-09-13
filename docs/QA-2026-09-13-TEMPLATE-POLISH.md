@@ -162,6 +162,12 @@ Scope: article reading layouts, compact mobile inventory cards, currency display
 - Shortened the mobile inventory link to `Виж всички (42)` with the count still supplied by live page data. Matched the dark translucent fill, white text and subtle outline of the Sell/Import help control, retaining the compact pill and arrow. Keyboard focus now uses a white outline without changing to a white background.
 - Inspected Home at 390px and confirmed the link opens Inventory. Scoped formatting, ESLint, Svelte autofixer (no issues) and diff checks passed. Full build/type checks were not repeated for this isolated label and CSS change.
 
+## Matched mobile hero entry geometry
+
+- Standardized Home, Sell and Import hero entries on the existing 48px primary-control token. Sell/Import previously measured 56px from a 48px arrow plus padding. All now use 44px action boxes with 36px painted circles, shared 2px inset and 10px tab-to-entry spacing. Sell/Import use the same white field surface as Home.
+- Kept tab underlines and fields aligned to the same 16px side gutters. At 390px, Import tabs/entry measured 358px wide; at 360px, Sell and Home measured 328px wide, with the field at y=121px and 48px tall. Sell manual mode stayed 48px tall without page overflow. Visually inspected both Import modes and Sell VIN mode; manual triggers on both routes opened their existing overlays.
+- Scoped ESLint, formatting, Svelte autofixer (no issues) and diff checks passed. Full build/type checks were not repeated for this CSS-only geometry change.
+
 ## Limits
 
 This is standalone local template evidence, not owner visual acceptance, mounted Cars release qualification, or a dealer deployment. No messages were sent to a dealer. Sell-car submissions and unrelated CMS/account features remain temporary prototypes. Real dealer collection still needs its own private database, identity and notification configuration, hosting-specific validation, and final dealer content/policy review. Repository-wide lint and the full legacy end-to-end suite were not used as a release claim; checks were scoped to this implementation and browser flows above.

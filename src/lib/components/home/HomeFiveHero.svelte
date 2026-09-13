@@ -1495,7 +1495,7 @@
 
 		.daynight-mobile-hero__search-module {
 			display: grid;
-			gap: 10px;
+			gap: var(--bc-mobile-entry-gap);
 			margin-bottom: 9px;
 			padding: 0;
 		}
@@ -1574,7 +1574,8 @@
 			height: var(--bc-control-height-primary);
 			align-items: center;
 			gap: 10px;
-			padding: 2px 2px 2px 16px;
+			padding: var(--bc-mobile-entry-inset) var(--bc-mobile-entry-inset)
+				var(--bc-mobile-entry-inset) var(--bc-space-4);
 			border: 0;
 			border-radius: 999px;
 			background: var(--daynight-mobile-surface, var(--bc-white));
