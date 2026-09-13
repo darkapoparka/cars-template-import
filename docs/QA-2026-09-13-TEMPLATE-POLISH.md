@@ -5,10 +5,11 @@ Scope: article reading layouts, compact mobile inventory cards, currency display
 ## Design and browser evidence
 
 - Articles now use one cover, a constrained reading column, one consultation card, and one related-article section. The existing slugs and actual article paragraphs remain. Related and listing cards are full links with top images.
-- Mobile vehicle cards use 40/60 image/content columns, two-line titles, shrinking stat labels, and one full-card link. The image remains fully visible inside its frame.
+- Follow-up correction: mobile vehicle cards use 50/50 image/content columns, two-line titles, shrinking stat labels, and one full-card link. Photos fill the image column with cover cropping; the previous contain fit made the cars look too small.
 - The existing black/red/gray styling, rounded surfaces, and footer accordions are retained. Footer destinations now distinguish terms, privacy, and cookies.
 - Inspected `/`, `/inventory`, `/contact`, `/sell-your-car`, `/financing`, and `/import` at 390 and 1440 pixels. No document-width overflow or failed loaded images found on these route checks.
 - Inventory also inspected at 360 pixels. BMW filtering, full-card detail navigation, and returning to the filtered listing worked.
+- The 50/50 follow-up was visually checked on inventory at 360 and 390 pixels and on import at 390 pixels. At 360 pixels the first three cards had equal 162-pixel columns with no clipped spec labels or page overflow. Scoped Prettier, ESLint, Svelte autofixer, and diff checks passed. The CSS-only follow-up did not repeat the earlier full build or unit suite.
 - Inspected all three article pages at 390 pixels and the import-check article at 1440 pixels, including its related cards. Inspected the blog list, privacy, cookies, terms, and mobile footer. The cookie footer link reached its separate destination.
 - Vehicle inquiry drawer opened and closed with focus returning to the inquiry button. An invalid one-character name produced a failure message and preserved typed details. Successful synthetic submission displayed saved-demo feedback.
 - Synthetic import and contact forms displayed saved feedback; each produced its own Neon row. The shared Svelte form owns submission explicitly, so legacy runtime handlers do not also submit it.

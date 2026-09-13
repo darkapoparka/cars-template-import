@@ -66,7 +66,7 @@
 		display: grid;
 		width: 100%;
 		min-width: 0;
-		grid-template-columns: minmax(0, 40fr) minmax(0, 60fr);
+		grid-template-columns: repeat(2, minmax(0, 1fr));
 		min-height: 154px;
 		overflow: hidden;
 		border-radius: var(--bc-radius-lg);
@@ -82,11 +82,13 @@
 	}
 
 	.mobile-vehicle-card__image img {
+		position: absolute;
+		inset: 0;
 		display: block;
 		width: 100%;
 		height: 100%;
 		min-height: 154px;
-		object-fit: contain;
+		object-fit: cover;
 	}
 
 	.mobile-vehicle-card__image span {
@@ -180,12 +182,6 @@
 		text-overflow: ellipsis;
 	}
 
-	@media (max-width: 359px) {
-		.mobile-vehicle-card__body li :global(svg) {
-			display: none;
-		}
-	}
-
 	.mobile-vehicle-card {
 		color: var(--bc-ink);
 		text-decoration: none;
@@ -213,7 +209,7 @@
 		font-size: 11px;
 		gap: 3px;
 	}
-	@media (max-width: 374px) {
+	@media (max-width: 430px) {
 		.mobile-vehicle-card__body li :global(svg) {
 			display: none;
 		}
