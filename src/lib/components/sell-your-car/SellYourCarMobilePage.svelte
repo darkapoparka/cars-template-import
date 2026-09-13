@@ -93,6 +93,7 @@
 	/>
 
 	<MobileServiceEntry
+		showTitle={false}
 		title={copy.title}
 		intro="Въведи VIN или опиши автомобила с марка, модел, година и пробег."
 		meta="2 стъпки · Автомобил и контакт"
