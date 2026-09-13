@@ -27,6 +27,13 @@ Scope: article reading layouts, compact mobile inventory cards, currency display
 - `npm run db:migrate` applied the reviewed schema to the isolated demo branch. Independent Neon reads verified three synthetic browser records. Authenticated HTTP admin login/read/update/page checks passed; unauthenticated inquiry access returned 401. Restarting the application preserved the saved records and status.
 - The dev server was restored on `127.0.0.1:6464`; the rendered finance and sell pages were checked after warm-up. Initial Vite route compilation was slow, so the broader visual matrix used the completed production build locally.
 
+## Bottom navigation icon follow-up
+
+- Replaced the five mixed Tabler navbar icons with Hugeicons Stroke Rounded: Home03, Car01, SaleTag01, Globe02, and Menu01. All render at 24px with 1.8px strokes, 12px labels, and the existing red active state. Tap targets remain 56px tall.
+- Inspected inventory at 390px and import at 360px using the in-app browser. No horizontal overflow; all five SVGs contained their expected paths. The menu opened and closed, and home, inventory, sell, and import links reached their routes with the matching active label.
+- Inspected inventory at 1440px: mobile navigation remains hidden and the desktop layout has no horizontal overflow. Browser console reported no errors after the dev-server restart.
+- `npm run check`, `npm run build`, scoped Prettier/ESLint, Svelte autofixer, and `git diff --check` passed. Unit tests and the wider form/dealer matrix were not repeated for this icon and spacing change. Dev server restored on port 6464.
+
 ## Limits
 
 This is standalone local template evidence, not owner visual acceptance, mounted Cars release qualification, or a dealer deployment. No messages were sent to a dealer. Sell-car submissions and unrelated CMS/account features remain temporary prototypes. Real dealer collection still needs its own private database, identity and notification configuration, hosting-specific validation, and final dealer content/policy review. Repository-wide lint and the full legacy end-to-end suite were not used as a release claim; checks were scoped to this implementation and browser flows above.

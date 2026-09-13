@@ -15,11 +15,14 @@
 		Wrench,
 		X
 	} from '@lucide/svelte';
-	import CarFilled from '@tabler/icons-svelte/icons/car-filled';
-	import HomeFilled from '@tabler/icons-svelte/icons/home-filled';
-	import Menu2 from '@tabler/icons-svelte/icons/menu-2';
-	import TagFilled from '@tabler/icons-svelte/icons/tag-filled';
-	import World from '@tabler/icons-svelte/icons/world';
+	import { HugeiconsIcon } from '@hugeicons/svelte';
+	import {
+		Car01Icon,
+		Home03Icon,
+		Menu01Icon,
+		SaleTag01Icon,
+		Globe02Icon
+	} from '@hugeicons/core-free-icons';
 
 	let { pathname = '/' }: { pathname?: string } = $props();
 
@@ -27,27 +30,27 @@
 		{
 			href: '/',
 			label: 'Начало',
-			icon: HomeFilled,
+			icon: Home03Icon,
 			exact: true
 		},
 		{
 			href: '/inventory',
 			label: 'Коли',
-			icon: CarFilled,
+			icon: Car01Icon,
 			exact: false,
 			tone: 'commerce'
 		},
 		{
 			href: '/sell-your-car',
 			label: 'Продай',
-			icon: TagFilled,
+			icon: SaleTag01Icon,
 			exact: false,
 			tone: 'commerce'
 		},
 		{
 			href: '/import',
 			label: 'Внос',
-			icon: World,
+			icon: Globe02Icon,
 			exact: false,
 			tone: 'commerce'
 		}
@@ -132,7 +135,6 @@
 	/>
 	<div class="mobile-bottom-nav__inner">
 		{#each mainItems as item (item.href)}
-			{@const Icon = item.icon}
 			<a
 				class={itemClass(item)}
 				href={resolve(item.href as '/')}
@@ -140,7 +142,7 @@
 				onclick={(event) => handleNavigationClick(event, item.href)}
 			>
 				<span class="mobile-bottom-nav__icon" aria-hidden="true">
-					<Icon size={26} color="currentColor" stroke={2.4} />
+					<HugeiconsIcon icon={item.icon} size={24} color="currentColor" strokeWidth={1.8} />
 				</span>
 				<span class="mobile-bottom-nav__label">{item.label}</span>
 			</a>
@@ -149,7 +151,7 @@
 		     aria-controls/expanded/haspopup state; a <label> must not (invalid ARIA). -->
 		<label for="mobile-bottom-menu-toggle" class="mobile-bottom-nav__menu-trigger">
 			<span class="mobile-bottom-nav__icon mobile-bottom-nav__icon--menu" aria-hidden="true">
-				<Menu2 size={27} color="currentColor" stroke={2.6} />
+				<HugeiconsIcon icon={Menu01Icon} size={24} color="currentColor" strokeWidth={1.8} />
 			</span>
 			<span class="mobile-bottom-nav__label">Меню</span>
 		</label>
@@ -315,7 +317,7 @@
 			align-items: center;
 			justify-content: center;
 			flex-direction: column;
-			gap: 2px;
+			gap: 4px;
 			border: 0;
 			border-radius: 0;
 			background: transparent;
@@ -335,8 +337,8 @@
 
 		.mobile-bottom-nav__icon {
 			display: flex;
-			width: 38px;
-			height: 30px;
+			width: 28px;
+			height: 28px;
 			align-items: center;
 			justify-content: center;
 			border-radius: var(--bc-radius-pill);
@@ -351,7 +353,7 @@
 			color: inherit;
 			font-size: var(--bc-mobile-meta);
 			font-weight: 600;
-			line-height: var(--bc-mobile-stat-leading);
+			line-height: 1.25;
 		}
 
 		.mobile-bottom-nav a.mobile-bottom-nav__item--commerce {
