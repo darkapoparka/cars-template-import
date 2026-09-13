@@ -82,6 +82,11 @@ Scope: article reading layouts, compact mobile inventory cards, currency display
 - In-app browser checks: inventory at 390px and 360px; sort changed to lowest price, year to 2021 onward, and both URL parameters and the filter count persisted. Relocated filter and search controls opened their drawers. Homepage, import and sell manual states and wizard CTA fit were inspected at 360px. Homepage and inventory were inspected at 1440px. No document-width overflow in the measured narrow inventory state. No submissions were sent.
 - `npm run check` reported zero errors/warnings; `npm run build`, scoped ESLint, Prettier and diff checks passed. All seven changed Svelte components reported no autofixer issues; existing effect/element-binding suggestions were retained. Unit and full end-to-end suites were not repeated. The owned dev server was restored on port 6464.
 
+## Compact inventory search correction
+
+- Inventory search is now one 44px button with a plain 20px magnifier and 20px regular label in the ink color. Filter and sort follow on the right as 44px circles; their existing active states, labels and count remain. Removed the nested oversized dark search button and its redundant tab stop.
+- Inspected at 390px and 360px; the unified search and circular sort controls opened the existing drawers. This scoped markup/CSS correction uses Prettier, ESLint, Svelte autofixer and diff checks; the preceding full build and type check were not repeated.
+
 ## Limits
 
 This is standalone local template evidence, not owner visual acceptance, mounted Cars release qualification, or a dealer deployment. No messages were sent to a dealer. Sell-car submissions and unrelated CMS/account features remain temporary prototypes. Real dealer collection still needs its own private database, identity and notification configuration, hosting-specific validation, and final dealer content/policy review. Repository-wide lint and the full legacy end-to-end suite were not used as a release claim; checks were scoped to this implementation and browser flows above.

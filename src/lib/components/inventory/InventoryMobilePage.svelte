@@ -425,6 +425,17 @@
 			<div class="daynight-inventory-mobile__search">
 				<button
 					type="button"
+					class="daynight-inventory-mobile__search-field"
+					aria-label={mobile.searchDisplayValue || mobile.searchPlaceholder}
+					aria-haspopup="dialog"
+					aria-expanded={searchDrawerOpen}
+					onclick={openSearchDrawer}
+				>
+					<Search size={20} strokeWidth={2} aria-hidden="true" />
+					<span>{mobile.searchDisplayValue || mobile.searchLabel}</span>
+				</button>
+				<button
+					type="button"
 					class="daynight-inventory-mobile__header-action"
 					class:active={hasActiveFilters}
 					aria-haspopup="dialog"
@@ -454,29 +465,6 @@
 						<span class="daynight-inventory-mobile__sort-dot" aria-hidden="true"></span>
 					{/if}
 				</button>
-				<div class="daynight-inventory-mobile__search-field">
-					<button
-						type="button"
-						class="daynight-inventory-mobile__search-label"
-						aria-label={mobile.searchDisplayValue || mobile.searchPlaceholder}
-						aria-haspopup="dialog"
-						aria-expanded={searchDrawerOpen}
-						onclick={openSearchDrawer}
-					>
-						<span class:active={Boolean(mobile.searchValue)}>
-							{mobile.searchDisplayValue || mobile.searchLabel}
-						</span>
-					</button>
-					<button
-						type="button"
-						class="daynight-inventory-mobile__search-action"
-						aria-label={mobile.searchLabel}
-						aria-expanded={searchDrawerOpen}
-						onclick={openSearchDrawer}
-					>
-						<Search size={19} strokeWidth={2.2} aria-hidden="true" />
-					</button>
-				</div>
 			</div>
 
 			<nav class="daynight-inventory-mobile__tools" aria-label={mobile.filterLabel}>
@@ -1083,7 +1071,7 @@
 
 	.daynight-inventory-mobile__search {
 		display: grid;
-		grid-template-columns: repeat(2, var(--bc-control-height-standard)) minmax(0, 1fr);
+		grid-template-columns: minmax(0, 1fr) repeat(2, var(--bc-control-height-standard));
 		align-items: center;
 		gap: var(--bc-space-2);
 		min-width: 0;
@@ -1097,7 +1085,7 @@
 		height: var(--bc-control-height-standard);
 		padding: 0;
 		border: 0;
-		border-radius: var(--bc-radius-control);
+		border-radius: var(--bc-radius-pill);
 		background: var(--bc-white);
 		color: var(--bc-ink);
 		cursor: pointer;
@@ -1138,74 +1126,33 @@
 	.daynight-inventory-mobile__search-field {
 		display: flex;
 		width: 100%;
-		max-width: 100%;
-		min-height: var(--bc-control-height-primary);
 		min-width: 0;
+		height: var(--bc-control-height-standard);
 		align-items: center;
-		gap: var(--bc-space-3);
+		gap: var(--bc-space-2);
 		border: 0;
 		border-radius: var(--bc-radius-pill);
 		background: var(--bc-white);
-		box-shadow: 0 1px 2px rgb(17 24 39 / 0.06);
-		padding: 5px 5px 5px 14px;
-		color: var(--bc-ink);
-	}
-
-	.daynight-inventory-mobile__search-label {
-		display: flex;
-		overflow: hidden;
-		min-width: 0;
-		height: 44px !important;
-		flex: 1 1 auto;
-		align-items: center;
-		border: 0;
-		background: transparent;
+		padding: 0 14px;
 		color: var(--bc-ink);
 		cursor: pointer;
-		padding: 0;
 		text-align: left;
 	}
-
-	.daynight-inventory-mobile__search-label span {
-		display: block;
+	.daynight-inventory-mobile__search-field :global(svg) {
+		flex: 0 0 auto;
+		color: var(--bc-copy);
+	}
+	.daynight-inventory-mobile__search-field span {
 		min-width: 0;
 		overflow: hidden;
-		color: var(--bc-muted);
-		font-size: var(--bc-text-search);
+		font-size: var(--bc-text-search-trigger);
 		font-weight: var(--bc-weight-body);
 		line-height: var(--bc-leading-search);
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
-
-	.daynight-inventory-mobile__search-label span.active {
-		color: var(--bc-ink);
-	}
-
-	.daynight-inventory-mobile__search-action {
-		display: flex;
-		width: var(--bc-control-height-standard);
-		height: var(--bc-control-height-standard);
-		align-items: center;
-		justify-content: center;
-		flex: 0 0 var(--bc-control-height-standard);
-		border: 0 !important;
-		border-radius: var(--bc-radius-pill);
-		background: var(--bc-ink);
-		box-shadow: none !important;
-		color: var(--bc-white);
-		cursor: pointer;
-		padding: 0;
-	}
-
-	.daynight-inventory-mobile__search-action :global(svg),
-	.daynight-inventory-mobile__search-action :global(path) {
-		stroke: var(--bc-white);
-	}
-
-	.daynight-inventory-mobile__search-label:focus-visible,
-	.daynight-inventory-mobile__search-action:focus-visible {
-		outline: 2px solid var(--bc-ink);
+	.daynight-inventory-mobile__search-field:focus-visible {
+		outline: 2px solid var(--bc-accent);
 		outline-offset: 2px;
 	}
 
