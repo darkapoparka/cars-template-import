@@ -168,6 +168,11 @@ Scope: article reading layouts, compact mobile inventory cards, currency display
 - Kept tab underlines and fields aligned to the same 16px side gutters. At 390px, Import tabs/entry measured 358px wide; at 360px, Sell and Home measured 328px wide, with the field at y=121px and 48px tall. Sell manual mode stayed 48px tall without page overflow. Visually inspected both Import modes and Sell VIN mode; manual triggers on both routes opened their existing overlays.
 - Scoped ESLint, formatting, Svelte autofixer (no issues) and diff checks passed. Full build/type checks were not repeated for this CSS-only geometry change.
 
+## Matched mobile secondary actions
+
+- Sell/Import help buttons now match Home's 44px hit area, 40px painted pill and 18px CTA typography. All three use the shared 10px entry-to-action gap and 32px hero bottom padding, keeping the following content transition aligned.
+- Formatting, Svelte autofixer (no issues) and diff checks passed. Full build/type checks were not repeated for this CSS-only correction. Browser verification was interrupted by local Vite module-loading timeouts; the owned development server was restarted on port 6464.
+
 ## Limits
 
 This is standalone local template evidence, not owner visual acceptance, mounted Cars release qualification, or a dealer deployment. No messages were sent to a dealer. Sell-car submissions and unrelated CMS/account features remain temporary prototypes. Real dealer collection still needs its own private database, identity and notification configuration, hosting-specific validation, and final dealer content/policy review. Repository-wide lint and the full legacy end-to-end suite were not used as a release claim; checks were scoped to this implementation and browser flows above.

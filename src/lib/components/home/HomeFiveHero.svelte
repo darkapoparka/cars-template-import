@@ -1467,7 +1467,7 @@
 		}
 
 		.daynight-mobile-hero {
-			padding: 10px 0 33px;
+			padding: 10px 0 var(--bc-space-8);
 			background: transparent;
 		}
 
@@ -1496,7 +1496,7 @@
 		.daynight-mobile-hero__search-module {
 			display: grid;
 			gap: var(--bc-mobile-entry-gap);
-			margin-bottom: 9px;
+			margin-bottom: var(--bc-mobile-entry-gap);
 			padding: 0;
 		}
 
