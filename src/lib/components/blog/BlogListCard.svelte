@@ -67,14 +67,15 @@
 	}
 	.dn-blog-card p {
 		margin: 0;
-		font-size: 15px;
-		line-height: 23px;
+		font-size: var(--bc-mobile-body);
+		line-height: var(--bc-mobile-body-leading);
 		color: var(--bc-copy);
 		display: -webkit-box;
 		-webkit-box-orient: vertical;
 		-webkit-line-clamp: 2;
 		line-clamp: 2;
 		overflow: hidden;
+		font-weight: var(--bc-weight-body);
 	}
 	.dn-blog-card:hover h2 {
 		color: var(--bc-accent);

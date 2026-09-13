@@ -437,9 +437,9 @@
 			min-height: 66px;
 			overflow: hidden;
 			color: var(--bc-ink);
-			font-size: 17px;
-			font-weight: 700;
-			line-height: 22px;
+			font-size: var(--bc-mobile-card-title);
+			font-weight: var(--bc-weight-heading);
+			line-height: var(--bc-mobile-card-title-leading);
 			-webkit-box-orient: vertical;
 			-webkit-line-clamp: 3;
 			line-clamp: 3;

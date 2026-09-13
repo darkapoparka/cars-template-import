@@ -283,9 +283,9 @@
 	}
 	.sell-flow__header h2 {
 		margin: 0;
-		font-size: 18px;
-		font-weight: 750;
-		line-height: 1.15;
+		font-size: var(--bc-mobile-section-title);
+		font-weight: var(--bc-weight-heading);
+		line-height: var(--bc-mobile-section-title-leading);
 	}
 	.sell-flow__header span {
 		color: rgba(255, 255, 255, 0.68);
@@ -337,15 +337,15 @@
 		margin: 0;
 	}
 	.sell-flow__intro h3 {
-		font-size: 20px;
-		font-weight: 750;
-		line-height: 1.2;
+		font-size: var(--bc-mobile-section-title);
+		font-weight: var(--bc-weight-heading);
+		line-height: var(--bc-mobile-section-title-leading);
 	}
 	.sell-flow__intro p {
 		color: var(--bc-muted);
-		font-size: 13px;
-		font-weight: 500;
-		line-height: 1.35;
+		font-size: var(--bc-mobile-body);
+		font-weight: var(--bc-weight-body);
+		line-height: var(--bc-mobile-body-leading);
 	}
 	.sell-field,
 	.sell-fieldset {
@@ -359,9 +359,9 @@
 	.sell-field > span,
 	.sell-fieldset legend {
 		color: var(--bc-copy);
-		font-size: 12px;
-		font-weight: 650;
-		line-height: 1.2;
+		font-size: var(--bc-mobile-label);
+		font-weight: var(--bc-weight-heading);
+		line-height: var(--bc-mobile-label-leading);
 		padding: 0;
 	}
 	.sell-field input,
@@ -374,9 +374,9 @@
 		box-shadow: none !important;
 		color: var(--bc-ink);
 		font-family: inherit;
-		font-size: 16px;
-		font-weight: 600;
-		line-height: 1.25;
+		font-size: var(--bc-text-control);
+		font-weight: var(--bc-weight-control);
+		line-height: var(--bc-leading-control);
 		outline: 0;
 	}
 	.sell-field input {
@@ -420,11 +420,12 @@
 		border-radius: 11px;
 		background: #fff;
 		color: var(--bc-ink);
-		font-size: 13px;
-		font-weight: 650;
+		font-size: var(--bc-text-control);
+		font-weight: var(--bc-weight-control);
 		padding: 0 13px;
 		cursor: pointer;
 		white-space: nowrap;
+		line-height: var(--bc-leading-control);
 	}
 	.sell-brand-rail button.active {
 		border-color: var(--bc-accent);
@@ -442,13 +443,14 @@
 	}
 	.sell-summary span {
 		color: var(--bc-muted);
-		font-size: 11px;
-		font-weight: 600;
+		font-size: var(--bc-mobile-meta);
+		font-weight: var(--bc-weight-body);
+		line-height: var(--bc-mobile-meta-leading);
 	}
 	.sell-summary strong {
-		font-size: 15px;
-		font-weight: 750;
-		line-height: 1.25;
+		font-size: var(--bc-mobile-card-title);
+		font-weight: var(--bc-weight-heading);
+		line-height: var(--bc-mobile-card-title-leading);
 	}
 	.sell-summary button {
 		position: absolute;
@@ -460,19 +462,20 @@
 		border-radius: 9px;
 		background: var(--bc-surface-hover);
 		color: var(--bc-ink);
-		font-size: 11px;
-		font-weight: 700;
+		font-size: var(--bc-mobile-label);
+		font-weight: var(--bc-weight-heading);
 		padding: 0 10px;
 		cursor: pointer;
+		line-height: var(--bc-mobile-label-leading);
 	}
 	.sell-flow__error {
 		margin: 0;
 		border-radius: 10px;
 		background: #fff0f1;
 		color: #9f1016;
-		font-size: 12px;
-		font-weight: 600;
-		line-height: 1.35;
+		font-size: var(--bc-mobile-body);
+		font-weight: var(--bc-weight-body);
+		line-height: var(--bc-mobile-body-leading);
 		padding: 9px 10px;
 	}
 	.sell-flow__footer {
@@ -494,9 +497,10 @@
 		justify-content: center;
 		gap: 6px;
 		border-radius: 12px;
-		font-size: 14px;
-		font-weight: 750;
+		font-size: var(--bc-text-control);
+		font-weight: var(--bc-weight-heading);
 		cursor: pointer;
+		line-height: var(--bc-leading-control);
 	}
 	.sell-flow__back {
 		border: 0;
@@ -539,13 +543,14 @@
 	}
 	.sell-flow__success h2 {
 		font-size: 22px;
-		font-weight: 750;
+		font-weight: var(--bc-weight-heading);
 	}
 	.sell-flow__success p {
 		max-width: 30ch;
 		color: var(--bc-muted);
-		font-size: 14px;
-		line-height: 1.4;
+		font-size: var(--bc-mobile-body);
+		line-height: var(--bc-mobile-body-leading);
+		font-weight: var(--bc-weight-body);
 	}
 	.sell-flow__success button {
 		min-width: 160px;
@@ -556,7 +561,7 @@
 		background: var(--bc-accent);
 		color: #fff;
 		font-size: 14px;
-		font-weight: 750;
+		font-weight: var(--bc-weight-heading);
 		cursor: pointer;
 	}
 	.sell-flow button:focus-visible,
@@ -582,8 +587,9 @@
 	}
 	.sell-flow__header h2 {
 		color: var(--bc-ink);
-		font-size: 17px;
-		line-height: 1.2;
+		font-size: var(--bc-mobile-section-title);
+		line-height: var(--bc-mobile-section-title-leading);
+		font-weight: var(--bc-weight-heading);
 	}
 	.sell-flow__header span {
 		color: var(--bc-muted);
@@ -620,12 +626,14 @@
 		gap: 2px;
 	}
 	.sell-flow__intro h3 {
-		font-size: 19px;
-		line-height: 1.2;
+		font-size: var(--bc-mobile-section-title);
+		line-height: var(--bc-mobile-section-title-leading);
+		font-weight: var(--bc-weight-heading);
 	}
 	.sell-flow__intro p {
-		font-size: 12px;
-		line-height: 1.35;
+		font-size: var(--bc-mobile-body);
+		line-height: var(--bc-mobile-body-leading);
+		font-weight: var(--bc-weight-body);
 	}
 	.sell-field,
 	.sell-fieldset {
@@ -633,7 +641,9 @@
 	}
 	.sell-field > span,
 	.sell-fieldset legend {
-		font-size: 11px;
+		font-size: var(--bc-mobile-label);
+		line-height: var(--bc-mobile-label-leading);
+		font-weight: var(--bc-weight-heading);
 	}
 	.sell-field input,
 	.sell-field textarea {

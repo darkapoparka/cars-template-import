@@ -30,6 +30,18 @@
 	--bc-text-h7: 1rem;
 	--bc-leading-h7: 1.5;
 	--bc-text-body: 16px;
+	/* Role scale: controls are readable at their existing tap-target height.
+	   Use only the 400/600/700 weights shipped by the Sofia Sans font assets. */
+	--bc-text-control: 1rem;
+	--bc-leading-control: 1.375;
+	--bc-text-search: 1.0625rem;
+	--bc-leading-search: 1.412;
+	--bc-text-prose: 1.125rem;
+	--bc-leading-prose: 1.65;
+	--bc-weight-body: 400;
+	--bc-weight-control: 400;
+	--bc-weight-heading: 600;
+	--bc-weight-emphasis: 700;
 	--bc-leading-body: 1.625;
 	--bc-text-body-lg: 18px;
 	--bc-leading-body-lg: 1.55;
@@ -228,16 +240,17 @@
 	--bc-mobile-page-title-leading: 32px;
 	--bc-mobile-section-title: 22px;
 	--bc-mobile-section-title-leading: 28px;
-	--bc-mobile-card-title: 17px;
-	--bc-mobile-card-title-leading: 22px;
-	--bc-mobile-body: 14px;
-	--bc-mobile-body-leading: 20px;
-	--bc-mobile-label: 13px;
-	--bc-mobile-label-leading: 18px;
-	--bc-mobile-meta: 12px;
-	--bc-mobile-meta-leading: 16px;
-	--bc-mobile-stat: 11px;
-	--bc-mobile-stat-leading: 15px;
+	--bc-mobile-card-title: 1.125rem;
+	--bc-mobile-card-title-leading: 24px;
+	--bc-mobile-body: var(--bc-text-body);
+	--bc-mobile-body-leading: 24px;
+	--bc-mobile-label: var(--bc-text-label);
+	--bc-mobile-label-leading: 20px;
+	--bc-mobile-meta: var(--bc-text-meta);
+	--bc-mobile-meta-leading: 18px;
+	--bc-mobile-stat: 0.75rem;
+	--bc-mobile-stat-leading: 16px;
+	--bc-mobile-card-price: 1.25rem;
 	--bc-mobile-price: 22px;
 	--bc-mobile-price-leading: 28px;
 	--bc-accent-tint: rgb(185 22 28 / 0.12);
@@ -336,6 +349,13 @@ body {
 	letter-spacing: inherit;
 }
 
+/* Legacy form CSS gives placeholders their own font size. Keep each hint
+   identical to its input, including mobile search and validation states. */
+body :is(input, textarea)::placeholder {
+	font: inherit !important;
+	letter-spacing: inherit;
+}
+
 :where(h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, .h7) {
 	font-family: var(--bc-font-heading);
 	font-synthesis: none;
@@ -345,13 +365,13 @@ body {
 
 :where(h1, .h1) {
 	font-size: var(--bc-text-h1);
-	font-weight: 700;
+	font-weight: var(--bc-weight-heading);
 	line-height: var(--bc-leading-h1);
 }
 
 :where(h2, .h2) {
 	font-size: var(--bc-text-h2);
-	font-weight: 700;
+	font-weight: var(--bc-weight-heading);
 	line-height: var(--bc-leading-h2);
 }
 

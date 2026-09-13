@@ -202,7 +202,9 @@
 		padding: 0 16px;
 		color: var(--bc-ink, #1c1c1c);
 		font: inherit;
-		font-size: 16px;
+		font-size: var(--bc-text-search);
+		line-height: var(--bc-leading-search);
+		font-weight: var(--bc-weight-body);
 	}
 
 	.daynight-search-modal__input:focus {

@@ -352,8 +352,8 @@
 		.mobile-bottom-nav__label {
 			color: inherit;
 			font-size: var(--bc-mobile-meta);
-			font-weight: 600;
-			line-height: 1.25;
+			font-weight: var(--bc-weight-body);
+			line-height: var(--bc-mobile-meta-leading);
 		}
 
 		.mobile-bottom-nav a.mobile-bottom-nav__item--commerce {
@@ -511,7 +511,7 @@
 		.mobile-menu-sheet__header p {
 			color: var(--bc-muted);
 			font-size: var(--bc-mobile-meta);
-			font-weight: 700;
+			font-weight: var(--bc-weight-body);
 			line-height: var(--bc-mobile-meta-leading);
 			text-transform: uppercase;
 		}
@@ -519,7 +519,7 @@
 		.mobile-menu-sheet__header strong {
 			display: block;
 			font-size: var(--bc-mobile-section-title);
-			font-weight: 700;
+			font-weight: var(--bc-weight-heading);
 			line-height: var(--bc-mobile-section-title-leading);
 		}
 
@@ -593,16 +593,16 @@
 
 		.mobile-menu-sheet__sell strong {
 			color: var(--bc-white);
-			font-size: var(--bc-mobile-body);
-			font-weight: 700;
-			line-height: var(--bc-mobile-body-leading);
+			font-size: var(--bc-text-control);
+			font-weight: var(--bc-weight-control);
+			line-height: var(--bc-leading-control);
 		}
 
 		.mobile-menu-sheet__sell small {
 			color: rgba(255, 255, 255, 0.8);
 			font-size: var(--bc-mobile-meta);
-			font-weight: 700;
-			line-height: 15px;
+			font-weight: var(--bc-weight-body);
+			line-height: var(--bc-mobile-meta-leading);
 		}
 
 		.mobile-menu-sheet__sell-arrow {
@@ -658,9 +658,9 @@
 			border-radius: var(--bc-radius-control);
 			background: var(--bc-white);
 			color: var(--bc-ink);
-			font-size: var(--bc-mobile-body);
-			font-weight: 700;
-			line-height: var(--bc-mobile-body-leading);
+			font-size: var(--bc-text-control);
+			font-weight: var(--bc-weight-control);
+			line-height: var(--bc-leading-control);
 		}
 
 		.mobile-menu-sheet__actions a:first-child {
@@ -695,7 +695,7 @@
 			margin: 0;
 			color: var(--bc-muted);
 			font-size: var(--bc-mobile-meta);
-			font-weight: 700;
+			font-weight: var(--bc-weight-body);
 			letter-spacing: 0;
 			line-height: var(--bc-mobile-meta-leading);
 			text-transform: uppercase;
@@ -715,9 +715,9 @@
 			background: var(--bc-surface);
 			padding: 0 13px;
 			color: var(--bc-ink);
-			font-size: var(--bc-mobile-body);
-			font-weight: 700;
-			line-height: var(--bc-mobile-body-leading);
+			font-size: var(--bc-text-control);
+			font-weight: var(--bc-weight-control);
+			line-height: var(--bc-leading-control);
 		}
 
 		.mobile-menu-sheet__links a.active,

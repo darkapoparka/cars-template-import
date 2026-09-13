@@ -273,15 +273,16 @@
 	.sell-guide h2 {
 		margin: 0;
 		font-size: var(--bc-mobile-section-title);
-		font-weight: 700;
+		font-weight: var(--bc-weight-heading);
 		line-height: var(--bc-mobile-section-title-leading);
 		color: var(--bc-ink);
 	}
 	.sell-guide__intro {
 		margin: 8px 0 24px;
 		color: var(--bc-copy);
-		font-size: 14px;
-		line-height: 1.5;
+		font-size: var(--bc-mobile-body);
+		line-height: var(--bc-mobile-body-leading);
+		font-weight: var(--bc-weight-body);
 	}
 	.sell-guide__steps {
 		display: grid;
@@ -310,17 +311,18 @@
 	}
 	.sell-guide h3 {
 		margin: 0 0 4px;
-		font-size: 15px;
-		line-height: 1.4;
-		font-weight: 700;
+		font-size: var(--bc-mobile-card-title);
+		line-height: var(--bc-mobile-card-title-leading);
+		font-weight: var(--bc-weight-heading);
 		color: var(--bc-ink);
 	}
 	.sell-guide__steps p,
 	.sell-guide__tip p {
 		margin: 0;
-		font-size: 13px;
-		line-height: 1.5;
+		font-size: var(--bc-mobile-body);
+		line-height: var(--bc-mobile-body-leading);
 		color: var(--bc-copy);
+		font-weight: var(--bc-weight-body);
 	}
 	.sell-guide__tip {
 		grid-template-columns: 22px minmax(0, 1fr);
@@ -357,19 +359,9 @@
 		border-radius: 0;
 		background: transparent;
 		color: rgb(255 255 255 / 0.72);
-		font-family:
-			'Geist Variable',
-			'Geist',
-			'Noto Sans',
-			ui-sans-serif,
-			system-ui,
-			-apple-system,
-			BlinkMacSystemFont,
-			'Segoe UI',
-			Arial,
-			sans-serif;
-		font-size: 19px;
-		font-weight: 600;
+		font-family: var(--bc-font-body);
+		font-size: var(--bc-mobile-card-title);
+		font-weight: var(--bc-weight-heading);
 		letter-spacing: 0;
 		line-height: 24px;
 		text-align: center;

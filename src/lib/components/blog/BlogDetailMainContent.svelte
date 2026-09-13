@@ -19,13 +19,13 @@
 
 <style>
 	.dn-article-body {
-		max-width: 720px;
+		max-width: 68ch;
 		margin: 32px auto 0;
 	}
 	.dn-article-body > p {
 		margin: 0 0 24px;
-		font-size: 18px;
-		line-height: 1.75;
+		font-size: var(--bc-text-prose);
+		line-height: var(--bc-leading-prose);
 		color: var(--bc-copy);
 	}
 	.dn-article-contact {
@@ -66,8 +66,8 @@
 			margin-top: 24px;
 		}
 		.dn-article-body > p {
-			font-size: 17px;
-			line-height: 28px;
+			font-size: var(--bc-text-prose);
+			line-height: var(--bc-leading-prose);
 			margin-bottom: 20px;
 		}
 		.dn-article-contact {

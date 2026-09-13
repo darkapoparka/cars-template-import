@@ -161,9 +161,9 @@
 	.mobile-service-entry__field :global(input),
 	.mobile-service-entry__field :global(.service-input__text) {
 		font-family: var(--bc-font-body);
-		font-size: var(--bc-text-body);
-		font-weight: 400;
-		line-height: var(--bc-mobile-card-title-leading);
+		font-size: var(--bc-text-search);
+		font-weight: var(--bc-weight-body);
+		line-height: var(--bc-leading-search);
 		text-align: left;
 	}
 	.mobile-service-entry__field :global(.service-manual-entry) {
@@ -269,9 +269,10 @@
 		border-radius: var(--bc-radius-pill);
 		background: rgb(255 255 255 / 0.08);
 		color: var(--bc-white);
-		font-size: var(--bc-mobile-meta);
-		font-weight: 600;
+		font-size: var(--bc-mobile-label);
+		font-weight: var(--bc-weight-control);
 		cursor: pointer;
+		line-height: var(--bc-mobile-label-leading);
 	}
 	.mobile-service-entry__browse {
 		position: relative;
@@ -306,7 +307,7 @@
 		color: var(--bc-ink);
 		font-size: var(--bc-mobile-section-title);
 		line-height: var(--bc-mobile-section-title-leading);
-		font-weight: 700;
+		font-weight: var(--bc-weight-heading);
 	}
 	.mobile-service-entry__inventory-heading a {
 		display: flex;
@@ -370,7 +371,7 @@
 		color: var(--bc-ink);
 		font-size: var(--bc-mobile-section-title);
 		line-height: var(--bc-mobile-section-title-leading);
-		font-weight: 700;
+		font-weight: var(--bc-weight-heading);
 	}
 	:global(.mobile-service-info-close) {
 		display: grid;

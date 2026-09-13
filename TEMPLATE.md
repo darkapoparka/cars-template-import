@@ -21,6 +21,8 @@ npm run dev -- --host 127.0.0.1 --port 6464 --strictPort
 
 ## Primary personalization surface
 
+Shared customer typography follows [Typography](docs/TYPOGRAPHY.md).
+
 - `src/lib/data/daynight.ts`
 - `src/lib/data/daynight-listings.json`
 - `src/lib/data/vehicles.ts`

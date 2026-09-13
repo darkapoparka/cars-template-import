@@ -1111,9 +1111,9 @@
 		min-width: 0;
 		overflow: hidden;
 		color: var(--bc-muted);
-		font-size: var(--bc-mobile-body);
-		font-weight: 600;
-		line-height: 21px;
+		font-size: var(--bc-text-search);
+		font-weight: var(--bc-weight-body);
+		line-height: var(--bc-leading-search);
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
@@ -1180,9 +1180,9 @@
 		appearance: none;
 		color: var(--bc-ink);
 		cursor: pointer;
-		font-size: var(--bc-mobile-body);
-		font-weight: 700;
-		line-height: var(--bc-mobile-label-leading);
+		font-size: var(--bc-text-control);
+		font-weight: var(--bc-weight-control);
+		line-height: var(--bc-leading-control);
 		text-decoration: none;
 		white-space: nowrap;
 	}
@@ -1213,16 +1213,16 @@
 
 	.daynight-inventory-mobile__tool-choice span {
 		color: var(--bc-ink);
-		font-size: var(--bc-mobile-body);
-		font-weight: 700;
-		line-height: var(--bc-mobile-label-leading);
+		font-size: var(--bc-text-control);
+		font-weight: var(--bc-weight-control);
+		line-height: var(--bc-leading-control);
 	}
 
 	.daynight-inventory-mobile__tool-choice.active span {
 		color: var(--bc-white);
-		font-size: var(--bc-mobile-body);
-		font-weight: 600;
-		line-height: var(--bc-mobile-label-leading);
+		font-size: var(--bc-text-control);
+		font-weight: var(--bc-weight-control);
+		line-height: var(--bc-leading-control);
 		text-transform: none;
 	}
 
@@ -1232,9 +1232,9 @@
 		max-width: min(42vw, 138px);
 		overflow: hidden;
 		color: var(--bc-ink);
-		font-size: var(--bc-mobile-body);
-		font-weight: 600;
-		line-height: var(--bc-mobile-label-leading);
+		font-size: var(--bc-text-control);
+		font-weight: var(--bc-weight-control);
+		line-height: var(--bc-leading-control);
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
@@ -1248,7 +1248,9 @@
 		border: 0;
 		border-radius: var(--bc-radius-control);
 		background: var(--bc-white);
-		font-size: 13px;
+		font-size: var(--bc-text-control);
+		line-height: var(--bc-leading-control);
+		font-weight: var(--bc-weight-control);
 	}
 
 	.daynight-inventory-mobile__cards {
@@ -1277,7 +1279,7 @@
 
 	.daynight-inventory-mobile__empty a {
 		color: var(--bc-accent);
-		font-weight: 650;
+		font-weight: var(--bc-weight-heading);
 	}
 
 	:global(.daynight-inventory-mobile-drawer__backdrop) {
@@ -1456,18 +1458,18 @@
 	:global(.daynight-inventory-mobile-drawer__sheet header p) {
 		margin: 0 0 2px;
 		color: var(--bc-accent);
-		font-size: var(--bc-mobile-meta);
-		font-weight: 650;
-		line-height: var(--bc-mobile-meta-leading);
+		font-size: var(--bc-mobile-label);
+		font-weight: var(--bc-weight-heading);
+		line-height: var(--bc-mobile-label-leading);
 		text-transform: uppercase;
 	}
 
 	.daynight-inventory-mobile-drawer__title {
 		display: block;
 		color: var(--bc-ink);
-		font-size: 24px;
-		font-weight: 700;
-		line-height: 30px;
+		font-size: var(--bc-mobile-section-title);
+		font-weight: var(--bc-weight-heading);
+		line-height: var(--bc-mobile-section-title-leading);
 	}
 
 	.daynight-inventory-mobile-drawer__description {
@@ -1526,9 +1528,9 @@
 		box-shadow: none !important;
 		color: var(--bc-ink);
 		/* >=16px stops iOS Safari from auto-zooming (and shifting the vaul sheet) on focus. */
-		font-size: var(--bc-text-body);
-		font-weight: 600;
-		line-height: var(--bc-mobile-card-title-leading);
+		font-size: var(--bc-text-search);
+		font-weight: var(--bc-weight-body);
+		line-height: var(--bc-leading-search);
 		outline: 0;
 		padding: 0 !important;
 		appearance: none;
@@ -1597,9 +1599,9 @@
 	.daynight-inventory-mobile-drawer__group p {
 		margin: 0;
 		color: var(--bc-muted);
-		font-size: var(--bc-mobile-meta);
-		font-weight: 800;
-		line-height: var(--bc-mobile-meta-leading);
+		font-size: var(--bc-mobile-label);
+		font-weight: var(--bc-weight-heading);
+		line-height: var(--bc-mobile-label-leading);
 		text-transform: uppercase;
 	}
 
@@ -1635,9 +1637,9 @@
 		appearance: none;
 		color: var(--bc-ink);
 		cursor: pointer;
-		font-size: var(--bc-mobile-body);
-		font-weight: 800;
-		line-height: var(--bc-mobile-label-leading);
+		font-size: var(--bc-text-control);
+		font-weight: var(--bc-weight-control);
+		line-height: var(--bc-leading-control);
 		text-align: left;
 	}
 
@@ -1649,8 +1651,10 @@
 		flex-direction: column;
 		gap: 6px;
 		padding: var(--bc-space-2) 5px;
-		font-size: var(--bc-mobile-meta);
+		font-size: var(--bc-text-control);
 		text-align: center;
+		line-height: var(--bc-leading-control);
+		font-weight: var(--bc-weight-control);
 	}
 
 	.daynight-inventory-mobile-drawer__group a.active,
@@ -1698,9 +1702,9 @@
 		border-radius: var(--bc-radius-pill);
 		background: var(--bc-white);
 		color: var(--bc-muted);
-		font-size: 11px;
-		font-weight: 800;
-		line-height: 21px;
+		font-size: var(--bc-mobile-meta);
+		font-weight: var(--bc-weight-body);
+		line-height: var(--bc-mobile-meta-leading);
 	}
 
 	.daynight-inventory-mobile-drawer__empty-option {
@@ -1710,9 +1714,9 @@
 		border-radius: var(--bc-radius-md);
 		background: var(--bc-surface-soft);
 		color: var(--bc-muted);
-		font-size: var(--bc-mobile-body);
-		font-weight: 800;
-		line-height: var(--bc-mobile-label-leading);
+		font-size: var(--bc-text-control);
+		font-weight: var(--bc-weight-control);
+		line-height: var(--bc-leading-control);
 		padding: 0 var(--bc-space-3);
 	}
 
@@ -1743,7 +1747,7 @@
 		gap: var(--bc-space-2);
 		background: var(--bc-accent);
 		color: var(--bc-white);
-		font-weight: 650;
+		font-weight: var(--bc-weight-heading);
 		text-align: center;
 		white-space: nowrap;
 	}
@@ -1757,9 +1761,9 @@
 		border-radius: var(--bc-radius-pill);
 		background: rgba(255, 255, 255, 0.72);
 		color: var(--bc-ink);
-		font-size: 11px;
-		font-weight: 800;
-		line-height: 23px;
+		font-size: var(--bc-mobile-meta);
+		font-weight: var(--bc-weight-body);
+		line-height: var(--bc-mobile-meta-leading);
 	}
 
 	.daynight-inventory-mobile-drawer__done {
@@ -1773,8 +1777,8 @@
 		appearance: none;
 		color: var(--bc-white);
 		cursor: pointer;
-		font-size: var(--bc-mobile-body);
-		font-weight: 650;
-		line-height: var(--bc-mobile-label-leading);
+		font-size: var(--bc-text-control);
+		font-weight: var(--bc-weight-heading);
+		line-height: var(--bc-leading-control);
 	}
 </style>

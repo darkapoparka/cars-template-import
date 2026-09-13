@@ -1526,19 +1526,9 @@
 			border-radius: 0;
 			background: transparent;
 			color: rgb(255 255 255 / 0.72);
-			font-family:
-				'Geist Variable',
-				'Geist',
-				'Noto Sans',
-				ui-sans-serif,
-				system-ui,
-				-apple-system,
-				BlinkMacSystemFont,
-				'Segoe UI',
-				Arial,
-				sans-serif;
-			font-size: 19px;
-			font-weight: 600;
+			font-family: var(--bc-font-body);
+			font-size: var(--bc-mobile-card-title);
+			font-weight: var(--bc-weight-heading);
 			letter-spacing: 0;
 			line-height: 24px;
 			text-align: center;
@@ -1615,9 +1605,9 @@
 			min-width: 0;
 			overflow: hidden;
 			color: var(--bc-ink);
-			font-size: 16px;
-			font-weight: 400;
-			line-height: 22px;
+			font-size: var(--bc-text-search);
+			font-weight: var(--bc-weight-body);
+			line-height: var(--bc-leading-search);
 			text-overflow: ellipsis;
 			white-space: nowrap;
 		}
@@ -1675,9 +1665,9 @@
 			box-shadow: none;
 			padding: 0 16px;
 			color: var(--bc-accent-contrast) !important;
-			font-size: 13px;
-			font-weight: 700;
-			line-height: 16px;
+			font-size: var(--bc-text-control);
+			font-weight: var(--bc-weight-heading);
+			line-height: var(--bc-leading-control);
 			text-decoration: none;
 		}
 
@@ -1776,17 +1766,17 @@
 
 		.daynight-mobile-location-sheet__panel header p {
 			color: var(--bc-accent);
-			font-size: 12px;
-			font-weight: 700;
-			line-height: 14px;
+			font-size: var(--bc-mobile-label);
+			font-weight: var(--bc-weight-heading);
+			line-height: var(--bc-mobile-label-leading);
 			text-transform: uppercase;
 		}
 
 		.daynight-mobile-location-sheet__panel header h2 {
 			color: var(--bc-ink);
-			font-size: 20px;
-			font-weight: 700;
-			line-height: 26px;
+			font-size: var(--bc-mobile-section-title);
+			font-weight: var(--bc-weight-heading);
+			line-height: var(--bc-mobile-section-title-leading);
 		}
 
 		.daynight-mobile-location-sheet__panel header button {
@@ -1912,9 +1902,9 @@
 
 		.daynight-mobile-location-address span {
 			color: var(--bc-muted);
-			font-size: 12px;
-			font-weight: 700;
-			line-height: 14px;
+			font-size: var(--bc-mobile-label);
+			font-weight: var(--bc-weight-heading);
+			line-height: var(--bc-mobile-label-leading);
 			text-transform: uppercase;
 		}
 
@@ -1949,9 +1939,9 @@
 			background: var(--bc-ink);
 			padding: 0 12px;
 			color: var(--bc-white);
-			font-size: 14px;
-			font-weight: 700;
-			line-height: 18px;
+			font-size: var(--bc-text-control);
+			font-weight: var(--bc-weight-heading);
+			line-height: var(--bc-leading-control);
 			text-align: center;
 			text-decoration: none;
 		}
@@ -2028,10 +2018,10 @@
 			display: block;
 			margin: 0;
 			color: var(--bc-ink);
-			font-size: 19px;
-			font-weight: 800;
+			font-size: var(--bc-mobile-section-title);
+			font-weight: var(--bc-weight-heading);
 			letter-spacing: 0;
-			line-height: 24px;
+			line-height: var(--bc-mobile-section-title-leading);
 		}
 
 		.daynight-home-search-drawer__form {
@@ -2068,9 +2058,9 @@
 			box-shadow: none !important;
 			color: var(--bc-ink);
 			/* >=16px stops iOS Safari from auto-zooming (and shifting the sheet) on focus. */
-			font-size: 16px;
-			font-weight: 700;
-			line-height: 22px;
+			font-size: var(--bc-text-search);
+			font-weight: var(--bc-weight-body);
+			line-height: var(--bc-leading-search);
 			outline: 0;
 			padding: 0 !important;
 			appearance: none;
@@ -2102,9 +2092,9 @@
 		.daynight-home-search-drawer__group p {
 			margin: 0;
 			color: var(--bc-muted);
-			font-size: 12px;
-			font-weight: 700;
-			line-height: 14px;
+			font-size: var(--bc-mobile-label);
+			font-weight: var(--bc-weight-heading);
+			line-height: var(--bc-mobile-label-leading);
 			text-transform: uppercase;
 		}
 
@@ -2134,9 +2124,9 @@
 			background: var(--bc-surface);
 			padding: 0 12px;
 			color: var(--bc-ink);
-			font-size: 14px;
-			font-weight: 700;
-			line-height: 18px;
+			font-size: var(--bc-text-control);
+			font-weight: var(--bc-weight-control);
+			line-height: var(--bc-leading-control);
 			text-decoration: none;
 		}
 
@@ -2148,8 +2138,10 @@
 			flex-direction: column;
 			gap: 6px;
 			padding: 8px 5px;
-			font-size: 12px;
+			font-size: var(--bc-text-control);
 			text-align: center;
+			line-height: var(--bc-leading-control);
+			font-weight: var(--bc-weight-control);
 		}
 
 		.daynight-mobile-brand-chip__logo {
@@ -2187,9 +2179,9 @@
 			background: var(--bc-surface);
 			padding: 12px 13px;
 			color: var(--bc-copy);
-			font-size: 14px;
-			font-weight: 700;
-			line-height: 20px;
+			font-size: var(--bc-mobile-body);
+			font-weight: var(--bc-weight-body);
+			line-height: var(--bc-mobile-body-leading);
 		}
 
 		/* Pinned footer bar: the form's last grid row, so it sits flush at the bottom of
@@ -2214,9 +2206,9 @@
 			background: var(--bc-surface);
 			padding: 0 12px;
 			color: var(--bc-ink);
-			font-size: 15px;
-			font-weight: 800;
-			line-height: 18px;
+			font-size: var(--bc-text-control);
+			font-weight: var(--bc-weight-heading);
+			line-height: var(--bc-leading-control);
 			text-align: center;
 			text-decoration: none;
 			white-space: nowrap;
@@ -2268,9 +2260,9 @@
 			box-shadow: none;
 			color: var(--bc-ink);
 			cursor: pointer;
-			font-size: 14px;
-			font-weight: 700;
-			line-height: 18px;
+			font-size: var(--bc-text-control);
+			font-weight: var(--bc-weight-control);
+			line-height: var(--bc-leading-control);
 			text-decoration: none;
 			white-space: nowrap;
 		}

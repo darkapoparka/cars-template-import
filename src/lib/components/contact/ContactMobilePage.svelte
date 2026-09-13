@@ -254,23 +254,23 @@
 	.daynight-contact-mobile__hero p {
 		color: var(--bc-white);
 		opacity: 0.86;
-		font-size: var(--bc-mobile-meta);
-		font-weight: 800;
-		line-height: 15px;
+		font-size: var(--bc-mobile-label);
+		font-weight: var(--bc-weight-heading);
+		line-height: var(--bc-mobile-label-leading);
 		text-transform: uppercase;
 	}
 
 	.daynight-contact-mobile__hero h1 {
 		color: var(--bc-white);
 		font-size: var(--bc-mobile-page-title);
-		font-weight: 800;
+		font-weight: var(--bc-weight-heading);
 		line-height: var(--bc-mobile-page-title-leading);
 	}
 
 	.daynight-contact-mobile__hero span {
 		color: rgba(255, 255, 255, 0.82);
 		font-size: var(--bc-mobile-body);
-		font-weight: 600;
+		font-weight: var(--bc-weight-body);
 		line-height: var(--bc-mobile-body-leading);
 	}
 
@@ -294,9 +294,9 @@
 		background: var(--bc-surface-raised);
 		color: var(--bc-ink);
 		cursor: pointer;
-		font-size: var(--bc-mobile-body);
-		font-weight: 800;
-		line-height: var(--bc-mobile-label-leading);
+		font-size: var(--bc-text-control);
+		font-weight: var(--bc-weight-heading);
+		line-height: var(--bc-leading-control);
 		padding: 0 var(--bc-space-2);
 		text-decoration: none !important;
 		white-space: nowrap;
@@ -367,9 +367,9 @@
 
 	.daynight-contact-mobile__info p {
 		color: var(--bc-muted);
-		font-size: var(--bc-mobile-meta);
-		font-weight: 800;
-		line-height: var(--bc-mobile-meta-leading);
+		font-size: var(--bc-mobile-label);
+		font-weight: var(--bc-weight-heading);
+		line-height: var(--bc-mobile-label-leading);
 		text-transform: uppercase;
 	}
 
@@ -377,7 +377,7 @@
 	.daynight-contact-mobile__info a {
 		color: var(--bc-ink);
 		font-size: var(--bc-mobile-card-title);
-		font-weight: 800;
+		font-weight: var(--bc-weight-heading);
 		line-height: var(--bc-mobile-card-title-leading);
 		overflow-wrap: anywhere;
 		text-decoration: none !important;
@@ -393,9 +393,9 @@
 
 	.daynight-contact-mobile__info small {
 		color: var(--bc-copy);
-		font-size: var(--bc-mobile-label);
-		font-weight: 600;
-		line-height: var(--bc-mobile-label-leading);
+		font-size: var(--bc-mobile-body);
+		font-weight: var(--bc-weight-body);
+		line-height: var(--bc-mobile-body-leading);
 	}
 
 	.daynight-contact-mobile__map-card {
@@ -424,16 +424,16 @@
 
 	.daynight-contact-mobile__map-card p {
 		color: var(--bc-accent);
-		font-size: var(--bc-mobile-meta);
-		font-weight: 800;
-		line-height: var(--bc-mobile-meta-leading);
+		font-size: var(--bc-mobile-label);
+		font-weight: var(--bc-weight-heading);
+		line-height: var(--bc-mobile-label-leading);
 		text-transform: uppercase;
 	}
 
 	.daynight-contact-mobile__map-card strong {
 		color: var(--bc-ink);
 		font-size: var(--bc-mobile-card-title);
-		font-weight: 800;
+		font-weight: var(--bc-weight-heading);
 		line-height: var(--bc-mobile-card-title-leading);
 	}
 
@@ -447,9 +447,9 @@
 		border-radius: var(--bc-radius-pill);
 		background: var(--bc-ink);
 		color: var(--bc-white);
-		font-size: var(--bc-mobile-label);
-		font-weight: 800;
-		line-height: var(--bc-mobile-meta-leading);
+		font-size: var(--bc-text-control);
+		font-weight: var(--bc-weight-heading);
+		line-height: var(--bc-leading-control);
 		padding: 0 var(--bc-space-3);
 		text-decoration: none !important;
 	}
@@ -618,16 +618,16 @@
 	.daynight-contact-mobile-sheet__header p {
 		margin-bottom: 2px;
 		color: var(--bc-accent);
-		font-size: var(--bc-mobile-meta);
-		font-weight: 800;
-		line-height: var(--bc-mobile-meta-leading);
+		font-size: var(--bc-mobile-label);
+		font-weight: var(--bc-weight-heading);
+		line-height: var(--bc-mobile-label-leading);
 		text-transform: uppercase;
 	}
 
 	.daynight-contact-mobile-sheet__header h2 {
 		color: var(--bc-ink);
 		font-size: var(--bc-mobile-section-title);
-		font-weight: 800;
+		font-weight: var(--bc-weight-heading);
 		line-height: var(--bc-mobile-section-title-leading);
 	}
 
@@ -683,9 +683,9 @@
 	.daynight-contact-mobile-sheet__body :global(.daynight-contact-mobile-form p) {
 		margin: 0 0 6px;
 		color: var(--bc-ink);
-		font-size: var(--bc-mobile-body);
-		font-weight: 700;
-		line-height: var(--bc-mobile-label-leading);
+		font-size: var(--bc-text-control);
+		font-weight: var(--bc-weight-heading);
+		line-height: var(--bc-leading-control);
 	}
 
 	.daynight-contact-mobile-sheet__body :global(.daynight-contact-mobile-form input),
@@ -698,7 +698,7 @@
 		box-shadow: none !important;
 		color: var(--bc-ink);
 		font-size: var(--bc-text-body) !important;
-		font-weight: 500;
+		font-weight: var(--bc-weight-body);
 		line-height: var(--bc-mobile-card-title-leading) !important;
 		outline: 0;
 		padding: 0 var(--bc-space-3) !important;
@@ -706,12 +706,14 @@
 
 	.daynight-contact-mobile-sheet__body :global(.daynight-contact-mobile-form input) {
 		height: var(--bc-control-height-primary) !important;
+		font-weight: var(--bc-weight-body);
 	}
 
 	.daynight-contact-mobile-sheet__body :global(.daynight-contact-mobile-form textarea) {
 		min-height: 98px !important;
 		padding-top: var(--bc-space-3) !important;
 		resize: vertical;
+		font-weight: var(--bc-weight-body);
 	}
 
 	.daynight-contact-mobile-sheet__body :global(.daynight-contact-mobile-form input::placeholder),
@@ -738,8 +740,8 @@
 		color: var(--bc-white) !important;
 		cursor: pointer;
 		font-size: var(--bc-mobile-card-title);
-		font-weight: 800;
-		line-height: 20px;
+		font-weight: var(--bc-weight-heading);
+		line-height: var(--bc-mobile-card-title-leading);
 	}
 
 	.daynight-contact-mobile-sheet__body
@@ -761,14 +763,15 @@
 		margin: -2px 0 0;
 		color: var(--bc-copy);
 		font-size: var(--bc-mobile-body);
-		font-weight: 600;
-		line-height: var(--bc-mobile-label-leading);
+		font-weight: var(--bc-weight-body);
+		line-height: var(--bc-mobile-body-leading);
 	}
 
 	@media (max-width: 359px) {
 		.daynight-contact-mobile__hero h1 {
 			font-size: var(--bc-mobile-page-title);
 			line-height: var(--bc-mobile-page-title-leading);
+			font-weight: var(--bc-weight-heading);
 		}
 		.daynight-contact-mobile__map-card {
 			grid-template-columns: 1fr;

@@ -371,9 +371,10 @@
 		}
 
 		.dn-footer-mobile__address {
-			font-size: 15px;
-			line-height: 22px;
+			font-size: var(--bc-mobile-body);
+			line-height: var(--bc-mobile-body-leading);
 			background: var(--bc-footer-panel);
+			font-weight: var(--bc-weight-body);
 		}
 
 		.dn-footer-mobile__hours {
@@ -382,8 +383,9 @@
 
 		.dn-footer-mobile__hours p {
 			margin: 0;
-			font-size: 14px;
-			line-height: 22px;
+			font-size: var(--bc-mobile-body);
+			line-height: var(--bc-mobile-body-leading);
+			font-weight: var(--bc-weight-body);
 		}
 
 		.dn-footer-mobile__hours p:first-child {
@@ -408,10 +410,11 @@
 			gap: 12px;
 			min-height: 48px;
 			padding: 12px 16px;
-			font-size: 14px;
-			font-weight: 600;
+			font-size: var(--bc-text-control);
+			font-weight: var(--bc-weight-heading);
 			list-style: none;
 			cursor: pointer;
+			line-height: var(--bc-leading-control);
 		}
 
 		.dn-footer-mobile__links summary::-webkit-details-marker {
@@ -432,7 +435,9 @@
 			align-items: center;
 			min-height: 44px;
 			color: var(--bc-footer-link);
-			font-size: 15px;
+			font-size: var(--bc-mobile-body);
+			line-height: var(--bc-mobile-body-leading);
+			font-weight: var(--bc-weight-body);
 		}
 
 		.dn-footer-mobile__socials {
@@ -457,8 +462,9 @@
 
 		.dn-footer-mobile__bottom p {
 			margin: 0 0 4px;
-			font-size: 13px;
-			line-height: 19px;
+			font-size: var(--bc-mobile-meta);
+			line-height: var(--bc-mobile-meta-leading);
+			font-weight: var(--bc-weight-body);
 		}
 
 		.dn-footer-mobile__bottom > div {
@@ -471,7 +477,9 @@
 			display: inline-flex;
 			align-items: center;
 			min-height: 44px;
-			font-size: 13px;
+			font-size: var(--bc-mobile-meta);
+			line-height: var(--bc-mobile-meta-leading);
+			font-weight: var(--bc-weight-body);
 		}
 	}
 </style>

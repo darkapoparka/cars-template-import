@@ -95,6 +95,8 @@
 
 	.mobile-vehicle-card__image span {
 		position: absolute;
+		display: inline-flex;
+		align-items: center;
 		top: var(--bc-space-2);
 		left: var(--bc-space-2);
 		min-height: 24px;
@@ -102,9 +104,9 @@
 		background: var(--bc-accent);
 		padding: 0 var(--bc-space-2);
 		color: var(--bc-white);
-		font-size: 10px;
-		font-weight: 700;
-		line-height: 24px;
+		font-size: var(--bc-mobile-stat);
+		font-weight: var(--bc-weight-body);
+		line-height: var(--bc-mobile-stat-leading);
 		text-transform: uppercase;
 	}
 
@@ -116,10 +118,13 @@
 	}
 
 	.mobile-vehicle-card__body p {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 		margin: 0 0 2px;
 		color: var(--bc-muted);
 		font-size: var(--bc-mobile-stat);
-		font-weight: 600;
+		font-weight: var(--bc-weight-body);
 		line-height: var(--bc-mobile-stat-leading);
 		text-transform: uppercase;
 	}
@@ -129,15 +134,16 @@
 		margin: 0 0 var(--bc-space-1);
 		color: var(--bc-ink);
 		font-size: var(--bc-mobile-card-title);
-		font-weight: 650;
+		font-weight: var(--bc-weight-heading);
 		line-height: var(--bc-mobile-card-title-leading);
 		overflow-wrap: anywhere;
 	}
 
 	.mobile-vehicle-card__body strong {
 		color: var(--bc-accent);
-		font-size: 20px;
-		font-weight: 700;
+		font-family: var(--bc-font-heading);
+		font-size: var(--bc-mobile-card-price);
+		font-weight: var(--bc-weight-emphasis);
 		line-height: var(--bc-space-6);
 		white-space: nowrap;
 	}
@@ -145,22 +151,22 @@
 		display: flex;
 		align-items: baseline;
 		justify-content: space-between;
-		gap: 6px;
+		gap: 4px;
 		margin-bottom: var(--bc-space-2);
 		min-width: 0;
 	}
 
 	.mobile-vehicle-card__body small {
 		color: var(--bc-muted);
-		font-size: 10px;
-		font-weight: 600;
+		font-size: var(--bc-mobile-stat);
+		font-weight: var(--bc-weight-body);
 		line-height: var(--bc-mobile-stat-leading);
 		white-space: nowrap;
 	}
 
 	.mobile-vehicle-card__body ul {
 		display: grid;
-		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+		grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
 		gap: 4px;
 		margin: 0;
 		padding: 0;
@@ -175,10 +181,10 @@
 		gap: var(--bc-space-1);
 		border-radius: var(--bc-radius-md);
 		background: var(--bc-surface-soft);
-		padding: 4px;
+		padding: 4px 2px;
 		color: var(--bc-copy);
 		font-size: var(--bc-mobile-stat);
-		font-weight: 600;
+		font-weight: var(--bc-weight-body);
 		line-height: var(--bc-mobile-stat-leading);
 		white-space: nowrap;
 		font-variant-numeric: tabular-nums;
@@ -209,15 +215,17 @@
 		white-space: nowrap;
 		text-overflow: ellipsis;
 		overflow: hidden;
-		min-height: 20px;
-		line-height: 20px;
+		min-height: var(--bc-mobile-card-title-leading);
+		line-height: var(--bc-mobile-card-title-leading);
 		margin-bottom: 4px;
 	}
 	.mobile-vehicle-card__body li {
 		overflow: hidden;
 		text-overflow: ellipsis;
-		font-size: 11px;
+		font-size: var(--bc-mobile-stat);
 		gap: 3px;
+		line-height: var(--bc-mobile-stat-leading);
+		font-weight: var(--bc-weight-body);
 	}
 	@media (max-width: 430px) {
 		.mobile-vehicle-card__body li :global(svg) {

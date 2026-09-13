@@ -375,9 +375,10 @@
 <style>
 	.bc-import-wizard__error {
 		color: var(--bc-accent-hover);
-		font-size: 14px;
-		line-height: 20px;
+		font-size: var(--bc-mobile-body);
+		line-height: var(--bc-mobile-body-leading);
 		margin: 0;
+		font-weight: var(--bc-weight-body);
 	}
 	.bc-import-wizard__intro .bc-import-wizard__summary {
 		margin-top: 8px;
@@ -414,17 +415,17 @@
 	}
 
 	.bc-import-wizard__header h2 {
-		font-size: 23px;
-		font-weight: 700;
+		font-size: var(--bc-mobile-section-title);
+		font-weight: var(--bc-weight-heading);
 		letter-spacing: -0.02em;
-		line-height: 28px;
+		line-height: var(--bc-mobile-section-title-leading);
 	}
 
 	.bc-import-wizard__header p {
 		color: var(--bc-muted);
-		font-size: 13px;
-		font-weight: 500;
-		line-height: 17px;
+		font-size: var(--bc-mobile-meta);
+		font-weight: var(--bc-weight-body);
+		line-height: var(--bc-mobile-meta-leading);
 	}
 
 	.bc-import-wizard__header > button {
@@ -482,18 +483,18 @@
 	}
 
 	.bc-import-wizard__intro h3 {
-		font-size: 20px;
-		font-weight: 700;
+		font-size: var(--bc-mobile-section-title);
+		font-weight: var(--bc-weight-heading);
 		letter-spacing: -0.015em;
-		line-height: 25px;
+		line-height: var(--bc-mobile-section-title-leading);
 	}
 
 	.bc-import-wizard__intro p {
 		max-width: 52ch;
 		color: var(--bc-muted);
-		font-size: 13.5px;
-		font-weight: 500;
-		line-height: 19px;
+		font-size: var(--bc-mobile-body);
+		font-weight: var(--bc-weight-body);
+		line-height: var(--bc-mobile-body-leading);
 	}
 
 	.bc-import-wizard__intent {
@@ -513,9 +514,9 @@
 		background: var(--bc-white);
 		color: var(--bc-ink);
 		cursor: pointer;
-		font-size: 13px;
-		font-weight: 650;
-		line-height: 17px;
+		font-size: var(--bc-text-control);
+		font-weight: var(--bc-weight-control);
+		line-height: var(--bc-leading-control);
 		padding: 0 9px;
 	}
 
@@ -543,9 +544,9 @@
 
 	.bc-import-wizard__fields span {
 		color: var(--bc-copy);
-		font-size: 12px;
-		font-weight: 700;
-		line-height: 15px;
+		font-size: var(--bc-mobile-label);
+		font-weight: var(--bc-weight-heading);
+		line-height: var(--bc-mobile-label-leading);
 	}
 
 	.bc-import-wizard__fields input,
@@ -557,9 +558,9 @@
 		background: var(--bc-white) !important;
 		box-shadow: none !important;
 		color: var(--bc-ink);
-		font-size: 16px;
-		font-weight: 600;
-		line-height: 22px;
+		font-size: var(--bc-text-control);
+		font-weight: var(--bc-weight-control);
+		line-height: var(--bc-leading-control);
 		outline: 0;
 	}
 
@@ -596,9 +597,9 @@
 	}
 	.bc-import-wizard__fields legend {
 		color: var(--bc-copy);
-		font-size: var(--bc-mobile-meta);
-		font-weight: 700;
-		line-height: var(--bc-mobile-meta-leading);
+		font-size: var(--bc-mobile-label);
+		font-weight: var(--bc-weight-heading);
+		line-height: var(--bc-mobile-label-leading);
 		padding: 0;
 	}
 	.bc-import-wizard__country-grid {
@@ -626,8 +627,9 @@
 		object-fit: cover;
 	}
 	.bc-import-wizard__country-grid button strong {
-		font-size: var(--bc-mobile-meta);
-		line-height: var(--bc-mobile-meta-leading);
+		font-size: var(--bc-text-control);
+		line-height: var(--bc-leading-control);
+		font-weight: var(--bc-weight-control);
 	}
 	.bc-import-wizard__country-grid button.active {
 		border-color: var(--bc-accent);
@@ -649,9 +651,10 @@
 		background: var(--bc-white);
 		color: var(--bc-ink);
 		cursor: pointer;
-		font-size: var(--bc-mobile-label);
-		font-weight: 650;
+		font-size: var(--bc-text-control);
+		font-weight: var(--bc-weight-control);
 		padding: 0 var(--bc-space-3);
+		line-height: var(--bc-leading-control);
 	}
 	.bc-import-wizard__chips button.active {
 		border-color: var(--bc-accent);
@@ -662,9 +665,9 @@
 	.bc-import-wizard__promise {
 		margin: -4px 0 0;
 		color: var(--bc-accent-hover);
-		font-size: 12px;
-		font-weight: 700;
-		line-height: 17px;
+		font-size: var(--bc-mobile-meta);
+		font-weight: var(--bc-weight-body);
+		line-height: var(--bc-mobile-meta-leading);
 	}
 
 	.bc-import-wizard__nav {
@@ -684,9 +687,9 @@
 		gap: 6px;
 		border-radius: var(--bc-radius-control);
 		cursor: pointer;
-		font-size: 14px;
-		font-weight: 700;
-		line-height: 18px;
+		font-size: var(--bc-text-control);
+		font-weight: var(--bc-weight-heading);
+		line-height: var(--bc-leading-control);
 	}
 
 	.bc-import-wizard__back {
@@ -743,9 +746,9 @@
 	.bc-import-wizard__success p {
 		max-width: 52ch;
 		color: var(--bc-muted);
-		font-size: 14px;
-		font-weight: 500;
-		line-height: 20px;
+		font-size: var(--bc-mobile-body);
+		font-weight: var(--bc-weight-body);
+		line-height: var(--bc-mobile-body-leading);
 	}
 
 	.bc-import-wizard__success button {
@@ -811,13 +814,15 @@
 	}
 	.bc-import-wizard__header h2 {
 		color: var(--bc-ink);
-		font-size: 17px;
-		line-height: 1.2;
+		font-size: var(--bc-mobile-section-title);
+		line-height: var(--bc-mobile-section-title-leading);
+		font-weight: var(--bc-weight-heading);
 	}
 	.bc-import-wizard__header p {
 		color: var(--bc-muted);
-		font-size: 11px;
-		line-height: 1.2;
+		font-size: var(--bc-mobile-meta);
+		line-height: var(--bc-mobile-meta-leading);
+		font-weight: var(--bc-weight-body);
 	}
 	.bc-import-wizard__progress {
 		gap: 4px;
@@ -839,12 +844,14 @@
 		gap: 2px;
 	}
 	.bc-import-wizard__intro h3 {
-		font-size: 19px;
-		line-height: 1.2;
+		font-size: var(--bc-mobile-section-title);
+		line-height: var(--bc-mobile-section-title-leading);
+		font-weight: var(--bc-weight-heading);
 	}
 	.bc-import-wizard__intro p {
-		font-size: 12px;
-		line-height: 1.35;
+		font-size: var(--bc-mobile-body);
+		line-height: var(--bc-mobile-body-leading);
+		font-weight: var(--bc-weight-body);
 	}
 	.bc-import-wizard__intent {
 		gap: 6px;
@@ -854,8 +861,10 @@
 		border: 0;
 		border-radius: 10px;
 		background: var(--bc-white);
-		font-size: 12px;
+		font-size: var(--bc-text-control);
 		padding: 0 10px;
+		line-height: var(--bc-leading-control);
+		font-weight: var(--bc-weight-control);
 	}
 	.bc-import-wizard__intent button.active {
 		background: var(--bc-accent);
@@ -870,7 +879,9 @@
 	}
 	.bc-import-wizard__fields span,
 	.bc-import-wizard__fields legend {
-		font-size: 11px;
+		font-size: var(--bc-mobile-label);
+		line-height: var(--bc-mobile-label-leading);
+		font-weight: var(--bc-weight-heading);
 	}
 	.bc-import-wizard__fields input,
 	.bc-import-wizard__fields textarea {

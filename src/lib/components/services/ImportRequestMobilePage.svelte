@@ -152,19 +152,9 @@
 		border-radius: 0;
 		background: transparent;
 		color: rgb(255 255 255 / 0.72);
-		font-family:
-			'Geist Variable',
-			'Geist',
-			'Noto Sans',
-			ui-sans-serif,
-			system-ui,
-			-apple-system,
-			BlinkMacSystemFont,
-			'Segoe UI',
-			Arial,
-			sans-serif;
-		font-size: 19px;
-		font-weight: 600;
+		font-family: var(--bc-font-body);
+		font-size: var(--bc-mobile-card-title);
+		font-weight: var(--bc-weight-heading);
 		letter-spacing: 0;
 		line-height: 24px;
 		text-align: center;

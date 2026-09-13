@@ -526,8 +526,8 @@
 			overflow: visible;
 			max-width: 100%;
 			margin: 0;
-			font-size: 15px;
-			font-weight: 600;
+			font-size: var(--bc-text-control);
+			font-weight: var(--bc-weight-control);
 			line-height: 20px;
 			letter-spacing: -0.01em;
 			overflow-wrap: anywhere;
@@ -536,8 +536,8 @@
 		}
 
 		.daynight-browse-section :global(.out-brand-2 .text-muted) {
-			font-size: 13px;
-			font-weight: 450;
+			font-size: var(--bc-mobile-meta);
+			font-weight: var(--bc-weight-body);
 			line-height: 18px;
 			white-space: nowrap;
 		}
