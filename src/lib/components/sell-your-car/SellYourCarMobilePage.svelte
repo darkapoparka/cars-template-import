@@ -27,7 +27,6 @@
 	let entryMode = $state<'vin' | 'manual'>('vin');
 	let manualEntry = $state(false);
 	let wizardSession = $state(0);
-	const vinField = $derived(form.fields.find((field) => field.name === 'vin')!);
 	const guideSteps = $derived(
 		steps.map((step, index) =>
 			index === 0
@@ -35,9 +34,7 @@
 				: step
 		)
 	);
-	/* Editable copies let the hero VIN carry into the detailed valuation. */
-	// svelte-ignore state_referenced_locally
-	let fieldValues = $state(
+	const fieldValues = $derived(
 		Object.fromEntries(form.fields.map((field) => [field.name, field.value ?? ''])) as Record<
 			string,
 			string
@@ -55,10 +52,6 @@
 		manualEntry = manual;
 		wizardSession += 1;
 		wizardOpen = true;
-	};
-	const handleVinSubmit = (event: SubmitEvent) => {
-		event.preventDefault();
-		openWizard(false);
 	};
 	const handleModeKeydown = (event: KeyboardEvent) => {
 		if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
@@ -130,24 +123,19 @@
 		{#snippet entry()}
 			<div id="sell-entry-panel" role="tabpanel" aria-labelledby={`sell-mode-${entryMode}`}>
 				{#if entryMode === 'vin'}
-					<form onsubmit={handleVinSubmit}>
-						<label for="sell-mobile-vin">VIN номер</label>
-						<div class="service-input">
-							<ScanLine size={21} strokeWidth={2.15} aria-hidden="true" />
-							<input
-								id="sell-mobile-vin"
-								name={vinField.name}
-								type={vinField.type}
-								placeholder="Въведи VIN номер"
-								required={vinField.required}
-								autocomplete={vinField.autocomplete}
-								bind:value={fieldValues.vin}
-							/>
-							<button type="submit" aria-label="Продължи с VIN">
-								<ArrowRight size={21} strokeWidth={2.35} aria-hidden="true" />
-							</button>
-						</div>
-					</form>
+					<button
+						type="button"
+						class="service-input service-manual-entry"
+						aria-haspopup="dialog"
+						aria-expanded={wizardOpen && !manualEntry}
+						onclick={() => openWizard(false)}
+					>
+						<ScanLine size={21} strokeWidth={2.15} aria-hidden="true" />
+						<span class="service-input__text">{fieldValues.vin || 'Въведи VIN номер'}</span>
+						<span class="service-input__go" aria-hidden="true">
+							<ArrowRight size={21} strokeWidth={2.35} />
+						</span>
+					</button>
 				{:else}
 					<MobileServiceManualEntry onclick={() => openWizard(true)} />
 				{/if}
@@ -164,14 +152,6 @@
 						</li>
 					{/each}
 				</ol>
-				<div class="sell-guide__tip">
-					<ScanLine size={22} strokeWidth={1.8} aria-hidden="true" />
-					<h3>VIN не е задължителен</h3>
-					<p>
-						Избери „Нямам VIN“ и въведи марка и модел. Годината и пробегът помагат за по-точна
-						оценка.
-					</p>
-				</div>
 			</section>
 		{/snippet}
 	</MobileServiceEntry>
@@ -274,16 +254,11 @@
 		padding: 0;
 		list-style: none;
 	}
-	.sell-guide__steps li,
-	.sell-guide__tip {
-		display: grid;
-		grid-template-columns: 22px minmax(0, 1fr);
-		align-items: center;
-		gap: var(--bc-space-1) var(--bc-space-2);
-	}
 	.sell-guide__steps li {
+		display: grid;
 		grid-template-columns: max-content minmax(0, 1fr);
-		column-gap: var(--bc-space-1);
+		align-items: center;
+		gap: var(--bc-space-1);
 	}
 	.sell-guide__number {
 		color: var(--bc-accent);
@@ -298,20 +273,13 @@
 		font-weight: var(--bc-weight-heading);
 		color: var(--bc-ink);
 	}
-	.sell-guide__steps p,
-	.sell-guide__tip p {
+	.sell-guide__steps p {
 		grid-column: 1 / -1;
 		margin: 0;
 		font-size: var(--bc-mobile-body);
 		line-height: var(--bc-mobile-body-leading);
 		color: var(--bc-copy);
 		font-weight: var(--bc-weight-body);
-	}
-	.sell-guide__tip {
-		margin-top: var(--bc-space-7);
-	}
-	.sell-guide__tip :global(svg) {
-		color: var(--bc-accent);
 	}
 	.sell-mode-tabs {
 		display: grid;

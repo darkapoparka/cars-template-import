@@ -127,6 +127,13 @@ Scope: article reading layouts, compact mobile inventory cards, currency display
 - Removed the redundant visible heading and introduction so the white card starts directly with the first step. Retained an accessible section label and removed unused heading/intro styles.
 - Inspected `/sell-your-car` at 390px. Formatting, Svelte autofixer (no issues/suggestions) and diff checks passed. Full checks were not repeated for this copy/markup removal.
 
+## Sell VIN overlay entry
+
+- Removed the redundant VIN-optional note and its styles. Sell's VIN hero entry is now one full-width overlay trigger using the same shared entry styles as manual entry and Import. Initial form values still pass into the wizard; VIN is entered inside the overlay.
+- At 390px, clicking the VIN trigger opened the form, and a synthetic VIN advanced to the contact step without submission. Closing and choosing manual entry opened the form without a VIN field. Confirmed existing homepage and Import Link/VIN triggers also open overlays. Inspected Sell at 360px with the three-step card; browser console had no warnings/errors.
+- Type checking passed with zero errors/warnings. Scoped ESLint, formatting and diff checks passed; Svelte autofixer reported no issues or suggestions.
+- Production build passed; restored the owned dev server on port 6464 afterward. No form submission was sent.
+
 ## Limits
 
 This is standalone local template evidence, not owner visual acceptance, mounted Cars release qualification, or a dealer deployment. No messages were sent to a dealer. Sell-car submissions and unrelated CMS/account features remain temporary prototypes. Real dealer collection still needs its own private database, identity and notification configuration, hosting-specific validation, and final dealer content/policy review. Repository-wide lint and the full legacy end-to-end suite were not used as a release claim; checks were scoped to this implementation and browser flows above.
