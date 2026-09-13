@@ -1467,7 +1467,7 @@
 		}
 
 		.daynight-mobile-hero {
-			padding: 10px 0 13px;
+			padding: 10px 0 33px;
 			background: transparent;
 		}
 
@@ -2224,12 +2224,27 @@
 		}
 
 		.daynight-mobile-home-quick {
-			background: var(--bc-bg);
-			margin: 0;
-			padding: 8px 0 9px;
+			position: relative;
+			z-index: 2;
+			background: var(--bc-bg-strong);
+			margin: -20px 0 0;
+			padding: 26px 0 9px;
 			border: 0;
-			box-shadow: none;
+			border-radius: 24px 24px 0 0;
+			box-shadow: 0 -1px 0 rgb(255 255 255 / 0.14);
 			overflow: hidden;
+		}
+
+		.daynight-mobile-home-quick::before {
+			position: absolute;
+			top: 9px;
+			left: 50%;
+			width: 38px;
+			height: 4px;
+			border-radius: var(--bc-radius-pill);
+			background: #c3cad2;
+			content: '';
+			transform: translateX(-50%);
 		}
 
 		.daynight-mobile-home-quick__scroller {

@@ -145,6 +145,11 @@ Scope: article reading layouts, compact mobile inventory cards, currency display
 - Matched Sell VIN/manual and Import Link/VIN/manual tabs to Home: existing 20px heading token, 24px line height, 6px bottom padding and retained 44px tap area. Active/inactive weights are unchanged.
 - Inspected both routes at 360px and measured all four tabs at 20px text and 44px height with matching padding. Formatting, Svelte autofixer (no issues) and diff checks passed. Full checks were not repeated for this CSS-only sizing change.
 
+## Home content drawer appearance
+
+- Matched the mobile Home content transition to Sell/Import: 24px rounded top corners, 20px overlap, 38px centered decorative handle and grey background continuing from quick pills through featured cars. Added hero bottom clearance so the all-cars control keeps its space. The section remains ordinary scrolling content.
+- Visually inspected Home at 390px and 360px with no document overflow; the quick filter button opened and closed the existing full-height filter overlay. Desktop inspected at 1440px and retained its layout. Browser console reported no warnings/errors. Formatting, Svelte autofixer (no issues) and diff checks passed. Full build/type/lint checks were not repeated for this CSS-only change.
+
 ## Limits
 
 This is standalone local template evidence, not owner visual acceptance, mounted Cars release qualification, or a dealer deployment. No messages were sent to a dealer. Sell-car submissions and unrelated CMS/account features remain temporary prototypes. Real dealer collection still needs its own private database, identity and notification configuration, hosting-specific validation, and final dealer content/policy review. Repository-wide lint and the full legacy end-to-end suite were not used as a release claim; checks were scoped to this implementation and browser flows above.

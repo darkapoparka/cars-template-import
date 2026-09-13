@@ -1010,7 +1010,7 @@
 
 	@media (max-width: 767px) {
 		.daynight-featured-vehicles {
-			background: var(--bc-bg);
+			background: var(--bc-bg-strong);
 			padding-top: 0;
 			padding-bottom: 8px;
 		}
