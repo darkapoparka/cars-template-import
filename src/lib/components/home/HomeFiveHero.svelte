@@ -289,7 +289,7 @@
 	};
 	const modeAllText = (action: { mode: string; secondaryLabel?: string }) =>
 		action.mode === 'buy' && hero
-			? `${isEnglish ? 'All' : 'Всички'} ${hero.totalMatches} ${hero.searchSubmitSuffix}`
+			? `${isEnglish ? 'View all' : 'Виж всички'} (${hero.totalMatches})`
 			: (action.secondaryLabel ?? mobileAllLabel);
 	const drawerSubmitLabel = (tab: HomeFiveHeroAction) =>
 		tab.mode === 'buy' ? mobileShowAllCommand : tab.submitLabel;
@@ -1431,8 +1431,8 @@
 			--daynight-mobile-ink: var(--bc-white);
 			--daynight-mobile-ink-muted: rgb(255 255 255 / 0.72);
 			--daynight-mobile-ink-strong: var(--bc-white);
-			--daynight-mobile-cta: var(--bc-surface-soft);
-			--daynight-mobile-cta-ink: var(--bc-ink);
+			--daynight-mobile-cta: rgb(255 255 255 / 0.08);
+			--daynight-mobile-cta-ink: var(--bc-white);
 			--daynight-mobile-action: var(--bc-dark-surface);
 			--daynight-mobile-action-focus: var(--bc-dark-hover);
 			--daynight-mobile-surface: var(--bc-white);
@@ -1665,7 +1665,7 @@
 			background: var(--daynight-mobile-cta, var(--bc-surface-raised));
 			border: 2px solid transparent;
 			background-clip: padding-box;
-			box-shadow: none;
+			box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.14);
 			padding: 0 12px;
 			color: var(--bc-accent-contrast) !important;
 			font-size: var(--bc-text-cta);
@@ -1683,9 +1683,7 @@
 		}
 
 		.daynight-mobile-hero__all:focus-visible {
-			background-color: var(--bc-white);
-			color: var(--bc-ink) !important;
-			outline: 2px solid rgba(28, 28, 28, 0.72);
+			outline: 2px solid var(--bc-white);
 			outline-offset: 2px;
 		}
 

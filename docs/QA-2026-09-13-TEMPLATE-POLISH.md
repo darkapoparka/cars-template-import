@@ -157,6 +157,11 @@ Scope: article reading layouts, compact mobile inventory cards, currency display
 - Type checking passed with zero errors/warnings. Scoped ESLint, Prettier and diff checks passed. Svelte autofixer reported no issues across all seven affected components; existing effect/attachment suggestions were outside this colour-only change.
 - Production build passed. The owned development server was restored on port 6464 afterward.
 
+## Home secondary inventory button
+
+- Shortened the mobile inventory link to `Виж всички (42)` with the count still supplied by live page data. Matched the dark translucent fill, white text and subtle outline of the Sell/Import help control, retaining the compact pill and arrow. Keyboard focus now uses a white outline without changing to a white background.
+- Inspected Home at 390px and confirmed the link opens Inventory. Scoped formatting, ESLint, Svelte autofixer (no issues) and diff checks passed. Full build/type checks were not repeated for this isolated label and CSS change.
+
 ## Limits
 
 This is standalone local template evidence, not owner visual acceptance, mounted Cars release qualification, or a dealer deployment. No messages were sent to a dealer. Sell-car submissions and unrelated CMS/account features remain temporary prototypes. Real dealer collection still needs its own private database, identity and notification configuration, hosting-specific validation, and final dealer content/policy review. Repository-wide lint and the full legacy end-to-end suite were not used as a release claim; checks were scoped to this implementation and browser flows above.
