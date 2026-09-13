@@ -266,6 +266,11 @@
 		text-decoration: none !important;
 	}
 
+	.sell-guide {
+		padding: var(--bc-space-4);
+		border-radius: var(--bc-radius-card);
+		background: var(--bc-white);
+	}
 	.sell-guide h2 {
 		margin: 0;
 		text-align: center;

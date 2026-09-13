@@ -117,6 +117,11 @@ Scope: article reading layouts, compact mobile inventory cards, currency display
 - Removed the reserved 22px step-number column: each number now takes its natural text width with a 4px gap before the heading. Descriptions and the VIN note retain their preceding layout.
 - Inspected `/sell-your-car` at 390px: number widths measured 8.39–9.98px and all number-to-heading gaps measured 4px. Prettier, Svelte autofixer (no issues/suggestions) and diff checks passed. The preceding build/type/lint checks were not repeated for this CSS-only correction.
 
+## Sell guide white card follow-up
+
+- Wrapped the existing guide presentation in one white surface using the existing 12px card radius and 16px spacing token. The VIN note remains inside without a nested surface.
+- Inspected at 390px and 360px; confirmed the computed padding/radius and no horizontal overflow at 390px. Formatting, Svelte autofixer (no issues/suggestions) and diff checks passed. Full checks were not repeated for this three-property CSS change.
+
 ## Limits
 
 This is standalone local template evidence, not owner visual acceptance, mounted Cars release qualification, or a dealer deployment. No messages were sent to a dealer. Sell-car submissions and unrelated CMS/account features remain temporary prototypes. Real dealer collection still needs its own private database, identity and notification configuration, hosting-specific validation, and final dealer content/policy review. Repository-wide lint and the full legacy end-to-end suite were not used as a release claim; checks were scoped to this implementation and browser flows above.
