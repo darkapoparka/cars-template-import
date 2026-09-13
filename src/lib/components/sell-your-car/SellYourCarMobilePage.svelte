@@ -298,6 +298,10 @@
 		align-items: center;
 		gap: var(--bc-space-1) var(--bc-space-2);
 	}
+	.sell-guide__steps li {
+		grid-template-columns: max-content minmax(0, 1fr);
+		column-gap: var(--bc-space-1);
+	}
 	.sell-guide__number {
 		color: var(--bc-accent);
 		font-size: var(--bc-mobile-card-title);

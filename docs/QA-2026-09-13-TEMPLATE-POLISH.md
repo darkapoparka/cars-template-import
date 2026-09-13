@@ -112,6 +112,11 @@ Scope: article reading layouts, compact mobile inventory cards, currency display
 - Inspected `/sell-your-car` at 390px and 360px, including scrolling to the complete VIN note above the bottom navigation. Confirmed description/number alignment, transparent number/tip backgrounds and no horizontal overflow. Desktop inspected at 1440px; browser console reported no warnings/errors. Scoped formatting, ESLint and diff checks passed; Svelte autofixer reported no issues or suggestions.
 - `npm run check` passed with zero errors/warnings and `npm run build` passed. Restored the owned dev server on port 6464 after the build.
 
+## Sell step number spacing correction
+
+- Removed the reserved 22px step-number column: each number now takes its natural text width with a 4px gap before the heading. Descriptions and the VIN note retain their preceding layout.
+- Inspected `/sell-your-car` at 390px: number widths measured 8.39–9.98px and all number-to-heading gaps measured 4px. Prettier, Svelte autofixer (no issues/suggestions) and diff checks passed. The preceding build/type/lint checks were not repeated for this CSS-only correction.
+
 ## Limits
 
 This is standalone local template evidence, not owner visual acceptance, mounted Cars release qualification, or a dealer deployment. No messages were sent to a dealer. Sell-car submissions and unrelated CMS/account features remain temporary prototypes. Real dealer collection still needs its own private database, identity and notification configuration, hosting-specific validation, and final dealer content/policy review. Repository-wide lint and the full legacy end-to-end suite were not used as a release claim; checks were scoped to this implementation and browser flows above.
