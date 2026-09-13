@@ -50,7 +50,6 @@
 		<div class="mobile-service-entry__field">{@render entry()}</div>
 		<Drawer.Root bind:open={infoOpen} direction="bottom" fixed>
 			<div class="mobile-service-entry__meta">
-				<strong>{response}</strong>
 				<Drawer.Trigger class="mobile-service-entry__help">
 					<CircleHelp size={18} aria-hidden="true" />
 					<span>{stepsTitle}</span>
@@ -66,7 +65,7 @@
 					</Drawer.Close>
 				</div>
 				<Drawer.Description class="mobile-service-info-description"
-					>{intro} {meta}</Drawer.Description
+					>{response}. {intro} {meta}</Drawer.Description
 				>
 				<ol>
 					{#each steps as step, index (step.title)}
@@ -111,7 +110,7 @@
 		min-height: calc(100dvh - 126px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
 	}
 	.mobile-service-entry__start {
-		padding: 10px var(--bc-space-4) var(--bc-space-2);
+		padding: 10px var(--bc-space-4) 32px;
 		background: var(--bc-mobile-dark);
 	}
 	.mobile-service-entry__modes {
@@ -190,16 +189,8 @@
 	.mobile-service-entry__meta {
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
-		gap: 4px 12px;
-		margin-top: var(--bc-space-1);
-		color: var(--bc-dark-muted);
-		font-size: var(--bc-mobile-meta);
-		line-height: var(--bc-mobile-label-leading);
-	}
-	.mobile-service-entry__meta strong {
-		color: var(--bc-white);
-		font-weight: 600;
+		justify-content: center;
+		margin-top: 12px;
 	}
 	.mobile-service-entry__alternative {
 		margin-bottom: var(--bc-space-5);
@@ -245,13 +236,14 @@
 	:global(.mobile-service-entry__help) {
 		display: flex;
 		width: auto;
-		min-height: var(--bc-control-height-standard);
+		min-height: 36px;
 		align-items: center;
 		gap: var(--bc-space-2);
 		margin: 0;
-		padding: 0 var(--bc-space-1);
-		border: 0;
-		background: transparent;
+		padding: 0 14px;
+		border: 1px solid rgb(255 255 255 / 0.14);
+		border-radius: var(--bc-radius-pill);
+		background: rgb(255 255 255 / 0.08);
 		color: var(--bc-white);
 		font-size: var(--bc-mobile-meta);
 		font-weight: 600;

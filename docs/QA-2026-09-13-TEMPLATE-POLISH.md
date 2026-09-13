@@ -49,6 +49,11 @@ Scope: article reading layouts, compact mobile inventory cards, currency display
 - In-app browser checks: at 390px and 360px, both routes place the tabs at y=66, input at y=122, and lower panel at y=214. Both use `rgb(9, 10, 11)` for the hero and `rgb(238, 241, 244)` for the panel. Manual sell entry retains a 56px field without shifting the panel; the valuation overlay and help drawer open and close. No document-width overflow or console errors found. Both desktop pages inspected at 1440px.
 - `npm run check`, `npm run build`, scoped Prettier/ESLint, Svelte autofixer for all three changed components, and `git diff --check` passed. Dev server restored on port 6464. No submissions or notification delivery were exercised for this layout change; unit and full end-to-end suites were not repeated.
 
+## Centered help control follow-up
+
+- Renamed the mobile import inventory heading to the shared default "Налични автомобили". Both entry pages now use a centered 36px pill button for "Как работи", with 12px between input/button and button/lower panel. The response note is retained inside the help drawer.
+- Visually inspected sell at 390px and import at 360px; measured horizontal centering and both 12px gaps. Both help drawers opened and closed, and import had no horizontal overflow or console errors. This markup/CSS follow-up uses scoped formatting, lint, Svelte autofixer, and diff checks; the preceding full build and unit suite were not repeated.
+
 ## Limits
 
 This is standalone local template evidence, not owner visual acceptance, mounted Cars release qualification, or a dealer deployment. No messages were sent to a dealer. Sell-car submissions and unrelated CMS/account features remain temporary prototypes. Real dealer collection still needs its own private database, identity and notification configuration, hosting-specific validation, and final dealer content/policy review. Repository-wide lint and the full legacy end-to-end suite were not used as a release claim; checks were scoped to this implementation and browser flows above.

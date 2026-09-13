@@ -44,7 +44,6 @@
 
 	<MobileServiceEntry
 		{serviceVehicles}
-		inventoryTitle="Налични в България"
 		showTitle={false}
 		title={importRequestMobileCopy.title}
 		intro={importRequestMobileCopy.intro}
