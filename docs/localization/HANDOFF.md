@@ -1,6 +1,6 @@
 # Import native EN/BG localization release
 
-Status: implementation and final local acceptance completed on 20 September 2026. Git publication and production acceptance are the next release step; the production receipt will identify the exact application commit and deployment.
+Status: implemented, committed, pushed and verified in production on 20 September 2026. Application release: `b2b99376ccdd7accd6486366220032afbd90d1e3`. Existing Vercel production deployment `dpl_GFCgAQo9Ef6Zzxtx138MxvE6s4bN` is READY and serves `cars-template-import.vercel.app`. This documentation-only receipt does not change application source.
 
 ## Source and publication boundary
 
@@ -35,6 +35,12 @@ Node `24.21.0`, npm `11.19.0`, retained npm lockfile and independent candidate i
 The 32 skips are viewport-specific cases, not unimplemented locale assertions. The mounted run uses an isolated Import fixture, not a Cars trio or dealer application. Browser checks cover the offered route families, both import/Sell modes, calculators, native and no-JavaScript contact, preferences save/dismiss/reload, keyboard focus, blocked storage/cookies, request races, explicit-language conflicts, request isolation, metadata, assets, URL state and narrow layout. [acceptance.json](evidence/acceptance.json) records exact cases, skips, timestamps and log hashes. Browser runs were serial.
 
 Visual spot checks include the English/Bulgarian 320px import screens and desktop/mobile preferences. Captures are stored in this evidence directory. Earlier failures are retained in the local audit: mobile fallback links overlapped fixed navigation; the settings form overflowed narrow widths; an obsolete test compared EN/BG price-label strings instead of the unchanged source amount/currency. Those issues were corrected, and the final runs above passed. Non-fatal retained legacy `@reference`/build-timing warnings remain visible in build logs.
+
+## Verified production release
+
+Application commit: `b2b99376ccdd7accd6486366220032afbd90d1e3`. The committed tree was compared byte-for-byte with all 1,540 tested candidate files; the runtime digest above is unchanged. Existing Git publication produced READY deployment `dpl_GFCgAQo9Ef6Zzxtx138MxvE6s4bN`. The public alias passed 22 HTTP route/resource checks, eight preference/security checks and 15 serial Chromium journeys, with zero failures or skips. HTTPS cookies were verified Secure, host-only, HttpOnly, SameSite=Lax and Path=/. Production checks included both languages, 320/390/1440 preference interaction, native no-JavaScript settings, blocked storage/cookies, stale requests, route language precedence, request isolation and SPA metadata updates. See [production.json](evidence/production.json) for exact cases and the deployment receipt.
+
+Git identity was supplied per invocation from this repository's existing history; no global Git identity or credential configuration was changed. A PortableGit helper-selection prompt was resolved by using the installed credential manager for the authorized push.
 
 ## Production and rollback
 
