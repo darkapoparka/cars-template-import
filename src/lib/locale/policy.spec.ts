@@ -154,6 +154,26 @@ describe('bounded preference-only endpoint', () => {
 			expect(response.status).toBe(400);
 			expect(response.headers.getSetCookie()).toEqual([]);
 		});
+	for (const returnTo of [
+		'/x/..//invalid.example/path',
+		'/%2e%2e//invalid.example/',
+		'/..//invalid.example/path?x=1'
+	])
+		for (const action of ['save', 'dismiss'] as const)
+			for (const format of ['json', 'form'] as const)
+				it(`rejects normalized external return ${action} ${format} ${returnTo}`, async () => {
+					expect(policy.safeReturnPath(returnTo, 'https://fixture.test')).toBeNull();
+					const data = { ...payload, action, returnTo };
+					const response = await policy.preferenceResponse(
+						request(
+							format === 'json' ? JSON.stringify(data) : new URLSearchParams(data).toString(),
+							format === 'json' ? 'application/json' : 'application/x-www-form-urlencoded'
+						)
+					);
+					expect(response.status).toBe(400);
+					expect(response.headers.get('location')).toBeNull();
+					expect(response.headers.getSetCookie()).toEqual([]);
+				});
 	it('rejects duplicate form fields, cross-origin, wrong type, oversized body and method', async () => {
 		expect(
 			(

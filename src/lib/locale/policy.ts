@@ -191,7 +191,11 @@ export function createLocaleRouting<const L extends Language>(input: LocaleConfi
 		try {
 			const url = new URL(value, origin);
 			// Reject encoded path separators, controls and nested escaping, not legitimate query values.
-			if (url.origin !== origin || /%(?:2f|5c|25|0[0-9a-f]|1[0-9a-f]|7f)/i.test(url.pathname))
+			if (
+				url.origin !== origin ||
+				!/^\/(?!\/)/.test(url.pathname) ||
+				/%(?:2f|5c|25|0[0-9a-f]|1[0-9a-f]|7f)/i.test(url.pathname)
+			)
 				return null;
 			const decoded = decodeURIComponent(url.pathname);
 			if (isResource(decoded) || unsupportedLocale(decoded)) return null;
