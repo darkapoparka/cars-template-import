@@ -96,6 +96,7 @@
 			variant="grid"
 			searchable
 			compact
+			prominent
 			icon={LayoutGrid}
 			isEnglish={english}
 			dialogTitle={english ? 'Choose make' : 'Избери марка'}
@@ -107,6 +108,7 @@
 			mode="multi"
 			searchable
 			compact
+			prominent
 			icon={CarFront}
 			isEnglish={english}
 			dialogTitle={english ? 'Choose model' : 'Избери модел'}
@@ -116,6 +118,7 @@
 			bind:selected={priceSelection}
 			mode="single"
 			compact
+			prominent
 			icon={Banknote}
 			isEnglish={english}
 		/>{/if}
@@ -124,6 +127,7 @@
 		bind:selected={mileageSelection}
 		mode="single"
 		compact
+		prominent
 		icon={Gauge}
 		isEnglish={english}
 	/>
@@ -189,7 +193,8 @@
 							>
 						</button>
 						<Action
-							size="primary"
+							size="hero"
+							class="home-hero__search-action"
 							aria-haspopup="dialog"
 							aria-expanded={searchOpen}
 							onclick={() => (searchOpen = true)}
@@ -326,10 +331,26 @@
 		border: 1px solid var(--bc-border-strong);
 		border-radius: var(--bc-radius-md);
 		background: var(--bc-surface-raised);
-		color: var(--bc-copy);
-		font-size: var(--bc-text-filter);
+		color: var(--bc-ink);
+		font-size: var(--bc-text-search-trigger);
 		font-weight: var(--bc-weight-control);
+		line-height: var(--bc-leading-search);
 		text-align: left;
+	}
+	.home-hero__search-trigger :global(svg) {
+		flex: 0 0 auto;
+		color: var(--bc-ink);
+	}
+	.home-hero__search-trigger {
+		min-height: var(--bc-control-height-hero);
+		border-color: var(--bc-route-pill-border);
+	}
+	.home-hero__search :global(.home-hero__search-action) {
+		min-width: 160px;
+		padding-inline: var(--bc-space-5);
+		border-radius: var(--bc-radius-md);
+		font-size: var(--bc-text-search-trigger);
+		font-weight: var(--bc-weight-heading);
 	}
 	.home-hero__search-trigger span {
 		overflow: hidden;

@@ -24,6 +24,7 @@
 		dialogDescription = '',
 		searchPlaceholder = '',
 		compact = false,
+		prominent = false,
 		icon: Icon
 	}: {
 		select: HomeFiveHeroSelect;
@@ -38,6 +39,7 @@
 		dialogDescription?: string;
 		searchPlaceholder?: string;
 		compact?: boolean;
+		prominent?: boolean;
 		icon?: Component<{ size?: number; strokeWidth?: number }>;
 	} = $props();
 	let open = $state(false);
@@ -92,6 +94,7 @@
 		type="button"
 		class="hfp__field"
 		class:hfp__field--compact={compact}
+		class:hfp__field--prominent={prominent}
 		class:hfp__field--selected={selected.length > 0}
 		aria-haspopup="dialog"
 		aria-expanded={open}
@@ -381,5 +384,16 @@
 	.hfp__field--compact.hfp__field--selected {
 		border-color: var(--bc-accent);
 		background: var(--bc-surface);
+	}
+	.hfp__field--prominent {
+		border-color: var(--bc-route-pill-border);
+	}
+	.hfp__field--prominent .hfp__value {
+		color: var(--bc-ink);
+		font-size: var(--bc-text-entry);
+		font-weight: var(--bc-weight-heading);
+	}
+	.hfp__field--prominent :global(svg) {
+		color: var(--bc-ink);
 	}
 </style>
