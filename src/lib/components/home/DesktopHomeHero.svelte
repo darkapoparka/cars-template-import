@@ -22,6 +22,15 @@
 	let { hero, english = false }: { hero: HomeFiveHeroData; english?: boolean } = $props();
 	let modeOverride = $state<HomeFiveHeroActionMode | 'finance' | null>(null);
 	const mode = $derived(modeOverride ?? hero.activeMode);
+	const modeContent = {
+		buy: { title: ['Купи автомобил', 'Buy a car'], action: '/inventory' },
+		finance: { title: ['Автомобил на лизинг', 'Finance a car'], action: '/inventory' },
+		sell: { title: ['Продай автомобил', 'Sell your car'], action: '/sell-your-car' },
+		import: { title: ['Внеси автомобил', 'Import a car'], action: '/import' }
+	} satisfies Record<
+		HomeFiveHeroActionMode | 'finance',
+		{ title: [string, string]; action: string }
+	>;
 	let brandSelection = $state<string[]>([]);
 	let modelSelection = $state<string[]>([]);
 	let priceSelection = $state<string[]>([]);
@@ -56,26 +65,8 @@
 			)
 		);
 	}
-	const title = $derived(
-		mode === 'finance'
-			? english
-				? 'Finance a car'
-				: 'Автомобил на лизинг'
-			: mode === 'import'
-				? english
-					? 'Import a car'
-					: 'Внеси автомобил'
-				: mode === 'sell'
-					? english
-						? 'Sell your car'
-						: 'Продай автомобил'
-					: english
-						? 'Buy a car'
-						: 'Купи автомобил'
-	);
-	const action = $derived(
-		mode === 'import' ? '/import' : mode === 'sell' ? '/sell-your-car' : '/inventory'
-	);
+	const title = $derived(modeContent[mode].title[english ? 1 : 0]);
+	const action = $derived(modeContent[mode].action);
 
 	let searchOpen = $state(false);
 	let keyword = $state('');
