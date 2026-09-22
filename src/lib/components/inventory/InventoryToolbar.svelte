@@ -309,7 +309,7 @@
 	.inventory-view nav {
 		border-radius: var(--bc-radius-panel);
 	}
-	@media (max-width: 1199px) {
+	@media (max-width: 1399px) {
 		.inventory-toolbar__row {
 			grid-template-columns: 1fr auto auto;
 		}
@@ -319,6 +319,23 @@
 		}
 		.inventory-toolbar__row :global(.inventory-toolbar__all) {
 			justify-self: start;
+		}
+	}
+	@media (min-width: 768px) {
+		select,
+		summary,
+		.inventory-toolbar__row :global(.inventory-toolbar__all) {
+			min-height: var(--bc-control-height-standard);
+			font-size: var(--bc-text-control);
+		}
+		.inventory-toolbar__active a {
+			min-height: var(--bc-control-height-compact);
+			padding-inline: var(--bc-space-3);
+		}
+		.inventory-view a[aria-current='true'] {
+			background: var(--bc-bg-strong);
+			border-radius: var(--bc-radius-md);
+			font-weight: var(--bc-weight-heading);
 		}
 	}
 	@media (max-width: 599px) {

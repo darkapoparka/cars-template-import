@@ -101,4 +101,11 @@
 		justify-content: space-between;
 		gap: var(--bc-space-3);
 	}
+	@media (min-width: 768px) {
+		.site-filter-trigger {
+			min-height: var(--bc-control-height-standard);
+			padding-inline: var(--bc-space-3);
+			gap: var(--bc-space-2);
+		}
+	}
 </style>

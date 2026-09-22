@@ -216,4 +216,39 @@
 		border-color: var(--bc-accent);
 		color: var(--bc-accent);
 	}
+	@media (min-width: 768px) {
+		.site-vehicle-card {
+			container-type: inline-size;
+			container-name: vehicle-card;
+		}
+		.site-vehicle-card__actions :global(.site-action) {
+			min-width: 0;
+			min-height: var(--bc-control-height-secondary);
+			padding-inline: var(--bc-space-3);
+			border-radius: var(--bc-radius-md);
+			font-size: var(--bc-text-control);
+		}
+		.site-vehicle-card__actions > button {
+			flex: 0 0 var(--bc-control-height-secondary);
+			width: var(--bc-control-height-secondary);
+			border-radius: var(--bc-radius-md);
+			color: var(--bc-copy);
+		}
+		.site-vehicle-card__actions > button:hover {
+			background: var(--bc-bg-strong);
+		}
+		@container vehicle-card (max-width: 280px) {
+			.site-vehicle-card__body {
+				padding: var(--bc-space-3);
+			}
+			.site-vehicle-card__actions :global(.site-action) {
+				min-height: var(--bc-control-height-compact);
+				font-size: var(--bc-text-label);
+			}
+			.site-vehicle-card__actions > button {
+				flex-basis: var(--bc-control-height-compact);
+				width: var(--bc-control-height-compact);
+			}
+		}
+	}
 </style>

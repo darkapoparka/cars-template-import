@@ -15,15 +15,22 @@ test('public actions retain their readable weight and homepage search emphasis',
 				weight: getComputedStyle(node).fontWeight,
 				height: node.getBoundingClientRect().height,
 				compact: node.classList.contains('size-compact'),
+				card: Boolean(node.closest('.site-vehicle-card')),
+				filter: node.classList.contains('inventory-toolbar__all'),
 				heroSearch: node.classList.contains('home-hero__search-action')
 			}))
 		);
 		for (const item of metrics) {
 			expect(item.weight, route + ' ' + item.text).toBe(item.heroSearch ? '600' : '400');
+			const desktopCard = info.project.name === 'desktop' && item.card;
 			expect(item.size).toBeGreaterThanOrEqual(
-				info.project.name === 'desktop' && !item.compact ? 20 : 18
+				desktopCard
+					? 16
+					: info.project.name === 'desktop' && !item.compact && !item.filter
+						? 20
+						: 18
 			);
-			expect(item.height).toBeGreaterThanOrEqual(44);
+			expect(item.height).toBeGreaterThanOrEqual(desktopCard ? 36 : 44);
 		}
 	}
 });
