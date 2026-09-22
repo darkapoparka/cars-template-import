@@ -387,6 +387,10 @@
 	}
 	.hfp__field--prominent {
 		border-color: var(--bc-route-pill-border);
+		background: var(--bc-bg-strong);
+	}
+	.hfp__field--compact.hfp__field--prominent.hfp__field--selected {
+		background: var(--bc-bg-strong);
 	}
 	.hfp__field--prominent .hfp__value {
 		color: var(--bc-ink);
