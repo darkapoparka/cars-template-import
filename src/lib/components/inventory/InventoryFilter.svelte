@@ -39,7 +39,7 @@
 		>{filter.selectedValues.length ? filter.selectedSummary : filter.label}</span
 	><ChevronDown size={18} aria-hidden="true" />
 </button>
-<Modal bind:open title={filter.label}>
+<Modal bind:open title={filter.label} class="filter-picker-dialog">
 	<form
 		id={formId}
 		class="site-filter-dialog"

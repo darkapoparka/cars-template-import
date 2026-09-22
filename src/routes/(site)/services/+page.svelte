@@ -123,28 +123,24 @@
 	}
 	@media (min-width: 768px) {
 		.service-card {
-			border: 1px solid var(--bc-border);
 			border-radius: var(--bc-radius-card);
-			background: var(--bc-surface-raised);
-			transition: border-color var(--bc-motion-fast);
-		}
-		.service-card:hover,
-		.service-card:focus-within {
-			border-color: var(--bc-border-strong);
+			background: var(--bc-surface);
 		}
 		.service-card__body {
 			gap: var(--bc-space-3);
 		}
 		.service-card__cta {
-			padding: 0;
-			background: transparent;
-			color: var(--bc-ink);
+			min-height: var(--bc-control-height-secondary);
+			padding-inline: var(--bc-space-4);
+			border-radius: var(--bc-radius-md);
+			background: var(--bc-ink);
+			color: var(--bc-white);
 			font-size: var(--bc-text-control);
 			font-weight: var(--bc-weight-action);
 		}
 		a:hover .service-card__cta {
-			background: transparent;
-			color: var(--bc-accent);
+			background: var(--bc-accent);
+			color: var(--bc-accent-contrast);
 		}
 	}
 	@media (max-width: 767.98px) {

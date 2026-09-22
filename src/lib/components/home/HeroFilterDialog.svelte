@@ -117,6 +117,7 @@
 	description={dialogDescription || undefined}
 	wide={variant === 'grid' && opts.length > 6}
 	bodyTone="muted"
+	class="filter-picker-dialog"
 	onOpenAutoFocus={focusSearch}
 >
 	<div class="hfp-picker">
@@ -399,5 +400,45 @@
 	}
 	.hfp__field--prominent :global(svg) {
 		color: var(--bc-ink);
+	}
+	@media (min-width: 768px) {
+		.hfp-picker {
+			padding: 0;
+			border: 0;
+			border-radius: 0;
+		}
+		.hfp__search {
+			min-height: var(--bc-control-height-primary);
+			border-radius: var(--bc-radius-md);
+			background: var(--bc-surface);
+		}
+		.hfp__search input {
+			background: transparent;
+		}
+		.hfp__list {
+			gap: var(--bc-space-1);
+		}
+		.hfp__row {
+			padding: var(--bc-space-2) var(--bc-space-3);
+			border-color: transparent;
+			background: transparent;
+			border-radius: var(--bc-radius-md);
+		}
+		.hfp__chip {
+			min-height: 80px;
+			padding: var(--bc-space-3);
+			border-radius: var(--bc-radius-md);
+			border-color: transparent;
+		}
+		.hfp__chip img {
+			width: 40px;
+			height: 28px;
+		}
+		.hfp__option:hover,
+		.hfp__option[aria-pressed='true'] {
+			background: var(--bc-bg-strong);
+			border-color: transparent;
+			box-shadow: none;
+		}
 	}
 </style>

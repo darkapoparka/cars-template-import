@@ -153,4 +153,26 @@
 		flex-shrink: 0;
 		min-width: 0;
 	}
+	@media (min-width: 768px) {
+		:global(.filter-picker-dialog) {
+			padding: var(--bc-space-6);
+		}
+		:global(.filter-picker-dialog) .site-dialog__header {
+			padding: 0 0 var(--bc-space-4);
+			border: 0;
+		}
+		:global(.filter-picker-dialog) .site-dialog__body {
+			padding: var(--bc-space-1);
+			background: var(--bc-surface-raised);
+		}
+		:global(.filter-picker-dialog) .site-dialog__footer {
+			padding: var(--bc-space-5) 0 0;
+			border: 0;
+		}
+		:global(.filter-picker-dialog) .site-dialog__footer :global(.site-action) {
+			min-width: 96px;
+			font-size: var(--bc-text-control);
+			border-radius: var(--bc-radius-md);
+		}
+	}
 </style>
