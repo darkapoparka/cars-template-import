@@ -47,7 +47,7 @@
 		>
 	</div>
 	<div class="site-vehicle-card__body">
-		<h2><a href={linkHref(href)}>{card.title}</a></h2>
+		<h2><a href={linkHref(href)} title={card.title}>{card.title}</a></h2>
 		<ul aria-label={english ? 'Specifications' : 'Характеристики'}>
 			<li>{card.year}</li>
 			<li>{card.fuel}</li>
@@ -149,9 +149,12 @@
 		font-size: var(--bc-text-h5);
 		font-weight: var(--bc-weight-heading);
 		line-height: var(--bc-leading-h5);
-		min-height: 2.6em;
 	}
 	h2 a {
+		display: block;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
 		text-decoration: none;
 		color: var(--bc-ink);
 	}
@@ -165,9 +168,9 @@
 	}
 	li {
 		border-radius: var(--bc-radius-xs);
-		background: var(--bc-bg-strong);
-		color: var(--bc-ink);
-		padding: var(--bc-space-1) var(--bc-space-2);
+		background: var(--bc-surface);
+		color: var(--bc-copy);
+		padding: 2px var(--bc-space-2);
 		font-size: var(--bc-text-meta);
 		line-height: var(--bc-leading-meta);
 	}

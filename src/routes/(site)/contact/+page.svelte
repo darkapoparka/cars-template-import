@@ -110,6 +110,7 @@
 	.contact-overview {
 		display: grid;
 		gap: var(--bc-space-6);
+		padding-block: var(--bc-space-8);
 	}
 	.contact-channels {
 		display: grid;
@@ -120,10 +121,11 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		gap: var(--bc-space-3);
-		padding: var(--bc-space-6);
-		border-radius: var(--bc-radius-panel);
-		background: var(--bc-surface);
+		gap: var(--bc-space-2);
+		padding: var(--bc-space-5);
+		border: 1px solid var(--bc-border);
+		border-radius: var(--bc-radius-card);
+		background: var(--bc-surface-raised);
 		color: var(--bc-ink);
 		text-decoration: none;
 		text-align: center;
@@ -134,10 +136,10 @@
 	.contact-channel__icon {
 		display: grid;
 		place-items: center;
-		width: var(--bc-control-height-hero);
-		height: var(--bc-control-height-hero);
+		width: var(--bc-control-height-standard);
+		height: var(--bc-control-height-standard);
 		border-radius: var(--bc-radius-pill);
-		background: var(--bc-white);
+		background: var(--bc-bg-strong);
 		color: var(--bc-ink);
 	}
 	.contact-channel h2 {
@@ -153,10 +155,11 @@
 		color: var(--bc-copy);
 	}
 	.contact-intake {
-		background: var(--bc-bg-strong);
+		padding-top: var(--bc-space-2);
 	}
 	.contact-form-panel {
 		max-width: var(--bc-container-narrow);
+		border: 1px solid var(--bc-border);
 		border-radius: var(--bc-radius-panel);
 		padding: var(--bc-space-8);
 		background: var(--bc-surface-raised);

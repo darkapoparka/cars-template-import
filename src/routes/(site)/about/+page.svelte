@@ -129,4 +129,29 @@
 			height: 360px;
 		}
 	}
+	@media (min-width: 768px) {
+		#about-team {
+			padding-top: var(--bc-space-6);
+		}
+		.about-team {
+			width: 100%;
+			max-width: 1120px;
+			margin-inline: auto;
+		}
+		.about-team article {
+			border: 1px solid var(--bc-border);
+			border-radius: var(--bc-radius-card);
+			background: var(--bc-surface-raised);
+		}
+		.about-team img {
+			height: auto;
+			aspect-ratio: 1.1;
+		}
+		.about-team article > div {
+			gap: var(--bc-space-2);
+		}
+		.about-team h3 {
+			margin: 0;
+		}
+	}
 </style>
