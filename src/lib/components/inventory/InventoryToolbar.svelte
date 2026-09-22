@@ -177,10 +177,8 @@
 	}
 	.inventory-toolbar__filters {
 		display: flex;
-		overflow-x: auto;
+		flex-wrap: wrap;
 		min-width: 0;
-		padding-block: 3px;
-		scrollbar-width: thin;
 		gap: var(--bc-space-2);
 	}
 	.inventory-toolbar__sort {
@@ -268,6 +266,19 @@
 		background: transparent;
 		color: var(--bc-ink);
 		font: inherit;
+		font-size: var(--bc-text-search-trigger);
+	}
+	.inventory-all__search input::placeholder {
+		color: var(--bc-copy);
+		opacity: 1;
+	}
+	.inventory-all__search:focus-within {
+		outline: 2px solid var(--bc-focus);
+		outline-offset: 2px;
+	}
+	.inventory-all__search input:focus-visible {
+		outline: none !important;
+		box-shadow: none !important;
 	}
 	.inventory-all__actions {
 		display: flex;

@@ -28,7 +28,7 @@
 	<section class="site-section site-container services-grid">
 		{#each data.services as service, index (service.title)}
 			<article class="service-card">
-				<a href={linkHref(hrefFor(service.href))}>
+				<a href={hrefFor(service.href)}>
 					<img
 						src={assetHref(service.image)}
 						alt=""

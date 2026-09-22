@@ -77,9 +77,10 @@
 		padding: 0 var(--bc-space-4);
 		border: 1px solid var(--bc-route-pill-border);
 		border-radius: var(--bc-radius-pill);
-		background: var(--bc-surface-raised);
+		background: var(--bc-bg-strong);
 		color: var(--bc-ink);
 		font-size: var(--bc-text-filter);
+		font-weight: var(--bc-weight-heading);
 		white-space: nowrap;
 	}
 	.site-filter-trigger:hover {

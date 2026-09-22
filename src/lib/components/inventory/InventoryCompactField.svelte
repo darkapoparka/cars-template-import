@@ -205,9 +205,9 @@
 	}
 	.compact-field > label,
 	.compact-field__label {
-		color: var(--bc-copy);
+		color: var(--bc-ink);
 		font-size: var(--bc-text-label);
-		font-weight: var(--bc-weight-control);
+		font-weight: var(--bc-weight-heading);
 	}
 	.compact-field :global(.compact-field__trigger),
 	.compact-field__number {
@@ -215,9 +215,9 @@
 		align-items: center;
 		gap: var(--bc-space-2);
 		width: 100%;
-		min-height: var(--bc-control-height-standard);
+		min-height: var(--bc-control-height-primary);
 		padding: var(--bc-space-2) var(--bc-space-3);
-		border: 1px solid var(--bc-border);
+		border: 1px solid var(--bc-route-pill-border);
 		border-radius: var(--bc-radius-md);
 		background: var(--bc-surface);
 		color: var(--bc-ink);

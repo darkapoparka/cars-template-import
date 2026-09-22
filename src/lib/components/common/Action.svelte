@@ -121,4 +121,7 @@
 		opacity: 0.5;
 		cursor: not-allowed;
 	}
+	.site-action :global(svg) {
+		flex-shrink: 0;
+	}
 </style>

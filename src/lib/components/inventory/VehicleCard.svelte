@@ -83,6 +83,14 @@
 		border-radius: var(--bc-radius-card);
 		background: var(--bc-surface-raised);
 		overflow: hidden;
+		transition:
+			border-color var(--bc-motion-fast),
+			box-shadow var(--bc-motion-fast);
+	}
+	.site-vehicle-card:hover,
+	.site-vehicle-card:focus-within {
+		border-color: var(--bc-border-strong);
+		box-shadow: var(--bc-shadow-card);
 	}
 	.site-vehicle-card__media {
 		position: relative;
@@ -140,7 +148,7 @@
 		font-family: var(--bc-font-heading);
 		font-size: var(--bc-text-h5);
 		font-weight: var(--bc-weight-heading);
-		line-height: 1.3;
+		line-height: var(--bc-leading-h5);
 		min-height: 2.6em;
 	}
 	h2 a {
@@ -157,9 +165,9 @@
 	}
 	li {
 		border-radius: var(--bc-radius-xs);
-		background: var(--bc-surface);
-		color: var(--bc-copy);
-		padding: 2px 6px;
+		background: var(--bc-bg-strong);
+		color: var(--bc-ink);
+		padding: var(--bc-space-1) var(--bc-space-2);
 		font-size: var(--bc-text-meta);
 		line-height: var(--bc-leading-meta);
 	}
@@ -173,12 +181,13 @@
 	}
 	strong {
 		color: var(--bc-ink);
-		font: var(--bc-weight-heading) 1.5rem/1.2 var(--bc-font-heading);
+		font: var(--bc-weight-heading) var(--bc-text-h4)/var(--bc-leading-h4) var(--bc-font-heading);
+		font-variant-numeric: tabular-nums;
 		white-space: nowrap;
 	}
 	.site-vehicle-card__price a {
 		font-size: var(--bc-text-meta);
-		color: var(--bc-muted);
+		color: var(--bc-copy);
 		text-decoration: none;
 	}
 	.site-vehicle-card__price a:hover {

@@ -2,7 +2,9 @@ import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { visit } from './helpers';
 
-test('public action labels share a readable regular-weight role', async ({ page }, info) => {
+test('public actions retain their readable weight and homepage search emphasis', async ({
+	page
+}, info) => {
 	for (const route of ['/', '/inventory', '/about', '/contact', '/services', '/financing']) {
 		await visit(page, route);
 		const actions = page.locator('.site-action:visible');
@@ -12,11 +14,12 @@ test('public action labels share a readable regular-weight role', async ({ page 
 				size: parseFloat(getComputedStyle(node).fontSize),
 				weight: getComputedStyle(node).fontWeight,
 				height: node.getBoundingClientRect().height,
-				compact: node.classList.contains('size-compact')
+				compact: node.classList.contains('size-compact'),
+				heroSearch: node.classList.contains('home-hero__search-action')
 			}))
 		);
 		for (const item of metrics) {
-			expect(item.weight, route + ' ' + item.text).toBe('400');
+			expect(item.weight, route + ' ' + item.text).toBe(item.heroSearch ? '600' : '400');
 			expect(item.size).toBeGreaterThanOrEqual(
 				info.project.name === 'desktop' && !item.compact ? 20 : 18
 			);
@@ -75,8 +78,8 @@ test('buying-panel selections retain their size and weight after choosing', asyn
 	await dialog.getByRole('button', { name: /Готово/ }).click();
 	await expect(trigger).toBeFocused();
 	const value = trigger.locator('.hfp__value');
-	expect(await value.evaluate((node) => getComputedStyle(node).fontWeight)).toBe('400');
-	expect(await value.evaluate((node) => getComputedStyle(node).fontSize)).toBe('18px');
+	expect(await value.evaluate((node) => getComputedStyle(node).fontWeight)).toBe('600');
+	expect(await value.evaluate((node) => getComputedStyle(node).fontSize)).toBe('20px');
 	await expect(trigger).toHaveClass(/hfp__field--compact/);
 	await expect(value).toContainText('BMW');
 });

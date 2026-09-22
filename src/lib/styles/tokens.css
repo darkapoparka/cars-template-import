@@ -306,6 +306,12 @@
 	--bc-motion-drawer: 280ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+@media (min-width: 768px) {
+	.site-shell {
+		--bc-text-meta: 0.875rem;
+	}
+}
+
 /* Desktop actions are larger, not heavier. Mobile keeps its established scale. */
 @media (min-width: 768px) {
 	:root {
