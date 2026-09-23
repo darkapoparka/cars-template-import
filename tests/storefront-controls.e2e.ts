@@ -120,7 +120,7 @@ test('compact filters fit on desktop and retain an accessible persistent footer'
 	const footer = dialog.locator('.site-dialog__footer');
 	const initial = await footer.boundingBox();
 	await dialog.getByRole('tab', { name: 'Модел', exact: true }).click();
-	await dialog.getByRole('tabpanel').evaluate((node) => {
+	await dialog.locator('.desktop-picker__options').evaluate((node) => {
 		node.scrollTop = node.scrollHeight;
 	});
 	expect((await footer.boundingBox())!.y).toBe(initial!.y);

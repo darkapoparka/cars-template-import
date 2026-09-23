@@ -11,6 +11,12 @@
 	let query = $state('');
 	let input = $state<HTMLInputElement>();
 	let root = $state<HTMLDivElement>();
+	let options = $state<HTMLDivElement>();
+	$effect(() => {
+		// A new search starts at its first match, even after browsing the end of the list.
+		void query;
+		if (options) options.scrollTop = 0;
+	});
 	const searchable = $derived(
 		['brand', 'model'].includes(filter.name) || filter.options.length > 8
 	);
@@ -43,7 +49,7 @@
 	}
 </script>
 
-<div class="desktop-picker" class:desktop-picker--brands={filter.name === 'brand'} bind:this={root}>
+<div class="desktop-picker" bind:this={root}>
 	{#if searchable}<div class="desktop-picker__search">
 			<label class="filter-control"
 				><Search size={20} aria-hidden="true" /><span class="sr-only">{searchLabel}</span><input
@@ -58,7 +64,7 @@
 				/></label
 			>
 		</div>{/if}
-	<div class="desktop-picker__options">
+	<div class="desktop-picker__options" bind:this={options}>
 		{#each matching as option (option.value)}<InventoryFilterChoice
 				label={option.label}
 				image={option.image}
@@ -72,21 +78,28 @@
 </div>
 
 <style>
+	.desktop-picker {
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+		min-height: 0;
+	}
 	.desktop-picker__search {
-		position: sticky;
-		top: 0;
-		z-index: 1;
-		padding-block: var(--bc-space-1) var(--bc-space-3);
+		flex: none;
+		padding: var(--bc-space-1) var(--bc-space-1) var(--bc-space-6);
 		background: var(--bc-surface-raised);
 	}
 	.desktop-picker__options {
+		flex: 1;
+		min-height: 0;
+		overflow-y: auto;
+		overscroll-behavior: contain;
+		scrollbar-width: thin;
+		padding: var(--bc-space-1);
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 		align-content: start;
-		gap: var(--bc-space-3);
-	}
-	.desktop-picker--brands .desktop-picker__options {
-		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: var(--bc-space-2) var(--bc-space-6);
 	}
 	@media (max-width: 767px) {
 		.desktop-picker__options {

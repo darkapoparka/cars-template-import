@@ -97,6 +97,7 @@
 
 <style>
 	.range-fields {
+		flex: none;
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 		gap: var(--bc-space-3);
@@ -113,6 +114,11 @@
 		color: var(--bc-copy);
 	}
 	.range-presets {
+		min-height: 0;
+		overflow-y: auto;
+		overscroll-behavior: contain;
+		scrollbar-width: thin;
+		padding: var(--bc-space-1);
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 		gap: var(--bc-space-2);

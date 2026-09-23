@@ -38,12 +38,6 @@
 		filter.name === 'priceTo' ? 'minPrice' : 'minMileage';
 	let picker = $state<DesktopFilterPicker>();
 	let filterForm = $state<HTMLFormElement>();
-	let filterPanel = $state<HTMLDivElement>();
-	$effect(() => {
-		// Each category starts at its heading, even after scrolling a long model list.
-		void activeFilter?.id;
-		if (filterPanel) filterPanel.scrollTop = 0;
-	});
 	let resultCount = $state<number | null>(null);
 	let counting = $state(false);
 	const draftFilters = $derived.by(() => {
@@ -243,6 +237,13 @@
 	wide
 	class="inventory-filters-dialog desktop-filter-dialog"
 >
+	{#snippet headerActions()}
+		{#if currentFilter && (draft[currentFilter.id]?.length || minimums[currentFilter.id])}
+			<button type="button" class="inventory-all__clear-category" onclick={clearCategory}
+				>{english ? 'Clear selection' : 'Изчисти избора'}</button
+			>
+		{/if}
+	{/snippet}
 	<form
 		class="inventory-all__form"
 		bind:this={filterForm}
@@ -309,20 +310,11 @@
 		</div>
 		<div
 			class="inventory-all__panel"
-			bind:this={filterPanel}
 			role="tabpanel"
 			id={formId + '-panel'}
 			aria-labelledby={activeFilter ? formId + '-' + activeFilter.id : formId + '-keyword-tab'}
 			tabindex="0"
 		>
-			<div class="inventory-all__panel-heading">
-				<h2>{currentFilter?.label ?? (english ? 'Search' : 'Търсене')}</h2>
-				{#if currentFilter && (draft[currentFilter.id]?.length || minimums[currentFilter.id])}
-					<button type="button" class="inventory-all__clear-category" onclick={clearCategory}
-						>{english ? 'Clear selection' : 'Изчисти избора'}</button
-					>
-				{/if}
-			</div>
 			{#if currentFilter}
 				{#key currentFilter.id}{#if currentFilter.numericInput}<DesktopFilterRange
 							bind:this={rangePicker}
@@ -395,8 +387,8 @@
 
 <style>
 	:global(.site-dialog.inventory-filters-dialog) {
-		width: min(880px, calc(100vw - 2 * var(--bc-space-6)));
-		height: min(560px, calc(100dvh - 2 * var(--bc-space-6)));
+		width: min(1040px, calc(100vw - 2 * var(--bc-space-6)));
+		height: min(640px, calc(100dvh - 2 * var(--bc-space-6)));
 		max-height: calc(100dvh - 2 * var(--bc-space-6));
 	}
 	:global(.site-dialog.inventory-filters-dialog .site-dialog__header) {
@@ -405,8 +397,10 @@
 		color: var(--bc-ink);
 	}
 	:global(.inventory-filters-dialog .site-dialog__icon) {
+		width: var(--bc-control-height-standard);
+		height: var(--bc-control-height-standard);
 		color: var(--bc-ink);
-		background: var(--bc-surface);
+		background: transparent;
 		border-radius: var(--bc-radius-pill);
 	}
 	:global(.inventory-filters-dialog .site-dialog__icon:hover) {
@@ -419,7 +413,7 @@
 	}
 	:global(.site-dialog.inventory-filters-dialog .site-dialog__footer) {
 		padding: var(--bc-space-3) var(--bc-space-6);
-		background: var(--bc-surface);
+		background: var(--bc-surface-raised);
 	}
 	:global(.site-dialog.inventory-filters-dialog .site-dialog__footer .site-action) {
 		min-height: var(--bc-control-height-primary);
@@ -437,14 +431,12 @@
 		gap: var(--bc-space-1);
 		margin: 0 var(--bc-space-6);
 		padding: var(--bc-space-1);
-		border-radius: var(--bc-radius-control);
-		background: var(--bc-surface);
 	}
 	.inventory-all__navigation button {
 		position: relative;
-		flex: 1 0 auto;
+		flex: 0 0 auto;
 		min-height: var(--bc-control-height-standard);
-		padding: var(--bc-space-2);
+		padding: var(--bc-space-2) var(--bc-space-4);
 		border: 0;
 		border-radius: var(--bc-radius-md);
 		background: transparent;
@@ -458,8 +450,8 @@
 		color: var(--bc-ink);
 	}
 	.inventory-all__navigation button[aria-selected='true'] {
-		background: var(--bc-ink);
-		color: var(--bc-white);
+		background: var(--bc-bg-strong);
+		color: var(--bc-ink);
 	}
 	.inventory-all__navigation button:focus-visible,
 	.inventory-all__clear-category:focus-visible {
@@ -493,33 +485,19 @@
 		flex: none;
 	}
 	.inventory-all__panel {
+		display: flex;
+		flex-direction: column;
 		min-width: 0;
 		min-height: 0;
 		padding: var(--bc-space-5) var(--bc-space-6);
-		overflow: auto;
-		overscroll-behavior: contain;
-		scrollbar-gutter: stable;
-		scrollbar-width: thin;
-		scrollbar-color: var(--bc-border-strong) var(--bc-surface-raised);
-	}
-	.inventory-all__panel-heading {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: var(--bc-space-4);
-		min-height: var(--bc-control-height-standard);
-		margin-bottom: var(--bc-space-2);
-	}
-	.inventory-all__panel h2 {
-		margin: 0;
-		font: var(--bc-weight-heading) var(--bc-text-h4)/1.25 var(--bc-font-body);
+		overflow: hidden;
 	}
 	.inventory-all__clear-category {
 		min-height: var(--bc-control-height-standard);
 		padding: 0 var(--bc-space-3);
 		border: 0;
 		border-radius: var(--bc-radius-md);
-		background: var(--bc-surface);
+		background: transparent;
 		color: var(--bc-copy);
 		font: inherit;
 		cursor: pointer;
@@ -550,9 +528,6 @@
 		flex: 1;
 	}
 	@media (min-width: 768px) and (max-width: 900px) {
-		:global(.site-dialog.inventory-filters-dialog) {
-			height: min(600px, calc(100dvh - 2 * var(--bc-space-6)));
-		}
 		.inventory-all__panel {
 			padding-block: var(--bc-space-4);
 		}

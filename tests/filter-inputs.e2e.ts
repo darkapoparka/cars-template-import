@@ -74,7 +74,7 @@ test('desktop categories stay readable and stationary across viewport sizes', as
 	}
 });
 
-test('category tabs keep actions visible while long choices scroll', async ({ page }) => {
+test('category tabs and search stay visible while long choices scroll', async ({ page }) => {
 	await page.setViewportSize({ width: 1440, height: 600 });
 	await visit(page, '/en/inventory');
 	await page.getByRole('button', { name: 'All filters', exact: true }).click();
@@ -83,12 +83,17 @@ test('category tabs keep actions visible while long choices scroll', async ({ pa
 	await expect(dialog.getByRole('tablist')).toHaveAttribute('aria-orientation', 'horizontal');
 	await dialog.getByRole('tab', { name: 'Model', exact: true }).click();
 	const footer = await dialog.locator('.site-dialog__footer').boundingBox();
-	await dialog.locator('.inventory-all__panel').evaluate((n) => (n.scrollTop = n.scrollHeight));
+	const search = await dialog.getByRole('searchbox').boundingBox();
+	const options = dialog.locator('.desktop-picker__options');
+	await options.evaluate((n) => (n.scrollTop = n.scrollHeight));
+	expect(await options.evaluate((n) => n.scrollTop)).toBeGreaterThan(0);
+	expect(await dialog.getByRole('searchbox').boundingBox()).toEqual(search);
+	await expect(dialog.getByRole('searchbox')).toBeInViewport();
 	expect((await dialog.locator('.site-dialog__footer').boundingBox())!.y).toBe(footer!.y);
+	await dialog.getByRole('searchbox').fill('Audi');
+	await expect(dialog.getByRole('checkbox', { name: 'Audi A7', exact: true })).toBeInViewport();
 	await dialog.getByRole('tab', { name: 'Price', exact: true }).click();
-	await expect
-		.poll(() => dialog.locator('.inventory-all__panel').evaluate((n) => n.scrollTop))
-		.toBe(0);
+	await expect.poll(() => dialog.locator('.range-presets').evaluate((n) => n.scrollTop)).toBe(0);
 	await expect(
 		dialog.getByRole('spinbutton', { name: 'Minimum price (EUR)', exact: true })
 	).toBeInViewport();

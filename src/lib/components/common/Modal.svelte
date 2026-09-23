@@ -19,6 +19,7 @@
 		onOpenAutoFocus,
 		onEscapeKeydown,
 		headerContent,
+		headerActions,
 		class: className = ''
 	}: {
 		open?: boolean;
@@ -34,6 +35,7 @@
 		onOpenAutoFocus?: (event: Event) => void;
 		onEscapeKeydown?: (event: KeyboardEvent) => void;
 		headerContent?: Snippet;
+		headerActions?: Snippet;
 		class?: string;
 	} = $props();
 </script>
@@ -65,6 +67,7 @@
 							>{description}</Dialog.Description
 						>{/if}
 				</div>
+				{#if headerActions}{@render headerActions()}{/if}
 				{#if variant === 'filter'}
 					<Dialog.Close
 						class="site-dialog__icon"
