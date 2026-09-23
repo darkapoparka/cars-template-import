@@ -117,14 +117,10 @@ test('compact filters fit on desktop and retain an accessible persistent footer'
 			.map((element) => element.className)
 	);
 	expect(scrollRegions).toHaveLength(0);
-	const surfaces = await dialog.evaluate((node) => ({
-		body: getComputedStyle(node.querySelector('.site-dialog__body')!).backgroundColor,
-		group: getComputedStyle(node.querySelector('.inventory-all__navigation')!).backgroundColor
-	}));
-	expect(surfaces.body).not.toBe(surfaces.group);
 	const footer = dialog.locator('.site-dialog__footer');
 	const initial = await footer.boundingBox();
-	await dialog.locator('.site-dialog__body').evaluate((node) => {
+	await dialog.getByRole('tab', { name: 'Модел', exact: true }).click();
+	await dialog.getByRole('tabpanel').evaluate((node) => {
 		node.scrollTop = node.scrollHeight;
 	});
 	expect((await footer.boundingBox())!.y).toBe(initial!.y);

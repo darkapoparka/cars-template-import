@@ -1,8 +1,77 @@
 import { expect, test } from '@playwright/test';
+import AxeBuilder from '@axe-core/playwright';
 import { visit } from './helpers';
 
 test.beforeEach(({ isMobile }) => {
 	test.skip(Boolean(isMobile), 'Desktop filter composition only.');
+});
+
+test('clearing a category retains other drafts and returns focus to its input', async ({
+	page
+}) => {
+	await visit(page, '/en/inventory?brand=BMW&minPrice=10000&maxPrice=40000');
+	await page.getByRole('button', { name: 'All filters', exact: true }).click();
+	const dialog = page.getByRole('dialog');
+	await dialog.getByRole('tab', { name: /^Price/ }).click();
+	await dialog.getByRole('button', { name: 'Clear selection', exact: true }).click();
+	await expect(
+		dialog.getByRole('spinbutton', { name: 'Minimum price (EUR)', exact: true })
+	).toBeFocused();
+	await expect(
+		dialog.getByRole('spinbutton', { name: 'Minimum price (EUR)', exact: true })
+	).toBeEmpty();
+	await expect(
+		dialog.getByRole('spinbutton', { name: 'Maximum price (EUR)', exact: true })
+	).toBeEmpty();
+	await dialog.getByRole('tab', { name: /^Make/ }).click();
+	await expect(dialog.getByRole('checkbox', { name: 'BMW', exact: true })).toBeChecked();
+	await dialog.getByRole('button', { name: 'Show cars', exact: true }).click();
+	await expect(page).toHaveURL(
+		(url) =>
+			url.searchParams.get('brand') === 'BMW' &&
+			!url.searchParams.has('minPrice') &&
+			!url.searchParams.has('maxPrice')
+	);
+});
+
+test('desktop categories stay readable and stationary across viewport sizes', async ({ page }) => {
+	for (const width of [768, 1024, 1440, 1920]) {
+		await page.setViewportSize({ width, height: 800 });
+		await visit(page, '/en/inventory');
+		await page.getByRole('button', { name: 'All filters', exact: true }).click();
+		const dialog = page.getByRole('dialog');
+		const footer = await dialog.locator('.site-dialog__footer').boundingBox();
+		for (const name of ['Make', 'Model', 'Price', 'Fuel', 'Extras']) {
+			await dialog.getByRole('tab', { name, exact: true }).click();
+			await expect(dialog.getByRole('button', { name: 'Show cars', exact: true })).toBeInViewport();
+			expect((await dialog.locator('.site-dialog__footer').boundingBox())!.y).toBe(footer!.y);
+			const metrics = await dialog
+				.locator('[role="tab"], .filter-control input, .filter-choice, .inventory-all__apply')
+				.evaluateAll((nodes) =>
+					nodes.map((node) => ({
+						text: node.textContent,
+						size: parseFloat(getComputedStyle(node).fontSize),
+						overflows: node.scrollWidth > node.clientWidth + 1
+					}))
+				);
+			for (const metric of metrics) {
+				expect(metric.size, `${width}: ${metric.text}`).toBeGreaterThanOrEqual(20);
+				expect(metric.overflows, `${width}: ${metric.text}`).toBe(false);
+			}
+		}
+		await dialog.getByRole('tab', { name: 'Make', exact: true }).click();
+		const tabs = await dialog.getByRole('tablist').boundingBox();
+		await dialog.getByRole('checkbox', { name: 'BMW', exact: true }).check();
+		expect(await dialog.getByRole('tablist').boundingBox()).toEqual(tabs);
+		if (width === 1440) {
+			const accessibility = await new AxeBuilder({ page })
+				.include('[role="dialog"]')
+				.withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
+				.analyze();
+			expect(accessibility.violations).toEqual([]);
+		}
+		await page.keyboard.press('Escape');
+	}
 });
 
 test('category tabs keep actions visible while long choices scroll', async ({ page }) => {
