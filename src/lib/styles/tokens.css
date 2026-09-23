@@ -251,6 +251,9 @@
 	--bc-footer-link: #ccd0d5;
 	--bc-footer-ink: #f7f7f7;
 	--bc-dark-muted: #c4c7cb;
+	--bc-glass-surface: rgb(255 255 255 / 0.12);
+	--bc-glass-hover: rgb(255 255 255 / 0.24);
+	--bc-glass-border: rgb(255 255 255 / 0.4);
 	--bc-mobile-appbar-height: 56px;
 	--bc-desktop-page-hero-height: 360px;
 	--bc-mobile-nav-height: 70px;

@@ -6,6 +6,7 @@
 	import ContactBanner from '$lib/components/common/ContactBanner.svelte';
 	import SocialLinks from '$lib/components/common/SocialLinks.svelte';
 	import Action from '$lib/components/common/Action.svelte';
+	import MapPin from '@lucide/svelte/icons/map-pin';
 	let { data }: PageProps = $props();
 	const english = $derived(data.locale === 'en');
 	const about = $derived(data.about);
@@ -22,12 +23,17 @@
 		title={english ? 'About us' : 'За нас'}
 		description={about.hero.description}
 		image={about.hero.image}
+		desktopImage="/assets/daynight/banners/about-desktop-v2.webp"
 		align="center"
 	>
 		{#snippet desktopActions()}
-			<Action href="/contact" size="hero"
-				>{english ? 'Contact our team' : 'Свържи се с екипа'}</Action
+			<Action href={data.site.contact.mapHref} variant="glass" size="hero"
+				><MapPin size={20} aria-hidden="true" />{english
+					? 'Get directions'
+					: 'Как да стигнем'}</Action
 			>
+		{/snippet}
+		{#snippet desktopSecondaryActions()}
 			<SocialLinks tone="dark" />
 		{/snippet}
 	</PageIntro>

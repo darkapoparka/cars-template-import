@@ -34,6 +34,7 @@
 	<PageIntro
 		title={english ? 'Services for your car' : 'Услуги за твоя автомобил'}
 		image="/assets/daynight/services/premium-cars-banner-generated.webp"
+		desktopImage="/assets/daynight/banners/services-desktop-v2.webp"
 		align="center"
 		desktopDescription={data.directory.description}
 	>
@@ -41,6 +42,18 @@
 			<form class="service-search" role="search" method="GET">
 				<SearchField bind:value={query} label={data.directory.search} controls="service-results" />
 			</form>
+		{/snippet}
+		{#snippet desktopSecondaryActions()}
+			<div class="service-quick-filters" role="group" aria-label={data.directory.quickLabel}>
+				{#each data.directory.quickFilters as filter (filter.query)}
+					<Action
+						variant="glass"
+						size="compact"
+						aria-pressed={query === filter.query}
+						onclick={() => (query = filter.query)}>{filter.label}</Action
+					>
+				{/each}
+			</div>
 		{/snippet}
 	</PageIntro>
 	<div class="site-container service-results-heading site-desktop-only">
@@ -92,6 +105,16 @@
 </main>
 
 <style>
+	.service-quick-filters {
+		display: flex;
+		justify-content: center;
+		flex-wrap: wrap;
+		gap: var(--bc-space-2);
+	}
+	.service-quick-filters :global(.site-action) {
+		border-radius: var(--bc-radius-pill);
+		padding-inline: var(--bc-space-4);
+	}
 	.service-search {
 		width: 100%;
 		max-width: 640px;
@@ -214,17 +237,17 @@
 			gap: var(--bc-space-2);
 		}
 		.service-card__cta {
-			min-height: var(--bc-control-height-secondary);
-			padding-inline: 0;
+			min-height: var(--bc-control-height-standard);
+			padding: var(--bc-space-2) var(--bc-space-4);
 			border-radius: var(--bc-radius-md);
-			background: transparent;
-			color: var(--bc-accent);
+			background: var(--bc-ink);
+			color: var(--bc-white);
 			font-size: var(--bc-text-control);
 			font-weight: var(--bc-weight-action);
 		}
 		a:hover .service-card__cta {
-			background: transparent;
-			color: var(--bc-accent-hover);
+			background: var(--bc-accent);
+			color: var(--bc-accent-contrast);
 		}
 	}
 	@media (max-width: 767.98px) {

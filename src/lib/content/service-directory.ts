@@ -9,6 +9,8 @@ type DirectoryCopy = {
 	count: string;
 	empty: string;
 	clear: string;
+	quickLabel: string;
+	quickFilters: { label: string; query: string }[];
 	details: Record<AuxeroSupportService['id'], ServiceDetail>;
 };
 
@@ -21,6 +23,14 @@ export const serviceDirectoryCopy: Record<Locale, DirectoryCopy> = {
 		count: 'услуги',
 		empty: 'Няма намерени услуги. Опитай с „внос“, „документи“ или „продажба“.',
 		clear: 'Изчисти търсенето',
+		quickLabel: 'Бърз избор на услуга',
+		quickFilters: [
+			{ label: 'Всички', query: '' },
+			{ label: 'Проверка / VIN', query: 'VIN' },
+			{ label: 'Продажба', query: 'продажба' },
+			{ label: 'Документи', query: 'документи' },
+			{ label: 'Оглед', query: 'оглед' }
+		],
 		details: {
 			sourcing: {
 				href: '/inventory',
@@ -71,6 +81,14 @@ export const serviceDirectoryCopy: Record<Locale, DirectoryCopy> = {
 		count: 'services',
 		empty: 'No matching services. Try “import”, “documents” or “selling”.',
 		clear: 'Clear search',
+		quickLabel: 'Quick service filters',
+		quickFilters: [
+			{ label: 'All', query: '' },
+			{ label: 'Check / VIN', query: 'VIN' },
+			{ label: 'Selling', query: 'selling' },
+			{ label: 'Documents', query: 'documents' },
+			{ label: 'Viewing', query: 'viewing' }
+		],
 		details: {
 			sourcing: {
 				href: '/inventory',

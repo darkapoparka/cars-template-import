@@ -48,18 +48,20 @@
 			title={english ? 'Contact us' : 'Контакти'}
 			description={data.site.contact.appointment}
 			image="/assets/daynight/proof-studio-import-handoff.webp"
+			desktopImage="/assets/daynight/banners/contact-desktop-v2.webp"
 			align="center"
 		>
 			{#snippet desktopActions()}
 				<Action href={data.site.contact.phoneHref} size="hero"
 					><Phone size={20} aria-hidden="true" />{english ? 'Call us' : 'Обади се'}</Action
 				>
-				<Action href={data.site.contact.mapHref} variant="inverse" size="hero"
+				<Action href={data.site.contact.mapHref} variant="glass" size="hero"
 					><MapPin size={20} aria-hidden="true" />{english
 						? 'Get directions'
 						: 'Как да стигнеш'}</Action
 				>
 			{/snippet}
+			{#snippet desktopSecondaryActions()}<SocialLinks tone="dark" />{/snippet}
 		</PageIntro>
 		<section
 			class="site-section site-container contact-overview"
@@ -77,7 +79,6 @@
 					</a>
 				{/each}
 			</div>
-			<SocialLinks />
 		</section>
 		<section class="site-section contact-intake">
 			<div class="site-container contact-form-panel">

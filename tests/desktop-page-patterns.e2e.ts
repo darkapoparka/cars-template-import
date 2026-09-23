@@ -51,6 +51,27 @@ for (const locale of ['bg', 'en']) {
 			name: locale === 'en' ? 'Search services' : 'Търси услуга'
 		});
 		await expect(page.locator('.service-card')).toHaveCount(6);
+		const quickFilters = page.getByRole('group', {
+			name: locale === 'en' ? 'Quick service filters' : 'Бърз избор на услуга'
+		});
+		for (const pill of await quickFilters.getByRole('button').all()) {
+			await pill.click();
+			await expect(pill).toHaveAttribute('aria-pressed', 'true');
+			expect(await page.locator('.service-card').count()).toBeGreaterThan(0);
+		}
+		await page
+			.getByRole('button', {
+				name: locale === 'en' ? 'Check / VIN' : 'Проверка / VIN',
+				exact: true
+			})
+			.click();
+		await expect(search).toHaveValue('VIN');
+		await expect(page.locator('.service-card')).toHaveCount(1);
+		await page
+			.getByRole('button', { name: locale === 'en' ? 'All' : 'Всички', exact: true })
+			.click();
+		await expect(search).toBeEmpty();
+		await expect(page.locator('.service-card')).toHaveCount(6);
 		await search.fill('VIN');
 		await expect(page.locator('.service-card')).toHaveCount(1);
 		await expect(page.locator('.service-card > a')).toHaveAttribute('href', `/${locale}/import`);
@@ -91,8 +112,12 @@ test('page actions are real destinations and the services directory is accessibl
 	page
 }) => {
 	await visit(page, '/en/about');
-	await page.locator('.site-intro').getByRole('link', { name: 'Contact our team' }).click();
-	await expect(page).toHaveURL(/\/en\/contact$/);
+	const directions = page.locator('.site-intro').getByRole('link', { name: 'Get directions' });
+	await expect(directions).toHaveAttribute('href', /^https:\/\/www.google.com\/maps/);
+	const action = (await directions.boundingBox())!;
+	const socials = (await page.locator('.site-intro .social-links').boundingBox())!;
+	expect(socials.y).toBeGreaterThan(action.y + action.height);
+	await visit(page, '/en/contact');
 	await expect(page.locator('.site-intro').getByRole('link', { name: 'Call us' })).toHaveAttribute(
 		'href',
 		/^tel:/
