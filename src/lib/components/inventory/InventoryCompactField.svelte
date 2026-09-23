@@ -12,10 +12,14 @@
 		onchoose: (trigger: HTMLButtonElement) => void;
 	} = $props();
 	const id = $props.id();
-	const summary = $derived(
-		selection
-			.map((value) => filter.options.find((option) => option.value === value)?.label ?? value)
-			.join(', ')
+	const selectedLabels = $derived(
+		selection.map(
+			(value) => filter.options.find((option) => option.value === value)?.label ?? value
+		)
+	);
+	const summary = $derived(selectedLabels.join(', '));
+	const visibleSummary = $derived(
+		selectedLabels.length > 1 ? `${selectedLabels[0]} +${selectedLabels.length - 1}` : summary
 	);
 </script>
 
@@ -26,9 +30,9 @@
 			{value}
 		/>{/each}
 	{#if filter.numericInput}
-		<div class="compact-field__number filter-control">
-			<div class="compact-field__text">
-				<label class="compact-field__label" for={id}>{filter.numericInput.label}</label>
+		<label class="compact-field__number filter-control" for={id}>
+			<span class="compact-field__text">
+				<span class="compact-field__label">{filter.numericInput.label}</span>
 				<input
 					{id}
 					type="number"
@@ -43,14 +47,15 @@
 						selection = Number.isFinite(value) ? [String(value)] : [];
 					}}
 				/>
-			</div>
+			</span>
 			<span class="compact-field__unit">{filter.numericInput.unit}</span>
-		</div>
+		</label>
 	{:else}
 		<button
 			type="button"
 			class="compact-field__trigger filter-control"
 			aria-labelledby={id + '-label ' + id + '-value'}
+			title={summary || undefined}
 			class:compact-field__trigger--selected={selection.length > 0}
 			onclick={(event) => onchoose(event.currentTarget)}
 		>
@@ -58,9 +63,10 @@
 				><span id={id + '-label'} class="compact-field__label">{filter.label}</span><span
 					class="compact-field__value"
 					class:sr-only={!summary}
-					id={id + '-value'}>{summary || filter.allLabel}</span
+					aria-hidden="true">{visibleSummary}</span
 				></span
 			><ChevronRight size={16} aria-hidden="true" />
+			<span class="sr-only" id={id + '-value'}>{summary || filter.allLabel}</span>
 		</button>
 	{/if}
 </div>
@@ -107,6 +113,9 @@
 	}
 	.compact-field__number input {
 		text-align: right;
+	}
+	.compact-field__number {
+		cursor: text;
 	}
 	.compact-field__number input::placeholder {
 		color: var(--bc-copy);

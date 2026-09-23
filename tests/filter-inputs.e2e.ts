@@ -5,6 +5,25 @@ test.beforeEach(({ isMobile }) => {
 	test.skip(Boolean(isMobile), 'These filters belong to the desktop inventory composition.');
 });
 
+test('multiple choices stay readable and the entire numeric field focuses its input', async ({
+	page
+}) => {
+	await visit(page, '/en/inventory');
+	await page.getByRole('button', { name: 'All filters', exact: true }).click();
+	const dialog = page.getByRole('dialog');
+	await dialog.getByRole('button', { name: /^Make / }).click();
+	for (const name of ['BMW', 'Mercedes', 'Audi'])
+		await dialog.getByRole('checkbox', { name, exact: true }).check();
+	await page.keyboard.press('Escape');
+	const make = dialog.getByRole('button', { name: 'Make BMW, Mercedes, Audi', exact: true });
+	await expect(make.locator('.compact-field__value')).toHaveText('BMW +2');
+	await expect(make).toHaveAttribute('title', 'BMW, Mercedes, Audi');
+	await dialog.locator('.compact-field__number').first().locator('.compact-field__unit').click();
+	await expect(
+		dialog.getByRole('spinbutton', { name: 'Maximum price (EUR)', exact: true })
+	).toBeFocused();
+});
+
 test('draft makes update models and the preview matches the submitted filters', async ({
 	page
 }) => {
