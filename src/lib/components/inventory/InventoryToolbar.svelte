@@ -320,11 +320,11 @@
 					}}>{desktop.sidebar.actions.clearLabel}</Action
 				>
 			{/if}
-			<Action class="inventory-all__apply" onclick={applyFilters}
-				>{english ? 'Show cars' : 'Покажи автомобили'}{#if resultCount !== null}<span
-						class="inventory-all__count"
-						aria-hidden="true">{resultCount}</span
-					>{/if}</Action
+			<Action class="inventory-all__apply" onclick={applyFilters} aria-busy={counting}
+				>{english ? 'Show cars' : 'Покажи автомобили'}<span
+					class="inventory-all__count"
+					aria-hidden="true">{counting ? '…' : (resultCount ?? '')}</span
+				></Action
 			>
 		</div>
 		{#if resultCount === 0}<p class="inventory-all__empty">
@@ -433,6 +433,8 @@
 		margin-left: auto;
 	}
 	.inventory-all__count {
+		min-width: 2ch;
+		text-align: center;
 		font-variant-numeric: tabular-nums;
 		opacity: 0.85;
 	}

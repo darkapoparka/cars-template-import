@@ -8,8 +8,7 @@
 		onchange,
 		mode = 'multiple',
 		name,
-		form,
-		inline = false
+		form
 	}: {
 		label: string;
 		image?: string;
@@ -18,11 +17,10 @@
 		mode?: 'multiple' | 'single';
 		name?: string;
 		form?: string;
-		inline?: boolean;
 	} = $props();
 </script>
 
-<label class="filter-choice" class:filter-choice--inline={inline}>
+<label class="filter-choice">
 	<span class="filter-choice__check" class:filter-choice__check--radio={mode === 'single'}>
 		<input type={mode === 'single' ? 'radio' : 'checkbox'} {name} {form} {checked} {onchange} />
 		<Check size={14} strokeWidth={3} aria-hidden="true" />
@@ -53,18 +51,6 @@
 	.filter-choice:has(:focus-visible) {
 		outline: 2px solid var(--bc-focus);
 		outline-offset: 2px;
-	}
-	.filter-choice--inline {
-		min-height: var(--bc-control-height-standard);
-		padding-inline: 0;
-		gap: var(--bc-space-2);
-	}
-	.filter-choice--inline:hover,
-	.filter-choice--inline:has(:checked) {
-		background: transparent;
-	}
-	.filter-choice--inline:has(:checked) {
-		font-weight: var(--bc-weight-control);
 	}
 	.filter-choice__check {
 		position: relative;

@@ -25,11 +25,17 @@ test('draft makes update models and the preview matches the submitted filters', 
 	expect(models).toBeGreaterThan(0);
 	await dialog.getByRole('checkbox').first().check();
 	await page.keyboard.press('Escape');
+	await dialog.getByRole('button', { name: /^Fuel / }).click();
 	await dialog.getByRole('checkbox', { name: 'Petrol', exact: true }).check();
+	await page.keyboard.press('Escape');
 	await dialog.getByRole('spinbutton', { name: 'Maximum price (EUR)', exact: true }).fill('1');
 	await expect(dialog.locator('.inventory-all__count')).toHaveText('0');
 	await expect(dialog.getByText('No cars match these filters.', { exact: false })).toBeVisible();
 	await dialog.getByRole('spinbutton', { name: 'Maximum price (EUR)', exact: true }).fill('');
+	await expect(dialog.getByRole('button', { name: 'Show cars', exact: true })).toHaveAttribute(
+		'aria-busy',
+		'false'
+	);
 	await expect(dialog.locator('.inventory-all__count')).not.toHaveText('0');
 	const count = Number(await dialog.locator('.inventory-all__count').innerText());
 	await dialog.getByRole('button', { name: 'Show cars', exact: true }).click();
