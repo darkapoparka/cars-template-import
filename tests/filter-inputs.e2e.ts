@@ -10,7 +10,7 @@ test('every filter has a useful input and searching preserves selected makes', a
 	await page.getByRole('button', { name: 'All filters', exact: true }).click();
 	const dialog = page.getByRole('dialog');
 	await dialog.getByRole('button', { name: /^Make / }).click();
-	const make = page.locator('.compact-field__dialog');
+	const make = page.locator('.inventory-filters-dialog--options');
 	await make.getByRole('searchbox').fill('BMW');
 	await make.getByRole('checkbox', { name: 'BMW', exact: true }).check();
 	await make.getByRole('searchbox').fill('no-such-make');
@@ -21,15 +21,17 @@ test('every filter has a useful input and searching preserves selected makes', a
 	await expect(page).toHaveURL((url) => url.searchParams.get('lang') === 'en');
 });
 
-test('nested options return focus and retain the draft until Show cars', async ({ page }) => {
+test('inline options return focus and retain the draft until Show cars', async ({ page }) => {
 	await visit(page, '/en/inventory?view=5');
 	const initialUrl = page.url();
 	await page.getByRole('button', { name: 'All filters', exact: true }).click();
 	const all = page.locator('.inventory-filters-dialog');
 	const make = all.getByRole('button', { name: /^Make / });
 	await make.click();
-	const picker = page.locator('.compact-field__dialog');
+	const picker = page.locator('.inventory-filters-dialog--options');
 	await expect(picker.getByRole('searchbox')).toBeFocused();
+	await expect(page.getByRole('dialog')).toHaveCount(1);
+	await expect(page.locator('.site-dialog-backdrop')).toHaveCount(1);
 	await picker.getByRole('checkbox', { name: 'BMW', exact: true }).check();
 	await picker.getByRole('searchbox').fill('no-such-make');
 	await picker.getByRole('searchbox').press('Enter');
@@ -44,7 +46,7 @@ test('nested options return focus and retain the draft until Show cars', async (
 	await make.click();
 	await expect(picker.getByRole('searchbox')).toHaveValue('');
 	await expect(picker.getByRole('checkbox', { name: 'BMW', exact: true })).toBeChecked();
-	await picker.getByRole('button', { name: 'Done', exact: true }).click();
+	await picker.getByRole('button', { name: 'All filters', exact: true }).click();
 	await all.getByRole('button', { name: 'Show cars', exact: true }).click();
 	await expect(page).toHaveURL(
 		(url) => url.searchParams.get('brand') === 'BMW' && url.searchParams.get('view') === '5'

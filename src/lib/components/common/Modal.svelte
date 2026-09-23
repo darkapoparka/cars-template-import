@@ -13,6 +13,7 @@
 		wide = false,
 		bodyTone = 'default',
 		onOpenAutoFocus,
+		onEscapeKeydown,
 		headerContent,
 		class: className = ''
 	}: {
@@ -24,6 +25,7 @@
 		wide?: boolean;
 		bodyTone?: 'default' | 'muted';
 		onOpenAutoFocus?: (event: Event) => void;
+		onEscapeKeydown?: (event: KeyboardEvent) => void;
 		headerContent?: Snippet;
 		class?: string;
 	} = $props();
@@ -34,6 +36,7 @@
 		<Dialog.Overlay class="site-dialog-backdrop" />
 		<Dialog.Content
 			{onOpenAutoFocus}
+			{onEscapeKeydown}
 			class={[
 				'site-dialog',
 				className,

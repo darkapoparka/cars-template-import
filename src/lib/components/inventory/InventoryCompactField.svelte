@@ -1,28 +1,17 @@
 <script lang="ts">
-	import Modal from '$lib/components/common/Modal.svelte';
-	import Action from '$lib/components/common/Action.svelte';
-	import { assetHref } from '$lib/utils/assets';
 	import ChevronRight from '@lucide/svelte/icons/chevron-right';
 	import type { AuxeroInventoryFilter } from '$lib/server/inventory-options';
 	import { inventoryFilterParam } from '$lib/domain/inventory-query';
 	let {
 		filter,
-		english = false,
-		selection = $bindable<string[]>([])
+		selection = $bindable<string[]>([]),
+		onchoose
 	}: {
 		filter: AuxeroInventoryFilter;
-		english?: boolean;
 		selection?: string[];
+		onchoose: (trigger: HTMLButtonElement) => void;
 	} = $props();
 	const id = $props.id();
-	let query = $state('');
-	let open = $state(false);
-	let searchInput = $state<HTMLInputElement>();
-	const matching = $derived(
-		filter.options.filter((option) =>
-			option.label.toLocaleLowerCase().includes(query.trim().toLocaleLowerCase())
-		)
-	);
 	const summary = $derived(
 		selection
 			.map((value) => filter.options.find((option) => option.value === value)?.label ?? value)
@@ -110,12 +99,8 @@
 			type="button"
 			class="compact-field__trigger"
 			aria-labelledby={id + '-label ' + id + '-value'}
-			aria-haspopup="dialog"
-			aria-expanded={open}
-			onclick={() => {
-				query = '';
-				open = true;
-			}}
+			class:compact-field__trigger--selected={selection.length > 0}
+			onclick={(event) => onchoose(event.currentTarget)}
 		>
 			<span class="compact-field__text"
 				><span id={id + '-label'} class="compact-field__label">{filter.label}</span><span
@@ -125,53 +110,6 @@
 				></span
 			><ChevronRight size={16} aria-hidden="true" />
 		</button>
-		<Modal
-			bind:open
-			class="filter-picker-dialog compact-field__dialog"
-			title={filter.label}
-			onOpenAutoFocus={(event) => {
-				event.preventDefault();
-				searchInput?.focus({ preventScroll: true });
-			}}
-		>
-			{#snippet headerContent()}
-				<div class="compact-field__search-wrap">
-					<input
-						bind:this={searchInput}
-						class="compact-field__search"
-						type="search"
-						bind:value={query}
-						aria-label={(english ? 'Search in ' : 'Търси в ') + filter.label}
-						placeholder={english ? 'Search options' : 'Търси в опциите'}
-					/>
-				</div>
-			{/snippet}
-			<div class="compact-field__options">
-				{#each matching as option (option.value)}
-					<label
-						><input
-							type={filter.mode === 'single' ? 'radio' : 'checkbox'}
-							name={id + '-option'}
-							checked={selection.includes(option.value)}
-							onchange={() => toggle(option.value)}
-						/>{#if option.image}<img
-								src={assetHref(option.image)}
-								alt=""
-								width="36"
-								height="28"
-							/>{/if}<span>{option.label}</span></label
-					>
-				{:else}<p role="status">{english ? 'No matches' : 'Няма съвпадения'}</p>{/each}
-			</div>
-			{#snippet footer()}
-				<div class="compact-field__actions">
-					<Action variant="secondary" onclick={() => (selection = [])}
-						>{english ? 'Clear' : 'Изчисти'}</Action
-					>
-					<Action onclick={() => (open = false)}>{english ? 'Done' : 'Готово'}</Action>
-				</div>
-			{/snippet}
-		</Modal>
 	{/if}
 </div>
 
@@ -249,7 +187,7 @@
 		width: 100%;
 		min-height: var(--bc-control-height-primary);
 		padding: var(--bc-space-2) var(--bc-space-3);
-		border: 1px solid var(--bc-route-pill-border);
+		border: 1px solid var(--bc-border);
 		border-radius: var(--bc-radius-md);
 		background: var(--bc-surface);
 		color: var(--bc-ink);
@@ -272,8 +210,10 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
-		font-size: var(--bc-text-label);
-		color: var(--bc-copy);
+		font-size: var(--bc-text-control);
+		color: var(--bc-ink);
+		font-weight: var(--bc-weight-heading);
+		margin-left: auto;
 	}
 	.compact-field :global(.compact-field__trigger > svg) {
 		flex: none;
@@ -296,6 +236,8 @@
 		flex-shrink: 0;
 	}
 	.compact-field__feature .compact-field__value {
+		margin-left: 0;
+		font-weight: var(--bc-weight-control);
 		font-size: var(--bc-text-control);
 		color: var(--bc-ink);
 	}
@@ -311,52 +253,14 @@
 		outline: none !important;
 		box-shadow: none !important;
 	}
-	.compact-field__search {
-		width: 100%;
-		min-height: var(--bc-control-height-standard);
-		padding: var(--bc-space-2) var(--bc-space-3);
-		border: 1px solid var(--bc-route-pill-border);
-		border-radius: var(--bc-radius-md);
-		background: var(--bc-surface);
-		color: var(--bc-ink);
-		font: inherit;
-		font-size: var(--bc-text-control);
+	.compact-field__trigger--selected .compact-field__label {
+		color: var(--bc-copy);
 	}
-	.compact-field__search-wrap {
-		padding: var(--bc-space-1) var(--bc-space-1) var(--bc-space-4);
+	.compact-field__trigger:hover {
+		border-color: var(--bc-border-strong);
 	}
-	.compact-field__options img {
-		object-fit: contain;
-		flex: 0 0 36px;
-	}
-	.compact-field__options input {
-		width: var(--bc-text-control);
-		height: var(--bc-text-control);
-		margin: 0;
-		flex-shrink: 0;
-	}
-	.compact-field__options {
-		min-height: 0;
-	}
-	.compact-field__options label {
-		display: flex;
-		align-items: center;
-		gap: var(--bc-space-3);
-		min-height: var(--bc-control-height-primary);
-		padding: var(--bc-space-2);
-		font-size: var(--bc-text-control);
-		border-radius: var(--bc-radius-md);
-		cursor: pointer;
-	}
-	.compact-field__options label:hover,
-	.compact-field__options label:has(:checked) {
-		background: var(--bc-surface);
-	}
-	.compact-field__options input {
-		accent-color: var(--bc-accent);
-	}
-	.compact-field__actions {
-		display: flex;
-		justify-content: space-between;
+	.compact-field__trigger:focus-visible {
+		outline: 2px solid var(--bc-focus);
+		outline-offset: 2px;
 	}
 </style>

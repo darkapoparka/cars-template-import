@@ -1,9 +1,15 @@
 <script lang="ts">
+	import { tick } from 'svelte';
+	import ArrowLeft from '@lucide/svelte/icons/arrow-left';
+	import { assetHref } from '$lib/utils/assets';
 	import { page } from '$app/state';
 	import SlidersHorizontal from '@lucide/svelte/icons/sliders-horizontal';
 	import X from '@lucide/svelte/icons/x';
 	import LayoutGrid from '@lucide/svelte/icons/layout-grid';
-	import type { AuxeroInventoryDesktopData } from '$lib/server/inventory-options';
+	import type {
+		AuxeroInventoryDesktopData,
+		AuxeroInventoryFilter
+	} from '$lib/server/inventory-options';
 	import InventoryFilter from './InventoryFilter.svelte';
 	import InventoryCompactField from './InventoryCompactField.svelte';
 	import Search from '@lucide/svelte/icons/search';
@@ -20,7 +26,38 @@
 	let allOpen = $state(false);
 	let draft = $state<Record<string, string[]>>({});
 	let keyword = $state('');
+	let activeFilter = $state<AuxeroInventoryFilter | null>(null);
+	let optionQuery = $state('');
+	let optionSearch = $state<HTMLInputElement>();
+	let returnTrigger: HTMLButtonElement | undefined;
+	const matchingOptions = $derived(
+		activeFilter?.options.filter((option) =>
+			option.label.toLocaleLowerCase().includes(optionQuery.trim().toLocaleLowerCase())
+		) ?? []
+	);
+	async function chooseFilter(filter: AuxeroInventoryFilter, trigger: HTMLButtonElement) {
+		returnTrigger = trigger;
+		optionQuery = '';
+		activeFilter = filter;
+		await tick();
+		optionSearch?.focus({ preventScroll: true });
+	}
+	async function backToFilters() {
+		activeFilter = null;
+		await tick();
+		returnTrigger?.focus({ preventScroll: true });
+	}
+	function toggleOption(value: string) {
+		if (!activeFilter) return;
+		const selected = draft[activeFilter.id] ?? [];
+		draft[activeFilter.id] = selected.includes(value)
+			? selected.filter((item) => item !== value)
+			: activeFilter.mode === 'single'
+				? [value]
+				: [...selected, value];
+	}
 	function openFilters() {
+		activeFilter = null;
 		draft = Object.fromEntries(
 			desktop.filters.map((filter) => [filter.id, [...filter.selectedValues]])
 		);
@@ -122,11 +159,55 @@
 </div>
 <Modal
 	bind:open={allOpen}
-	title={english ? 'Find a car' : 'Търсене на автомобили'}
+	title={activeFilter?.label ?? (english ? 'Find a car' : 'Търсене на автомобили')}
+	onEscapeKeydown={(event) => {
+		if (activeFilter) {
+			event.preventDefault();
+			void backToFilters();
+		}
+	}}
 	wide
-	class="inventory-filters-dialog"
+	class={['inventory-filters-dialog', activeFilter && 'inventory-filters-dialog--options']
+		.filter(Boolean)
+		.join(' ')}
 >
+	{#snippet headerContent()}
+		{#if activeFilter}
+			<div class="inventory-options__header">
+				<button type="button" class="inventory-options__back" onclick={backToFilters}>
+					<ArrowLeft size={18} aria-hidden="true" />{english ? 'All filters' : 'Всички филтри'}
+				</button>
+				<div class="inventory-all__search">
+					<Search size={20} aria-hidden="true" />
+					<input
+						bind:this={optionSearch}
+						type="search"
+						bind:value={optionQuery}
+						aria-label={(english ? 'Search in ' : 'Търси в ') + activeFilter.label}
+						placeholder={english ? 'Search options' : 'Търси в опциите'}
+					/>
+				</div>
+			</div>
+		{/if}
+	{/snippet}
+	{#if activeFilter}
+		<div class="inventory-options">
+			{#each matchingOptions as option (option.value)}
+				<label>
+					<input
+						type={activeFilter.mode === 'single' ? 'radio' : 'checkbox'}
+						name={formId + '-option'}
+						checked={(draft[activeFilter.id] ?? []).includes(option.value)}
+						onchange={() => toggleOption(option.value)}
+					/>
+					{#if option.image}<img src={assetHref(option.image)} alt="" width="36" height="28" />{/if}
+					<span>{option.label}</span>
+				</label>
+			{:else}<p role="status">{english ? 'No matches' : 'Няма съвпадения'}</p>{/each}
+		</div>
+	{/if}
 	<form
+		style:display={activeFilter ? 'none' : undefined}
 		class="inventory-all__form"
 		id={formId}
 		action={linkHref('/inventory')}
@@ -149,7 +230,7 @@
 		<div class="inventory-all">
 			{#each desktop.filters as filter (filter.id)}<InventoryCompactField
 					{filter}
-					{english}
+					onchoose={(trigger) => chooseFilter(filter, trigger)}
 					bind:selection={draft[filter.id]}
 				/>{/each}
 		</div>
@@ -159,11 +240,19 @@
 			<Action
 				variant="secondary"
 				onclick={() => {
+					if (activeFilter) {
+						draft[activeFilter.id] = [];
+						return;
+					}
 					keyword = '';
 					draft = Object.fromEntries(desktop.filters.map((filter) => [filter.id, []]));
 				}}>{desktop.sidebar.actions.clearLabel}</Action
 			>
-			<Action type="submit" form={formId}>{english ? 'Show cars' : 'Покажи автомобили'}</Action>
+			{#if activeFilter}
+				<Action onclick={backToFilters}>{english ? 'Done' : 'Готово'}</Action>
+			{:else}
+				<Action type="submit" form={formId}>{english ? 'Show cars' : 'Покажи автомобили'}</Action>
+			{/if}
 		</div>
 	{/snippet}
 </Modal>
@@ -262,7 +351,7 @@
 		gap: var(--bc-space-3);
 		padding: 0 var(--bc-space-3);
 		min-height: var(--bc-control-height-primary);
-		border: 1px solid var(--bc-route-pill-border);
+		border: 1px solid var(--bc-border);
 		border-radius: var(--bc-radius-md);
 		background: var(--bc-surface);
 		color: var(--bc-muted);
@@ -283,7 +372,7 @@
 	}
 	.inventory-all__search:focus-within {
 		outline: 2px solid var(--bc-focus);
-		outline-offset: 2px;
+		outline-offset: 0;
 	}
 	.inventory-all__search input:focus-visible {
 		outline: none !important;
@@ -360,5 +449,55 @@
 		.inventory-all {
 			grid-template-columns: repeat(2, minmax(0, 1fr));
 		}
+	}
+	:global(.site-dialog.inventory-filters-dialog--options) {
+		width: min(640px, calc(100vw - 2 * var(--bc-space-6)));
+	}
+	.inventory-options__header {
+		padding: var(--bc-space-1);
+	}
+	.inventory-options__back {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--bc-space-2);
+		padding: 0;
+		margin-bottom: var(--bc-space-4);
+		border: 0;
+		background: transparent;
+		color: var(--bc-copy);
+		font: inherit;
+		font-size: var(--bc-text-control);
+		cursor: pointer;
+	}
+	.inventory-options {
+		padding: var(--bc-space-3) var(--bc-space-1) var(--bc-space-1);
+	}
+	.inventory-options label {
+		display: flex;
+		align-items: center;
+		gap: var(--bc-space-3);
+		min-height: var(--bc-control-height-primary);
+		padding: var(--bc-space-2) var(--bc-space-3);
+		border-radius: var(--bc-radius-md);
+		font-size: var(--bc-text-control);
+		cursor: pointer;
+	}
+	.inventory-options label:hover,
+	.inventory-options label:has(:checked) {
+		background: var(--bc-surface);
+	}
+	.inventory-options label:has(:checked) {
+		font-weight: var(--bc-weight-heading);
+	}
+	.inventory-options input {
+		width: var(--bc-text-control);
+		height: var(--bc-text-control);
+		margin: 0;
+		accent-color: var(--bc-accent);
+		flex-shrink: 0;
+	}
+	.inventory-options img {
+		object-fit: contain;
+		flex: 0 0 36px;
 	}
 </style>
