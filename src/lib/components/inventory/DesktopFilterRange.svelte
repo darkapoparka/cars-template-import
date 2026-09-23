@@ -40,7 +40,7 @@
 	}
 </script>
 
-<div class="range-fields">
+<div class="range-fields filter-fields">
 	<label class="filter-control"
 		><span>{english ? 'From' : 'От'}</span><input
 			bind:this={lower}
@@ -81,7 +81,7 @@
 		/><span class="unit">{filter.numericInput?.unit}</span></label
 	>
 </div>
-<div class="range-presets">
+<div class="range-presets filter-options">
 	{#each filter.options as option (option.value)}<InventoryFilterChoice
 			label={option.label}
 			checked={selection.includes(option.value)}
@@ -97,11 +97,7 @@
 
 <style>
 	.range-fields {
-		flex: none;
-		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: var(--bc-space-3);
-		margin-bottom: var(--bc-space-5);
 	}
 	.range-fields label {
 		cursor: text;
@@ -113,21 +109,8 @@
 		font-size: var(--bc-text-label);
 		color: var(--bc-copy);
 	}
-	.range-presets {
-		min-height: 0;
-		overflow-y: auto;
-		overscroll-behavior: contain;
-		scrollbar-width: thin;
-		padding: var(--bc-space-1);
-		display: grid;
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: var(--bc-space-2);
-	}
 	@media (max-width: 767px) {
 		.range-fields {
-			grid-template-columns: 1fr;
-		}
-		.range-presets {
 			grid-template-columns: 1fr;
 		}
 	}

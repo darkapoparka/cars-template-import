@@ -50,7 +50,7 @@
 </script>
 
 <div class="desktop-picker" bind:this={root}>
-	{#if searchable}<div class="desktop-picker__search">
+	{#if searchable}<div class="filter-fields">
 			<label class="filter-control"
 				><Search size={20} aria-hidden="true" /><span class="sr-only">{searchLabel}</span><input
 					bind:this={input}
@@ -64,7 +64,7 @@
 				/></label
 			>
 		</div>{/if}
-	<div class="desktop-picker__options" bind:this={options}>
+	<div class="desktop-picker__options filter-options" bind:this={options}>
 		{#each matching as option (option.value)}<InventoryFilterChoice
 				label={option.label}
 				image={option.image}
@@ -84,26 +84,7 @@
 		flex: 1;
 		min-height: 0;
 	}
-	.desktop-picker__search {
-		flex: none;
-		padding: var(--bc-space-1) var(--bc-space-1) var(--bc-space-6);
-		background: var(--bc-surface-raised);
-	}
 	.desktop-picker__options {
 		flex: 1;
-		min-height: 0;
-		overflow-y: auto;
-		overscroll-behavior: contain;
-		scrollbar-width: thin;
-		padding: var(--bc-space-1);
-		display: grid;
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-		align-content: start;
-		gap: var(--bc-space-2) var(--bc-space-6);
-	}
-	@media (max-width: 767px) {
-		.desktop-picker__options {
-			grid-template-columns: minmax(0, 1fr);
-		}
 	}
 </style>

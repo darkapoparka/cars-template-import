@@ -6,6 +6,60 @@ test.beforeEach(({ isMobile }) => {
 	test.skip(Boolean(isMobile), 'Desktop filter composition only.');
 });
 
+for (const locale of ['en', 'bg']) {
+	test(`${locale}: fields and first option retain their position across categories`, async ({
+		page
+	}) => {
+		const categories =
+			locale === 'en'
+				? ['Search', 'Make', 'Model', 'Price', 'Mileage']
+				: ['Търсене', 'Марка', 'Модел', 'Цена', 'Пробег'];
+		for (const width of [768, 1024, 1440, 1920]) {
+			await page.setViewportSize({ width, height: 800 });
+			await visit(page, `/${locale}/inventory`);
+			await page
+				.getByRole('button', {
+					name: locale === 'en' ? 'All filters' : 'Всички филтри',
+					exact: true
+				})
+				.click();
+			const dialog = page.getByRole('dialog');
+			await dialog.getByRole('tab', { name: categories[0], exact: true }).click();
+			const baseline = (await dialog.locator('.filter-control').boundingBox())!;
+			const baselineInput = (await dialog.getByRole('searchbox').boundingBox())!;
+			let firstOption;
+			for (const name of categories.slice(1)) {
+				await dialog.getByRole('tab', { name, exact: true }).click();
+				const fields = await dialog.locator('.filter-control').all();
+				const bounds = await Promise.all(fields.map((field) => field.boundingBox()));
+				expect(bounds[0]!.x, `${width}: ${name} left edge`).toBe(baseline.x);
+				const last = bounds.at(-1)!;
+				expect(last!.x + last!.width, `${width}: ${name} right edge`).toBe(
+					baseline.x + baseline.width
+				);
+				for (const [index, field] of fields.entries()) {
+					expect(bounds[index]!.y, `${width}: ${name} top edge`).toBe(baseline.y);
+					expect(bounds[index]!.height).toBe(baseline.height);
+					const input = (await field.locator('input').boundingBox())!;
+					expect(input.y).toBe(baselineInput.y);
+					expect(input.height).toBe(baselineInput.height);
+				}
+				const option = await dialog.locator('.filter-choice').first().boundingBox();
+				firstOption ??= option;
+				expect(option, `${width}: ${name} first option`).toEqual(firstOption);
+			}
+			await dialog.getByRole('tab', { name: categories[1], exact: true }).click();
+			await dialog.getByRole('checkbox', { name: 'BMW', exact: true }).check();
+			await dialog.getByRole('searchbox').fill('no-matching-make');
+			await expect(dialog.getByRole('status')).toHaveText(
+				locale === 'en' ? 'No matches' : 'Няма съвпадения'
+			);
+			expect(await dialog.locator('.filter-control').boundingBox()).toEqual(baseline);
+			await page.keyboard.press('Escape');
+		}
+	});
+}
+
 test('clearing a category retains other drafts and returns focus to its input', async ({
 	page
 }) => {

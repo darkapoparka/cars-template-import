@@ -335,16 +335,18 @@
 							}
 						/>{/if}{/key}
 			{:else}
-				<label class="inventory-all__search filter-control">
-					<Search size={20} aria-hidden="true" /><span class="sr-only"
-						>{english ? 'Make, model or keyword' : 'Марка, модел или ключова дума'}</span
-					>
-					<input
-						type="search"
-						bind:value={keyword}
-						placeholder={english ? 'Make, model or keyword' : 'Марка, модел или ключова дума'}
-					/>
-				</label>
+				<div class="filter-fields">
+					<label class="inventory-all__search filter-control">
+						<Search size={20} aria-hidden="true" /><span class="sr-only"
+							>{english ? 'Make, model or keyword' : 'Марка, модел или ключова дума'}</span
+						>
+						<input
+							type="search"
+							bind:value={keyword}
+							placeholder={english ? 'Make, model or keyword' : 'Марка, модел или ключова дума'}
+						/>
+					</label>
+				</div>
 			{/if}
 		</div>
 	</form>

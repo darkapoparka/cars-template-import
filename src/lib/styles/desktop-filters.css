@@ -1,4 +1,24 @@
 /* Shared desktop inventory dialog controls. Mobile uses its own sheet composition. */
+.desktop-filter-dialog .filter-fields {
+	display: grid;
+	flex: none;
+	gap: var(--bc-space-3);
+	margin-bottom: var(--bc-space-5);
+}
+
+.desktop-filter-dialog .filter-options {
+	min-height: 0;
+	overflow-y: auto;
+	overscroll-behavior: contain;
+	scrollbar-width: thin;
+	/* Allow keyboard focus rings inside the scrolling region. */
+	padding: var(--bc-space-1);
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	align-content: start;
+	gap: var(--bc-space-2) var(--bc-space-6);
+}
+
 .desktop-filter-dialog .filter-control {
 	display: flex;
 	align-items: center;
@@ -78,7 +98,7 @@
 	}
 	.desktop-filter-dialog .filter-choice img {
 		width: 44px;
-		height: 32px;
+		height: 30px;
 	}
 	.desktop-filter-dialog .filter-choice__check:has(:checked) {
 		border-color: var(--bc-accent);
