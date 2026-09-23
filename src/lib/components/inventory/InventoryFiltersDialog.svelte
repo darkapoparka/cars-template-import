@@ -396,29 +396,30 @@
 <style>
 	:global(.site-dialog.inventory-filters-dialog) {
 		width: min(960px, calc(100vw - 2 * var(--bc-space-6)));
-		height: min(640px, calc(100dvh - 2 * var(--bc-space-6)));
+		height: min(700px, calc(100dvh - 2 * var(--bc-space-6)));
 		max-height: calc(100dvh - 2 * var(--bc-space-6));
 	}
-	:global(.inventory-filters-dialog .site-dialog__header) {
-		padding: var(--bc-space-4) var(--bc-space-7);
-		background: var(--bc-ink);
-		color: var(--bc-white);
+	:global(.site-dialog.inventory-filters-dialog .site-dialog__header) {
+		padding: var(--bc-space-6) var(--bc-space-7) var(--bc-space-4);
+		background: var(--bc-surface-raised);
+		color: var(--bc-ink);
 	}
 	:global(.inventory-filters-dialog .site-dialog__icon) {
-		color: var(--bc-white);
+		color: var(--bc-ink);
+		background: var(--bc-surface);
+		border-radius: var(--bc-radius-pill);
 	}
 	:global(.inventory-filters-dialog .site-dialog__icon:hover) {
-		background: rgb(255 255 255 / 0.12);
+		background: var(--bc-bg-strong);
 	}
 	:global(.site-dialog.inventory-filters-dialog .site-dialog__body) {
 		flex: 1;
 		padding: 0;
 		overflow: hidden;
 	}
-	:global(.inventory-filters-dialog .site-dialog__footer) {
+	:global(.site-dialog.inventory-filters-dialog .site-dialog__footer) {
 		padding: var(--bc-space-4) var(--bc-space-7);
-		border-top: 1px solid var(--bc-border);
-		background: var(--bc-surface-raised);
+		background: var(--bc-surface);
 	}
 	:global(.site-dialog.inventory-filters-dialog .site-dialog__footer .site-action) {
 		min-height: var(--bc-control-height-primary);
@@ -433,14 +434,19 @@
 	.inventory-all__navigation {
 		display: flex;
 		flex-wrap: wrap;
-		padding-inline: var(--bc-space-4);
-		border-bottom: 1px solid var(--bc-border);
+		gap: var(--bc-space-1);
+		margin: 0 var(--bc-space-7);
+		padding: var(--bc-space-2);
+		border-radius: var(--bc-radius-panel);
+		background: var(--bc-surface);
 	}
 	.inventory-all__navigation button {
 		position: relative;
-		min-height: var(--bc-control-height-hero);
+		flex: 1 0 auto;
+		min-height: var(--bc-control-height-primary);
 		padding: var(--bc-space-3);
 		border: 0;
+		border-radius: var(--bc-radius-md);
 		background: transparent;
 		color: var(--bc-copy);
 		font: var(--bc-weight-control) var(--bc-text-entry)/var(--bc-leading-control)
@@ -448,18 +454,12 @@
 		cursor: pointer;
 	}
 	.inventory-all__navigation button:hover {
-		background: var(--bc-surface);
+		background: var(--bc-bg-strong);
 		color: var(--bc-ink);
 	}
 	.inventory-all__navigation button[aria-selected='true'] {
-		color: var(--bc-ink);
-	}
-	.inventory-all__navigation button[aria-selected='true']::after {
-		position: absolute;
-		inset: auto var(--bc-space-3) -1px;
-		height: 3px;
-		background: var(--bc-accent);
-		content: '';
+		background: var(--bc-ink);
+		color: var(--bc-white);
 	}
 	.inventory-all__navigation button:focus-visible,
 	.inventory-all__clear-category:focus-visible {
@@ -469,6 +469,7 @@
 	.inventory-all__navigation button > span {
 		display: flex;
 		align-items: center;
+		justify-content: center;
 		gap: var(--bc-space-2);
 	}
 	.inventory-all__navigation small {
@@ -515,19 +516,17 @@
 	}
 	.inventory-all__clear-category {
 		min-height: var(--bc-control-height-standard);
-		padding: 0 var(--bc-space-2);
+		padding: 0 var(--bc-space-3);
 		border: 0;
-		border-radius: var(--bc-radius-sm);
-		background: transparent;
+		border-radius: var(--bc-radius-md);
+		background: var(--bc-surface);
 		color: var(--bc-copy);
 		font: inherit;
-		text-decoration: underline;
-		text-underline-offset: 4px;
 		cursor: pointer;
 	}
 	.inventory-all__clear-category:hover {
 		color: var(--bc-ink);
-		background: var(--bc-surface);
+		background: var(--bc-bg-strong);
 	}
 	.inventory-all__actions {
 		display: flex;
@@ -551,12 +550,12 @@
 		flex: 1;
 	}
 	@media (min-width: 768px) and (max-width: 900px) {
+		.inventory-all__panel {
+			padding-block: var(--bc-space-5);
+		}
 		.inventory-all__navigation {
 			display: grid;
 			grid-template-columns: repeat(5, minmax(0, 1fr));
-		}
-		.inventory-all__navigation button > span {
-			justify-content: center;
 		}
 	}
 </style>

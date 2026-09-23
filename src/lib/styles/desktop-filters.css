@@ -7,10 +7,11 @@
 	padding: var(--bc-space-3) var(--bc-space-4);
 	border: 1px solid var(--bc-border);
 	border-radius: var(--bc-radius-md);
-	background: var(--bc-surface-raised);
+	background: var(--bc-surface);
 	color: var(--bc-ink);
 	font: var(--bc-weight-control) var(--bc-text-entry)/var(--bc-leading-control) var(--bc-font-body);
 }
+
 .desktop-filter-dialog .filter-control:hover {
 	border-color: var(--bc-border-strong);
 }
@@ -57,18 +58,43 @@
 	}
 	.desktop-filter-dialog .filter-choice {
 		min-width: 0;
-		min-height: var(--bc-control-height-hero);
-		padding: var(--bc-space-3);
-		border-bottom: 1px solid var(--bc-border);
-		border-radius: 0;
+		position: relative;
+		min-height: 64px;
+		padding: var(--bc-space-4);
+		border: 1px solid var(--bc-border);
+		border-radius: var(--bc-radius-control);
+		background: var(--bc-surface-raised);
 		font-size: var(--bc-text-entry);
 		font-weight: var(--bc-weight-control);
 	}
 	.desktop-filter-dialog .filter-choice:hover {
 		background: var(--bc-surface);
+		border-color: var(--bc-border-strong);
 	}
 	.desktop-filter-dialog .filter-choice:has(:checked) {
-		background: var(--bc-surface);
+		border-color: var(--bc-accent);
+		background: color-mix(in srgb, var(--bc-accent) 4%, var(--bc-surface-raised));
+		font-weight: var(--bc-weight-control);
+	}
+	.desktop-filter-dialog .filter-choice__check {
+		order: 1;
+		margin-left: auto;
+	}
+	.desktop-filter-dialog .desktop-picker--brands .filter-choice {
+		min-height: 132px;
+		flex-direction: column;
+		justify-content: center;
+		gap: var(--bc-space-3);
+		text-align: center;
+	}
+	.desktop-filter-dialog .desktop-picker--brands .filter-choice__check {
+		position: absolute;
+		top: var(--bc-space-3);
+		right: var(--bc-space-3);
+	}
+	.desktop-filter-dialog .desktop-picker--brands .filter-choice img {
+		width: 64px;
+		height: 48px;
 	}
 	.desktop-filter-dialog .filter-choice img {
 		width: 44px;
@@ -81,5 +107,16 @@
 	.desktop-filter-dialog .filter-choice > span:last-child {
 		min-width: 0;
 		overflow-wrap: anywhere;
+	}
+}
+
+@media (min-width: 768px) and (max-width: 900px) {
+	.desktop-filter-dialog .desktop-picker--brands .filter-choice {
+		min-height: 112px;
+		gap: var(--bc-space-2);
+	}
+	.desktop-filter-dialog .desktop-picker--brands .filter-choice img {
+		width: 56px;
+		height: 40px;
 	}
 }

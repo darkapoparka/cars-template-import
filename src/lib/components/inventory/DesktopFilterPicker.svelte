@@ -14,6 +14,17 @@
 	const searchable = $derived(
 		['brand', 'model'].includes(filter.name) || filter.options.length > 8
 	);
+	const searchLabel = $derived(
+		filter.name === 'brand'
+			? english
+				? 'Search makes'
+				: 'Търси марка'
+			: filter.name === 'model'
+				? english
+					? 'Search models'
+					: 'Търси модел'
+				: (english ? 'Search in ' : 'Търси в ') + filter.label
+	);
 	const matching = $derived(
 		filter.options.filter((option) =>
 			option.label.toLocaleLowerCase().includes(query.trim().toLocaleLowerCase())
@@ -32,16 +43,14 @@
 	}
 </script>
 
-<div class="desktop-picker" bind:this={root}>
+<div class="desktop-picker" class:desktop-picker--brands={filter.name === 'brand'} bind:this={root}>
 	{#if searchable}<div class="desktop-picker__search">
 			<label class="filter-control"
-				><Search size={20} aria-hidden="true" /><span class="sr-only"
-					>{(english ? 'Search in ' : 'Търси в ') + filter.label}</span
-				><input
+				><Search size={20} aria-hidden="true" /><span class="sr-only">{searchLabel}</span><input
 					bind:this={input}
 					type="search"
 					bind:value={query}
-					placeholder={(english ? 'Search in ' : 'Търси в ') + filter.label}
+					placeholder={searchLabel}
 					autocomplete="off"
 					onkeydown={(event) => {
 						if (event.key === 'Enter') event.preventDefault();
@@ -67,14 +76,17 @@
 		position: sticky;
 		top: 0;
 		z-index: 1;
-		padding-bottom: var(--bc-space-3);
+		padding-block: var(--bc-space-1) var(--bc-space-5);
 		background: var(--bc-surface-raised);
 	}
 	.desktop-picker__options {
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 		align-content: start;
-		column-gap: var(--bc-space-5);
+		gap: var(--bc-space-3);
+	}
+	.desktop-picker--brands .desktop-picker__options {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
 	}
 	@media (max-width: 767px) {
 		.desktop-picker__options {
