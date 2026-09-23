@@ -72,6 +72,13 @@
 		);
 	});
 	const currentFilter = $derived(draftFilters.find((filter) => filter.id === activeFilter?.id));
+	const filterDialogSize = $derived.by(() => {
+		if (!currentFilter) return 'compact';
+		if (currentFilter.modelCatalog || currentFilter.options.length > 8) return 'tall';
+		if (currentFilter.numericInput && currentFilter.options.length <= 5) return 'range';
+		if (currentFilter.numericInput || currentFilter.options.length > 5) return 'medium';
+		return 'compact';
+	});
 	const orderedFilters = $derived(
 		[...draftFilters].sort((a, b) => {
 			const order = [
@@ -325,7 +332,7 @@
 	}}
 	title={english ? 'Find a car' : 'Търсене на автомобили'}
 	wide
-	class="inventory-filters-dialog desktop-filter-dialog"
+	class="inventory-filters-dialog desktop-filter-dialog desktop-filter-dialog--{filterDialogSize}"
 >
 	<form
 		class="inventory-all__form"
@@ -552,6 +559,38 @@
 	:global(.site-dialog.inventory-filters-dialog) {
 		width: min(960px, calc(100vw - 2 * var(--bc-space-6)));
 		height: min(700px, calc(100dvh - 2 * var(--bc-space-6)));
+	}
+	@media (min-width: 900px) {
+		:global(.site-dialog.inventory-filters-dialog.desktop-filter-dialog--compact) {
+			height: min(600px, calc(100dvh - 2 * var(--bc-space-6)));
+		}
+		:global(.site-dialog.inventory-filters-dialog.desktop-filter-dialog--range) {
+			height: min(560px, calc(100dvh - 2 * var(--bc-space-6)));
+		}
+		:global(.site-dialog.inventory-filters-dialog.desktop-filter-dialog--medium) {
+			height: min(640px, calc(100dvh - 2 * var(--bc-space-6)));
+		}
+		:global(.site-dialog.inventory-filters-dialog.desktop-filter-dialog--tall) {
+			height: min(700px, calc(100dvh - 2 * var(--bc-space-6)));
+		}
+		:global(.site-dialog.inventory-filters-dialog .site-dialog__header) {
+			border-bottom: 1px solid var(--bc-border);
+		}
+		:global(.site-dialog.inventory-filters-dialog .site-dialog__footer) {
+			border-top: 1px solid var(--bc-border);
+			background: var(--bc-surface-raised);
+		}
+		.inventory-all__navigation {
+			border-right: 1px solid var(--bc-border);
+			scrollbar-color: var(--bc-border-strong) var(--bc-surface);
+			padding-block: var(--bc-space-2);
+		}
+		.inventory-all__navigation button {
+			padding-block: var(--bc-space-1);
+		}
+		.inventory-all__panel {
+			scrollbar-color: var(--bc-border-strong) var(--bc-surface-raised);
+		}
 	}
 	:global(.site-dialog.inventory-filters-dialog .site-dialog__body) {
 		padding: 0;
