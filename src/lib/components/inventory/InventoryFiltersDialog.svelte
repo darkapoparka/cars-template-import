@@ -395,12 +395,12 @@
 
 <style>
 	:global(.site-dialog.inventory-filters-dialog) {
-		width: min(960px, calc(100vw - 2 * var(--bc-space-6)));
-		height: min(700px, calc(100dvh - 2 * var(--bc-space-6)));
+		width: min(880px, calc(100vw - 2 * var(--bc-space-6)));
+		height: min(560px, calc(100dvh - 2 * var(--bc-space-6)));
 		max-height: calc(100dvh - 2 * var(--bc-space-6));
 	}
 	:global(.site-dialog.inventory-filters-dialog .site-dialog__header) {
-		padding: var(--bc-space-6) var(--bc-space-7) var(--bc-space-4);
+		padding: var(--bc-space-4) var(--bc-space-6);
 		background: var(--bc-surface-raised);
 		color: var(--bc-ink);
 	}
@@ -418,7 +418,7 @@
 		overflow: hidden;
 	}
 	:global(.site-dialog.inventory-filters-dialog .site-dialog__footer) {
-		padding: var(--bc-space-4) var(--bc-space-7);
+		padding: var(--bc-space-3) var(--bc-space-6);
 		background: var(--bc-surface);
 	}
 	:global(.site-dialog.inventory-filters-dialog .site-dialog__footer .site-action) {
@@ -435,16 +435,16 @@
 		display: flex;
 		flex-wrap: wrap;
 		gap: var(--bc-space-1);
-		margin: 0 var(--bc-space-7);
-		padding: var(--bc-space-2);
-		border-radius: var(--bc-radius-panel);
+		margin: 0 var(--bc-space-6);
+		padding: var(--bc-space-1);
+		border-radius: var(--bc-radius-control);
 		background: var(--bc-surface);
 	}
 	.inventory-all__navigation button {
 		position: relative;
 		flex: 1 0 auto;
-		min-height: var(--bc-control-height-primary);
-		padding: var(--bc-space-3);
+		min-height: var(--bc-control-height-standard);
+		padding: var(--bc-space-2);
 		border: 0;
 		border-radius: var(--bc-radius-md);
 		background: transparent;
@@ -495,7 +495,7 @@
 	.inventory-all__panel {
 		min-width: 0;
 		min-height: 0;
-		padding: var(--bc-space-6) var(--bc-space-7);
+		padding: var(--bc-space-5) var(--bc-space-6);
 		overflow: auto;
 		overscroll-behavior: contain;
 		scrollbar-gutter: stable;
@@ -508,7 +508,7 @@
 		justify-content: space-between;
 		gap: var(--bc-space-4);
 		min-height: var(--bc-control-height-standard);
-		margin-bottom: var(--bc-space-3);
+		margin-bottom: var(--bc-space-2);
 	}
 	.inventory-all__panel h2 {
 		margin: 0;
@@ -550,8 +550,11 @@
 		flex: 1;
 	}
 	@media (min-width: 768px) and (max-width: 900px) {
+		:global(.site-dialog.inventory-filters-dialog) {
+			height: min(600px, calc(100dvh - 2 * var(--bc-space-6)));
+		}
 		.inventory-all__panel {
-			padding-block: var(--bc-space-5);
+			padding-block: var(--bc-space-4);
 		}
 		.inventory-all__navigation {
 			display: grid;

@@ -76,7 +76,7 @@
 		position: sticky;
 		top: 0;
 		z-index: 1;
-		padding-block: var(--bc-space-1) var(--bc-space-5);
+		padding-block: var(--bc-space-1) var(--bc-space-3);
 		background: var(--bc-surface-raised);
 	}
 	.desktop-picker__options {
