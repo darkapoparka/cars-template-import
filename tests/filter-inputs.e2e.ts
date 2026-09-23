@@ -17,6 +17,13 @@ test('sidebar switches categories without another dialog and keeps actions stati
 	await dialog.getByRole('tab', { name: 'Model', exact: true }).click();
 	await dialog.locator('.inventory-all__panel').evaluate((n) => (n.scrollTop = n.scrollHeight));
 	expect((await dialog.locator('.site-dialog__footer').boundingBox())!.y).toBe(footer!.y);
+	await dialog.getByRole('tab', { name: 'Price', exact: true }).click();
+	await expect
+		.poll(() => dialog.locator('.inventory-all__panel').evaluate((n) => n.scrollTop))
+		.toBe(0);
+	await expect(
+		dialog.getByRole('spinbutton', { name: 'Minimum price (EUR)', exact: true })
+	).toBeInViewport();
 	await dialog.getByRole('tab', { name: 'Fuel', exact: true }).click();
 	await expect(dialog.getByRole('searchbox')).toHaveCount(0);
 	await expect(dialog.getByRole('checkbox', { name: 'Petrol', exact: true })).toBeVisible();

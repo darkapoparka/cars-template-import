@@ -36,6 +36,12 @@
 	let picker = $state<DesktopFilterPicker>();
 	let keywordInput = $state<HTMLInputElement>();
 	let filterForm = $state<HTMLFormElement>();
+	let filterPanel = $state<HTMLDivElement>();
+	$effect(() => {
+		// Each category starts at its heading, even after scrolling a long model list.
+		void activeFilter?.id;
+		if (filterPanel) filterPanel.scrollTop = 0;
+	});
 	let resultCount = $state<number | null>(null);
 	let counting = $state(false);
 	const draftFilters = $derived.by(() => {
@@ -168,9 +174,14 @@
 		if (filter.numericInput) {
 			const min = minimums[filter.id];
 			const format = (value: string) => Number(value).toLocaleString(english ? 'en' : 'bg');
-			return min || values.length
-				? `${min ? format(min) : '—'} – ${values[0] ? format(values[0]) : '—'} ${filter.numericInput.unit}`
-				: '';
+			if (!min && !values.length) return '';
+			const range =
+				min && values[0]
+					? `${format(min)} – ${format(values[0])}`
+					: min
+						? `${english ? 'From' : 'От'} ${format(min)}`
+						: `${english ? 'Up to' : 'До'} ${format(values[0])}`;
+			return `${range} ${filter.numericInput.unit}`;
 		}
 		return values
 			.map((value) => filter.options.find((option) => option.value === value)?.label ?? value)
@@ -382,6 +393,7 @@
 		</div>
 		<div
 			class="inventory-all__panel"
+			bind:this={filterPanel}
 			role="tabpanel"
 			id={formId + '-panel'}
 			aria-labelledby={activeFilter ? formId + '-' + activeFilter.id : formId + '-keyword-tab'}
@@ -575,8 +587,15 @@
 		background: var(--bc-bg-strong);
 	}
 	.inventory-all__navigation button[aria-selected='true'] {
-		background: var(--bc-surface-raised);
+		background: var(--bc-ink);
+		color: var(--bc-surface-raised);
 		font-weight: var(--bc-weight-heading);
+	}
+	.inventory-all__navigation button[aria-selected='true'] small {
+		color: inherit;
+	}
+	.inventory-all__navigation button[aria-selected='true'] .inventory-all__selected {
+		background: currentColor;
 	}
 	.inventory-all__navigation button > span {
 		display: flex;
@@ -608,6 +627,8 @@
 		min-height: 0;
 		padding: var(--bc-space-5) var(--bc-space-6);
 		overflow: auto;
+		overscroll-behavior: contain;
+		scrollbar-gutter: stable;
 		scrollbar-width: thin;
 	}
 	.inventory-all__panel h2 {

@@ -17,9 +17,9 @@
 }
 .desktop-filter-dialog .filter-control:focus-within,
 .desktop-filter-dialog .filter-control:focus-visible {
-	border-color: var(--bc-focus);
-	outline: 2px solid var(--bc-focus);
-	outline-offset: 0;
+	border-color: var(--bc-ink);
+	outline: 2px solid var(--bc-ink);
+	outline-offset: -2px;
 }
 .desktop-filter-dialog .filter-control input:not([type='checkbox']) {
 	min-width: 0;

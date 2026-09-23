@@ -41,7 +41,7 @@
 					bind:this={input}
 					type="search"
 					bind:value={query}
-					placeholder={english ? 'Search options' : 'Търсене в опциите'}
+					placeholder={(english ? 'Search in ' : 'Търси в ') + filter.label}
 					autocomplete="off"
 					onkeydown={(event) => {
 						if (event.key === 'Enter') event.preventDefault();
@@ -70,12 +70,12 @@
 		position: sticky;
 		top: 0;
 		z-index: 1;
-		padding: var(--bc-space-1) var(--bc-space-1) var(--bc-space-4);
+		padding-bottom: var(--bc-space-4);
 		background: var(--bc-surface-raised);
 	}
 	.desktop-picker__options {
 		display: grid;
 		gap: var(--bc-space-1);
-		padding: var(--bc-space-1);
+		padding-block: var(--bc-space-1);
 	}
 </style>
