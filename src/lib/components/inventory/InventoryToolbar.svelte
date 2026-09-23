@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { tick } from 'svelte';
-	import ArrowLeft from '@lucide/svelte/icons/arrow-left';
 	import DesktopFilterPicker from './DesktopFilterPicker.svelte';
 	import '$lib/styles/desktop-filters.css';
 	import { page } from '$app/state';
@@ -29,9 +28,13 @@
 	let keyword = $state('');
 	let activeFilter = $state<AuxeroInventoryFilter | null>(null);
 	let returnTrigger: HTMLButtonElement | undefined;
-	function chooseFilter(filter: AuxeroInventoryFilter, trigger: HTMLButtonElement) {
+	let picker = $state<DesktopFilterPicker>();
+	let keywordInput = $state<HTMLInputElement>();
+	async function chooseFilter(filter: AuxeroInventoryFilter, trigger: HTMLButtonElement) {
 		returnTrigger = trigger;
 		activeFilter = filter;
+		await tick();
+		picker?.focusSearch();
 	}
 	async function backToFilters() {
 		activeFilter = null;
@@ -141,6 +144,13 @@
 </div>
 <Modal
 	bind:open={allOpen}
+	variant="filter"
+	onBack={activeFilter ? backToFilters : undefined}
+	backLabel={english ? 'All filters' : 'Всички филтри'}
+	onOpenAutoFocus={(event) => {
+		event.preventDefault();
+		keywordInput?.focus({ preventScroll: true });
+	}}
 	title={activeFilter?.label ?? (english ? 'Find a car' : 'Търсене на автомобили')}
 	onEscapeKeydown={(event) => {
 		if (activeFilter) {
@@ -156,20 +166,9 @@
 		.filter(Boolean)
 		.join(' ')}
 >
-	{#snippet headerLeading()}
-		{#if activeFilter}
-			<button
-				class="inventory-options__back"
-				type="button"
-				aria-label={english ? 'All filters' : 'Всички филтри'}
-				onclick={backToFilters}
-			>
-				<ArrowLeft size={20} aria-hidden="true" />
-			</button>
-		{/if}
-	{/snippet}
 	{#if activeFilter}
 		{#key activeFilter.id}<DesktopFilterPicker
+				bind:this={picker}
 				filter={activeFilter}
 				{english}
 				bind:selection={draft[activeFilter.id]}
@@ -190,6 +189,7 @@
 				>{english ? 'Make, model or keyword' : 'Марка, модел или ключова дума'}</label
 			>
 			<input
+				bind:this={keywordInput}
 				id={formId + '-keyword'}
 				type="search"
 				name="keyword"
@@ -320,10 +320,7 @@
 		justify-content: space-between;
 		gap: var(--bc-space-3);
 	}
-	.inventory-all__actions :global(.site-action) {
-		font-size: var(--bc-text-control);
-		border-radius: var(--bc-radius-md);
-	}
+
 	.inventory-toolbar {
 		position: sticky;
 		top: 0;
@@ -386,20 +383,5 @@
 		.inventory-all {
 			grid-template-columns: repeat(2, minmax(0, 1fr));
 		}
-	}
-	.inventory-options__back {
-		display: grid;
-		place-items: center;
-		flex-shrink: 0;
-		width: var(--bc-control-height-secondary);
-		height: var(--bc-control-height-secondary);
-		border: 0;
-		border-radius: var(--bc-radius-md);
-		background: var(--bc-surface);
-		color: var(--bc-ink);
-		cursor: pointer;
-	}
-	.inventory-options__back:hover {
-		background: var(--bc-surface-hover);
 	}
 </style>

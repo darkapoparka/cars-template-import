@@ -5,6 +5,39 @@ test.beforeEach(({ isMobile }) => {
 	test.skip(Boolean(isMobile), 'These filters belong to the desktop inventory composition.');
 });
 
+test('filter dialog keeps navigation and actions visible and discards an unapplied draft', async ({
+	page
+}) => {
+	await page.setViewportSize({ width: 1440, height: 600 });
+	await visit(page, '/en/inventory');
+	const trigger = page.getByRole('button', { name: 'All filters', exact: true });
+	await trigger.click();
+	const dialog = page.getByRole('dialog');
+	await dialog.getByRole('button', { name: /^Model / }).click();
+	await expect(dialog.getByRole('searchbox')).toBeFocused();
+	const searchBefore = await dialog.getByRole('searchbox').boundingBox();
+	const footer = dialog.locator('.site-dialog__footer');
+	const footerBefore = await footer.boundingBox();
+	await dialog.locator('.site-dialog__body').evaluate((node) => {
+		node.scrollTop = node.scrollHeight;
+	});
+	expect((await dialog.getByRole('searchbox').boundingBox())!.y).toBeCloseTo(searchBefore!.y, 0);
+	expect((await footer.boundingBox())!.y).toBe(footerBefore!.y);
+	await dialog.getByRole('button', { name: 'All filters', exact: true }).click();
+	await dialog.getByRole('button', { name: /^Make / }).click();
+	await dialog.getByRole('checkbox', { name: 'BMW', exact: true }).check();
+	await dialog.getByRole('button', { name: 'Close', exact: true }).click();
+	await expect(trigger).toBeFocused();
+	await trigger.click();
+	await dialog.getByRole('button', { name: /^Make / }).click();
+	await expect(dialog.getByRole('checkbox', { name: 'BMW', exact: true })).not.toBeChecked();
+	await page.keyboard.press('Escape');
+	await expect(dialog.getByRole('button', { name: /^Make / })).toBeFocused();
+	await page.keyboard.press('Escape');
+	await expect(dialog).not.toBeVisible();
+	await expect(trigger).toBeFocused();
+});
+
 test('quick make picker preserves searched-out choices and submits only canonical fields', async ({
 	page
 }) => {

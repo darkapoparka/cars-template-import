@@ -14,6 +14,7 @@
 	import '$lib/styles/desktop-filters.css';
 	let { filter, english = false }: { filter: AuxeroInventoryFilter; english?: boolean } = $props();
 	let open = $state(false);
+	let picker = $state<DesktopFilterPicker>();
 	let selection = $state<string[]>([]);
 	const formId = $props.id();
 	const canonicalName = $derived(inventoryFilterParam(filter.name));
@@ -40,7 +41,16 @@
 		>{filter.selectedValues.length ? filter.selectedSummary : filter.label}</span
 	><ChevronDown size={18} aria-hidden="true" />
 </button>
-<Modal bind:open title={filter.label} class="filter-picker-dialog desktop-filter-dialog">
+<Modal
+	bind:open
+	title={filter.label}
+	variant="filter"
+	class="desktop-filter-dialog"
+	onOpenAutoFocus={(event) => {
+		event.preventDefault();
+		picker?.focusSearch();
+	}}
+>
 	<form
 		id={formId}
 		class="site-filter-dialog"
@@ -48,7 +58,7 @@
 		onsubmit={() => (open = false)}
 	>
 		{#each keep as [name, value], i (i)}<input type="hidden" {name} {value} />{/each}
-		<DesktopFilterPicker {filter} {english} bind:selection serialize />
+		<DesktopFilterPicker bind:this={picker} {filter} {english} bind:selection serialize />
 	</form>
 	{#snippet footer()}
 		<div class="filter-actions">

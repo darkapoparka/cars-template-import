@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import Search from '@lucide/svelte/icons/search';
 	import { assetHref } from '$lib/utils/assets';
 	import { inventoryFilterParam } from '$lib/domain/inventory-query';
@@ -23,7 +22,9 @@
 			option.label.toLocaleLowerCase().includes(query.trim().toLocaleLowerCase())
 		)
 	);
-	onMount(() => input?.focus({ preventScroll: true }));
+	export function focusSearch() {
+		input?.focus({ preventScroll: true });
+	}
 	function toggle(value: string) {
 		selection =
 			filter.mode === 'single'
@@ -103,16 +104,16 @@
 	}
 	.desktop-picker__options {
 		display: grid;
-		gap: var(--bc-space-2);
+		gap: var(--bc-space-1);
 		padding: var(--bc-space-1);
 	}
 	.desktop-picker__option {
 		display: flex;
 		align-items: center;
 		gap: var(--bc-space-3);
-		min-height: var(--bc-control-height-hero);
-		padding: var(--bc-space-3) var(--bc-space-4);
-		border: 1px solid var(--bc-border);
+		min-height: var(--bc-control-height-primary);
+		padding: var(--bc-space-2) var(--bc-space-3);
+		border: 0;
 		border-radius: var(--bc-radius-md);
 		color: var(--bc-ink);
 		font-size: var(--bc-text-control);
@@ -125,7 +126,6 @@
 		background: var(--bc-surface);
 	}
 	.desktop-picker__option:has(:checked) {
-		border-color: var(--bc-ink);
 		background: var(--bc-surface);
 		font-weight: var(--bc-weight-heading);
 	}

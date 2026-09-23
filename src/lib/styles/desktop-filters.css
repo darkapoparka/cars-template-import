@@ -47,14 +47,3 @@
 	-webkit-appearance: none;
 	margin: 0;
 }
-.desktop-filter-dialog .site-dialog__footer {
-	padding-top: var(--bc-space-6);
-}
-.desktop-filter-dialog .site-dialog__footer .site-action {
-	font-size: var(--bc-text-control);
-	border-radius: var(--bc-radius-md);
-	min-height: var(--bc-control-height-primary);
-}
-.desktop-filter-dialog .site-dialog__footer .primary {
-	padding-inline: var(--bc-space-8);
-}
