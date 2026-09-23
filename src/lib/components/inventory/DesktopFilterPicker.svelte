@@ -32,12 +32,7 @@
 	}
 </script>
 
-<div
-	class="desktop-picker"
-	class:desktop-picker--models={filter.name === 'model'}
-	class:desktop-picker--brands={filter.name === 'brand'}
-	bind:this={root}
->
+<div class="desktop-picker" bind:this={root}>
 	{#if searchable}<div class="desktop-picker__search">
 			<label class="filter-control"
 				><Search size={20} aria-hidden="true" /><span class="sr-only"
@@ -68,36 +63,21 @@
 </div>
 
 <style>
-	.desktop-picker--models .desktop-picker__options {
-		grid-template-columns: repeat(3, minmax(0, 1fr));
-	}
 	.desktop-picker__search {
 		position: sticky;
 		top: 0;
 		z-index: 1;
-		padding-bottom: var(--bc-space-4);
+		padding-bottom: var(--bc-space-3);
 		background: var(--bc-surface-raised);
 	}
 	.desktop-picker__options {
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 		align-content: start;
-		gap: var(--bc-space-2);
-		padding-block: var(--bc-space-1);
+		column-gap: var(--bc-space-5);
 	}
-	@media (max-width: 1199px) {
-		.desktop-picker--models .desktop-picker__options {
-			grid-template-columns: repeat(2, minmax(0, 1fr));
-		}
-	}
-	@media (min-width: 1200px) {
-		.desktop-picker--brands .desktop-picker__options {
-			grid-template-columns: repeat(3, minmax(0, 1fr));
-		}
-	}
-	@media (max-width: 899px) {
-		.desktop-picker__options,
-		.desktop-picker--models .desktop-picker__options {
+	@media (max-width: 767px) {
+		.desktop-picker__options {
 			grid-template-columns: minmax(0, 1fr);
 		}
 	}

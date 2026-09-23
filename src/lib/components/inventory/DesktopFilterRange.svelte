@@ -117,7 +117,7 @@
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 		gap: var(--bc-space-2);
 	}
-	@media (max-width: 899px) {
+	@media (max-width: 767px) {
 		.range-fields {
 			grid-template-columns: 1fr;
 		}

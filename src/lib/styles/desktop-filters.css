@@ -49,23 +49,29 @@
 	margin: 0;
 }
 
-@media (min-width: 900px) {
+@media (min-width: 768px) {
+	.desktop-filter-dialog .filter-control {
+		min-height: var(--bc-control-height-primary);
+		padding: var(--bc-space-2) var(--bc-space-3);
+	}
+	.desktop-filter-dialog .filter-control:focus-within,
+	.desktop-filter-dialog .filter-control:focus-visible {
+		border-color: var(--bc-focus);
+		outline: 1px solid var(--bc-focus);
+		outline-offset: 0;
+	}
 	.desktop-filter-dialog .filter-choice {
 		min-width: 0;
-		min-height: var(--bc-control-height-hero);
-		border: 1px solid var(--bc-border);
-		background: var(--bc-surface-raised);
-		transition:
-			border-color 140ms ease,
-			background-color 140ms ease;
+		min-height: var(--bc-control-height-primary);
+		padding-inline: var(--bc-space-2);
+		border-bottom: 1px solid var(--bc-border);
+		border-radius: 0;
 	}
 	.desktop-filter-dialog .filter-choice:hover {
-		border-color: var(--bc-border-strong);
 		background: var(--bc-surface);
 	}
 	.desktop-filter-dialog .filter-choice:has(:checked) {
-		border-color: var(--bc-accent);
-		background: var(--bc-accent-tint);
+		background: var(--bc-surface);
 	}
 	.desktop-filter-dialog .filter-choice__check:has(:checked) {
 		border-color: var(--bc-accent);

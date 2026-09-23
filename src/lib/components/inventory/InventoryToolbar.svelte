@@ -323,12 +323,7 @@
 		event.preventDefault();
 		(currentFilter?.numericInput ? rangePicker : picker)?.focusSearch();
 	}}
-	title={english ? 'Find a car' : 'Търсене на автомобили'}
-	description={
-		english
-			? 'Choose a few details to narrow down the cars in stock.'
-			: 'Изберете критерии, за да стесните наличните автомобили.'
-	}
+	title={english ? 'Filters' : 'Филтри'}
 	wide
 	class="inventory-filters-dialog desktop-filter-dialog"
 >
@@ -555,24 +550,23 @@
 		background: var(--bc-surface);
 	}
 	:global(.site-dialog.inventory-filters-dialog) {
-		width: min(1080px, calc(100vw - 2 * var(--bc-space-6)));
-		height: min(600px, calc(100dvh - 2 * var(--bc-space-6)));
+		width: min(900px, calc(100vw - 2 * var(--bc-space-6)));
+		height: min(480px, calc(100dvh - 2 * var(--bc-space-6)));
 	}
-	@media (min-width: 900px) {
+	@media (min-width: 768px) {
 		:global(.site-dialog.inventory-filters-dialog .site-dialog__header) {
 			align-items: center;
-			padding-block: var(--bc-space-4);
+			padding-block: var(--bc-space-3);
 			border-bottom: 1px solid var(--bc-border);
 		}
 		:global(.site-dialog.inventory-filters-dialog .site-dialog__footer) {
 			border-top: 1px solid var(--bc-border);
 			background: var(--bc-surface-raised);
+			padding-block: var(--bc-space-3);
 		}
 		.inventory-all__navigation {
-			padding-inline: var(--bc-space-3);
 			border-right: 1px solid var(--bc-border);
 			scrollbar-color: var(--bc-border-strong) var(--bc-surface);
-			padding-block: var(--bc-space-2);
 		}
 		.inventory-all__panel {
 			scrollbar-color: var(--bc-border-strong) var(--bc-surface-raised);
@@ -585,7 +579,7 @@
 	}
 	.inventory-all__form {
 		display: grid;
-		grid-template-columns: 212px minmax(0, 1fr);
+		grid-template-columns: 196px minmax(0, 1fr);
 		height: 100%;
 		min-height: 0;
 	}
@@ -657,8 +651,8 @@
 		scrollbar-width: thin;
 	}
 	.inventory-all__panel h2 {
-		margin: 0 0 var(--bc-space-4);
-		font: var(--bc-weight-heading) var(--bc-text-h4)/var(--bc-leading-h4) var(--bc-font-body);
+		margin: 0 0 var(--bc-space-3);
+		font: var(--bc-weight-heading) var(--bc-text-h5)/var(--bc-leading-h5) var(--bc-font-body);
 	}
 	@media (max-width: 899px) {
 		.inventory-all__form {
@@ -778,13 +772,17 @@
 			padding: var(--bc-space-4);
 		}
 	}
-	@media (min-width: 900px) {
+	@media (min-width: 768px) {
+		.inventory-all__navigation {
+			padding: var(--bc-space-1) var(--bc-space-3);
+		}
 		.inventory-all__navigation button {
 			position: relative;
 			min-height: var(--bc-control-height-compact);
 			border: 1px solid transparent;
 			padding-inline: var(--bc-space-3);
 			padding-block: var(--bc-space-1);
+			font-size: var(--bc-text-label);
 			transition:
 				background-color 140ms ease,
 				border-color 140ms ease;
@@ -793,10 +791,10 @@
 			background: var(--bc-bg-strong);
 		}
 		.inventory-all__navigation button[aria-selected='true'] {
-			border-color: color-mix(in srgb, var(--bc-accent) 24%, var(--bc-border));
-			background: var(--bc-surface-raised);
+			border-color: transparent;
+			background: var(--bc-bg-strong);
 			color: var(--bc-ink);
-			box-shadow: var(--bc-shadow-subtle);
+			box-shadow: none;
 		}
 		.inventory-all__navigation button[aria-selected='true']::before {
 			position: absolute;
