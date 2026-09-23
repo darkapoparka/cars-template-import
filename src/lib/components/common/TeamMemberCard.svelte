@@ -62,45 +62,37 @@
 	}
 	@media (min-width: 768px) {
 		.team-card {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			padding: var(--bc-space-8) var(--bc-space-5);
 			border: 1px solid var(--bc-border);
 			background: var(--bc-surface-raised);
 			box-shadow: var(--bc-shadow-subtle);
 		}
 		.team-card__portrait {
-			height: auto;
-			aspect-ratio: 4 / 3;
+			width: 144px;
+			height: 144px;
+			border-radius: 50%;
 		}
 		.team-card__body {
-			grid-template-columns: minmax(0, 1fr) auto;
-			justify-items: start;
-			align-items: start;
-			gap: var(--bc-space-2) var(--bc-space-4);
-			padding: var(--bc-space-5);
-			text-align: left;
+			flex: 1;
+			width: 100%;
+			grid-template-rows: auto 1fr auto;
+			gap: var(--bc-space-2);
+			padding: var(--bc-space-6) 0 0;
 		}
 		h3 {
-			grid-column: 1 / -1;
 			margin: 0;
 		}
 		p {
-			grid-column: 1 / -1;
-			grid-row: 2;
-			font-size: var(--bc-text-body-lg);
 			line-height: var(--bc-leading-body-lg);
+			max-width: 26ch;
+			text-wrap: balance;
 		}
 		.team-card__socials {
 			display: block;
-			grid-column: 1;
-			grid-row: 3;
-		}
-	}
-	@media (min-width: 1024px) {
-		p {
-			grid-column: 1;
-		}
-		.team-card__socials {
-			grid-column: 2;
-			grid-row: 2;
+			margin-top: var(--bc-space-4);
 		}
 	}
 </style>
