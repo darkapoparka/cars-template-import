@@ -15,6 +15,7 @@
 		onOpenAutoFocus,
 		onEscapeKeydown,
 		headerContent,
+		headerLeading,
 		class: className = ''
 	}: {
 		open?: boolean;
@@ -27,6 +28,7 @@
 		onOpenAutoFocus?: (event: Event) => void;
 		onEscapeKeydown?: (event: KeyboardEvent) => void;
 		headerContent?: Snippet;
+		headerLeading?: Snippet;
 		class?: string;
 	} = $props();
 </script>
@@ -45,7 +47,8 @@
 			]}
 		>
 			<header class="site-dialog__header">
-				<div>
+				{#if headerLeading}{@render headerLeading()}{/if}
+				<div class="site-dialog__heading">
 					<Dialog.Title class="site-dialog__title">{title}</Dialog.Title
 					>{#if description}<Dialog.Description class="site-dialog__description"
 							>{description}</Dialog.Description
@@ -97,6 +100,9 @@
 		justify-content: space-between;
 		gap: var(--bc-space-4);
 		padding-bottom: var(--bc-space-4);
+	}
+	.site-dialog__heading {
+		flex: 1;
 	}
 	:global(.site-dialog__title) {
 		margin: 0;

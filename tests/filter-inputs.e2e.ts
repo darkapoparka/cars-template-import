@@ -5,6 +5,24 @@ test.beforeEach(({ isMobile }) => {
 	test.skip(Boolean(isMobile), 'These filters belong to the desktop inventory composition.');
 });
 
+test('quick make picker preserves searched-out choices and submits only canonical fields', async ({
+	page
+}) => {
+	await visit(page, '/en/inventory?view=5');
+	await page.getByRole('button', { name: 'Make', exact: true }).click();
+	const picker = page.getByRole('dialog');
+	await picker.getByRole('checkbox', { name: 'BMW', exact: true }).check();
+	await picker.getByRole('searchbox').fill('no-match');
+	await expect(picker.getByRole('status')).toHaveText('No matches');
+	await picker.getByRole('button', { name: 'Apply', exact: true }).click();
+	await expect(page).toHaveURL(
+		(url) => url.searchParams.get('brand') === 'BMW' && url.searchParams.get('view') === '5'
+	);
+	expect(
+		[...new URL(page.url()).searchParams.keys()].some((name) => name.endsWith('-choice'))
+	).toBe(false);
+});
+
 test('every filter has a useful input and searching preserves selected makes', async ({ page }) => {
 	await visit(page, '/inventory?lang=en&view=3');
 	await page.getByRole('button', { name: 'All filters', exact: true }).click();

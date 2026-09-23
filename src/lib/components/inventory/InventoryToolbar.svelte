@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { tick } from 'svelte';
 	import ArrowLeft from '@lucide/svelte/icons/arrow-left';
-	import { assetHref } from '$lib/utils/assets';
+	import DesktopFilterPicker from './DesktopFilterPicker.svelte';
+	import '$lib/styles/desktop-filters.css';
 	import { page } from '$app/state';
 	import SlidersHorizontal from '@lucide/svelte/icons/sliders-horizontal';
 	import X from '@lucide/svelte/icons/x';
@@ -27,34 +28,15 @@
 	let draft = $state<Record<string, string[]>>({});
 	let keyword = $state('');
 	let activeFilter = $state<AuxeroInventoryFilter | null>(null);
-	let optionQuery = $state('');
-	let optionSearch = $state<HTMLInputElement>();
 	let returnTrigger: HTMLButtonElement | undefined;
-	const matchingOptions = $derived(
-		activeFilter?.options.filter((option) =>
-			option.label.toLocaleLowerCase().includes(optionQuery.trim().toLocaleLowerCase())
-		) ?? []
-	);
-	async function chooseFilter(filter: AuxeroInventoryFilter, trigger: HTMLButtonElement) {
+	function chooseFilter(filter: AuxeroInventoryFilter, trigger: HTMLButtonElement) {
 		returnTrigger = trigger;
-		optionQuery = '';
 		activeFilter = filter;
-		await tick();
-		optionSearch?.focus({ preventScroll: true });
 	}
 	async function backToFilters() {
 		activeFilter = null;
 		await tick();
 		returnTrigger?.focus({ preventScroll: true });
-	}
-	function toggleOption(value: string) {
-		if (!activeFilter) return;
-		const selected = draft[activeFilter.id] ?? [];
-		draft[activeFilter.id] = selected.includes(value)
-			? selected.filter((item) => item !== value)
-			: activeFilter.mode === 'single'
-				? [value]
-				: [...selected, value];
 	}
 	function openFilters() {
 		activeFilter = null;
@@ -167,45 +149,33 @@
 		}
 	}}
 	wide
-	class={['inventory-filters-dialog', activeFilter && 'inventory-filters-dialog--options']
+	class={[
+		'inventory-filters-dialog desktop-filter-dialog',
+		activeFilter && 'inventory-filters-dialog--options'
+	]
 		.filter(Boolean)
 		.join(' ')}
 >
-	{#snippet headerContent()}
+	{#snippet headerLeading()}
 		{#if activeFilter}
-			<div class="inventory-options__header">
-				<button type="button" class="inventory-options__back" onclick={backToFilters}>
-					<ArrowLeft size={18} aria-hidden="true" />{english ? 'All filters' : 'Всички филтри'}
-				</button>
-				<div class="inventory-all__search">
-					<Search size={20} aria-hidden="true" />
-					<input
-						bind:this={optionSearch}
-						type="search"
-						bind:value={optionQuery}
-						aria-label={(english ? 'Search in ' : 'Търси в ') + activeFilter.label}
-						placeholder={english ? 'Search options' : 'Търси в опциите'}
-					/>
-				</div>
-			</div>
+			<button
+				class="inventory-options__back"
+				type="button"
+				aria-label={english ? 'All filters' : 'Всички филтри'}
+				onclick={backToFilters}
+			>
+				<ArrowLeft size={20} aria-hidden="true" />
+			</button>
 		{/if}
 	{/snippet}
 	{#if activeFilter}
-		<div class="inventory-options">
-			{#each matchingOptions as option (option.value)}
-				<label>
-					<input
-						type={activeFilter.mode === 'single' ? 'radio' : 'checkbox'}
-						name={formId + '-option'}
-						checked={(draft[activeFilter.id] ?? []).includes(option.value)}
-						onchange={() => toggleOption(option.value)}
-					/>
-					{#if option.image}<img src={assetHref(option.image)} alt="" width="36" height="28" />{/if}
-					<span>{option.label}</span>
-				</label>
-			{:else}<p role="status">{english ? 'No matches' : 'Няма съвпадения'}</p>{/each}
-		</div>
+		{#key activeFilter.id}<DesktopFilterPicker
+				filter={activeFilter}
+				{english}
+				bind:selection={draft[activeFilter.id]}
+			/>{/key}
 	{/if}
+
 	<form
 		style:display={activeFilter ? 'none' : undefined}
 		class="inventory-all__form"
@@ -214,7 +184,7 @@
 		onsubmit={() => (allOpen = false)}
 	>
 		{#each passthrough as [name, value], i (i)}<input type="hidden" {name} {value} />{/each}
-		<div class="inventory-all__search">
+		<div class="inventory-all__search filter-control">
 			<Search size={20} aria-hidden="true" />
 			<label class="sr-only" for={formId + '-keyword'}
 				>{english ? 'Make, model or keyword' : 'Марка, модел или ключова дума'}</label
@@ -238,7 +208,7 @@
 	{#snippet footer()}
 		<div class="inventory-all__actions">
 			<Action
-				variant="secondary"
+				variant="quiet"
 				onclick={() => {
 					if (activeFilter) {
 						draft[activeFilter.id] = [];
@@ -335,48 +305,15 @@
 	}
 	.inventory-all {
 		display: grid;
-		grid-template-columns: repeat(4, minmax(0, 1fr));
-		gap: var(--bc-space-5) var(--bc-space-4);
-		padding-block: var(--bc-space-5);
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: var(--bc-space-3);
+		padding-top: var(--bc-space-4);
 	}
 	:global(.site-dialog.inventory-filters-dialog) {
-		width: min(1040px, calc(100vw - 2 * var(--bc-space-6)));
+		width: min(760px, calc(100vw - 2 * var(--bc-space-6)));
 	}
 	.inventory-all__form {
 		padding: var(--bc-space-1);
-	}
-	.inventory-all__search {
-		display: flex;
-		align-items: center;
-		gap: var(--bc-space-3);
-		padding: 0 var(--bc-space-3);
-		min-height: var(--bc-control-height-primary);
-		border: 1px solid var(--bc-border);
-		border-radius: var(--bc-radius-md);
-		background: var(--bc-surface);
-		color: var(--bc-muted);
-	}
-	.inventory-all__search input {
-		width: 100%;
-		min-width: 0;
-		border: 0;
-		padding: var(--bc-space-2) 0;
-		background: transparent;
-		color: var(--bc-ink);
-		font: inherit;
-		font-size: var(--bc-text-control);
-	}
-	.inventory-all__search input::placeholder {
-		color: var(--bc-copy);
-		opacity: 1;
-	}
-	.inventory-all__search:focus-within {
-		outline: 2px solid var(--bc-focus);
-		outline-offset: 0;
-	}
-	.inventory-all__search input:focus-visible {
-		outline: none !important;
-		box-shadow: none !important;
 	}
 	.inventory-all__actions {
 		display: flex;
@@ -450,54 +387,19 @@
 			grid-template-columns: repeat(2, minmax(0, 1fr));
 		}
 	}
-	:global(.site-dialog.inventory-filters-dialog--options) {
-		width: min(640px, calc(100vw - 2 * var(--bc-space-6)));
-	}
-	.inventory-options__header {
-		padding: var(--bc-space-1);
-	}
 	.inventory-options__back {
-		display: inline-flex;
-		align-items: center;
-		gap: var(--bc-space-2);
-		padding: 0;
-		margin-bottom: var(--bc-space-4);
-		border: 0;
-		background: transparent;
-		color: var(--bc-copy);
-		font: inherit;
-		font-size: var(--bc-text-control);
-		cursor: pointer;
-	}
-	.inventory-options {
-		padding: var(--bc-space-3) var(--bc-space-1) var(--bc-space-1);
-	}
-	.inventory-options label {
-		display: flex;
-		align-items: center;
-		gap: var(--bc-space-3);
-		min-height: var(--bc-control-height-primary);
-		padding: var(--bc-space-2) var(--bc-space-3);
-		border-radius: var(--bc-radius-md);
-		font-size: var(--bc-text-control);
-		cursor: pointer;
-	}
-	.inventory-options label:hover,
-	.inventory-options label:has(:checked) {
-		background: var(--bc-surface);
-	}
-	.inventory-options label:has(:checked) {
-		font-weight: var(--bc-weight-heading);
-	}
-	.inventory-options input {
-		width: var(--bc-text-control);
-		height: var(--bc-text-control);
-		margin: 0;
-		accent-color: var(--bc-accent);
+		display: grid;
+		place-items: center;
 		flex-shrink: 0;
+		width: var(--bc-control-height-secondary);
+		height: var(--bc-control-height-secondary);
+		border: 0;
+		border-radius: var(--bc-radius-md);
+		background: var(--bc-surface);
+		color: var(--bc-ink);
+		cursor: pointer;
 	}
-	.inventory-options img {
-		object-fit: contain;
-		flex: 0 0 36px;
+	.inventory-options__back:hover {
+		background: var(--bc-surface-hover);
 	}
 </style>

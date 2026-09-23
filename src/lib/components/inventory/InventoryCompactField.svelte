@@ -41,7 +41,7 @@
 			{value}
 		/>{/each}
 	{#if filter.name === 'feature' && filter.options.length === 1}
-		<label class="compact-field__feature"
+		<label class="compact-field__feature filter-control"
 			><input
 				type="checkbox"
 				checked={selection.includes(filter.options[0].value)}
@@ -66,11 +66,9 @@
 			</div>
 		</fieldset>
 	{:else if filter.numericInput}
-		<div class="compact-field__number">
+		<div class="compact-field__number filter-control">
 			<div class="compact-field__text">
-				<label class="compact-field__label" class:sr-only={!selection.length} for={id}
-					>{filter.label}</label
-				>
+				<label class="compact-field__label" for={id}>{filter.numericInput.label}</label>
 				<input
 					{id}
 					type="number"
@@ -78,9 +76,8 @@
 					min="1"
 					step="1"
 					inputmode="numeric"
-					placeholder={filter.numericInput.label}
+					placeholder="—"
 					value={selection[0] ?? ''}
-					list={id + '-presets'}
 					oninput={(event) => {
 						const value = event.currentTarget.valueAsNumber;
 						selection = Number.isFinite(value) ? [String(value)] : [];
@@ -89,15 +86,10 @@
 			</div>
 			<span class="compact-field__unit">{filter.numericInput.unit}</span>
 		</div>
-		<datalist id={id + '-presets'}
-			>{#each filter.options as option (option.value)}<option value={option.value}
-					>{option.label}</option
-				>{/each}</datalist
-		>
 	{:else}
 		<button
 			type="button"
-			class="compact-field__trigger"
+			class="compact-field__trigger filter-control"
 			aria-labelledby={id + '-label ' + id + '-value'}
 			class:compact-field__trigger--selected={selection.length > 0}
 			onclick={(event) => onchoose(event.currentTarget)}
@@ -114,22 +106,8 @@
 </div>
 
 <style>
-	.compact-field > .compact-field__feature {
-		display: flex;
-		align-items: center;
-		gap: var(--bc-space-2);
-		min-height: var(--bc-control-height-primary);
-		padding: var(--bc-space-2) var(--bc-space-3);
-		border: 1px solid var(--bc-border);
-		border-radius: var(--bc-radius-md);
-		background: var(--bc-surface);
-		color: var(--bc-ink);
-		font-size: var(--bc-text-filter);
-		font-weight: normal;
-		cursor: pointer;
-	}
 	.compact-field__feature input {
-		accent-color: var(--bc-accent);
+		accent-color: var(--bc-ink);
 	}
 	.compact-field--features {
 		grid-column: 1 / -1;
@@ -166,7 +144,7 @@
 		cursor: pointer;
 	}
 	.compact-features input {
-		accent-color: var(--bc-accent);
+		accent-color: var(--bc-ink);
 	}
 	.compact-field {
 		display: grid;
@@ -178,20 +156,6 @@
 		color: var(--bc-ink);
 		font-size: var(--bc-text-control);
 		font-weight: var(--bc-weight-control);
-	}
-	.compact-field :global(.compact-field__trigger),
-	.compact-field__number {
-		display: flex;
-		align-items: center;
-		gap: var(--bc-space-2);
-		width: 100%;
-		min-height: var(--bc-control-height-primary);
-		padding: var(--bc-space-2) var(--bc-space-3);
-		border: 1px solid var(--bc-border);
-		border-radius: var(--bc-radius-md);
-		background: var(--bc-surface);
-		color: var(--bc-ink);
-		font-size: var(--bc-text-filter);
 	}
 	.compact-field :global(.compact-field__trigger) {
 		justify-content: space-between;
@@ -219,14 +183,7 @@
 		flex: none;
 	}
 	.compact-field__number input {
-		width: 100%;
-		min-width: 0;
-		padding: 0;
-		border: 0;
-		background: transparent;
-		color: inherit;
-		font: inherit;
-		font-size: var(--bc-text-control);
+		text-align: right;
 	}
 	.compact-field__number input::placeholder {
 		color: var(--bc-ink);
@@ -245,22 +202,7 @@
 		color: var(--bc-muted);
 		font-size: var(--bc-text-label);
 	}
-	.compact-field__number:focus-within {
-		outline: 2px solid var(--bc-focus);
-		outline-offset: 2px;
-	}
-	.compact-field__number input:focus-visible {
-		outline: none !important;
-		box-shadow: none !important;
-	}
 	.compact-field__trigger--selected .compact-field__label {
 		color: var(--bc-copy);
-	}
-	.compact-field__trigger:hover {
-		border-color: var(--bc-border-strong);
-	}
-	.compact-field__trigger:focus-visible {
-		outline: 2px solid var(--bc-focus);
-		outline-offset: 2px;
 	}
 </style>

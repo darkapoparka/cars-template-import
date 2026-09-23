@@ -1,0 +1,60 @@
+/* Shared desktop inventory dialog controls. Mobile uses its own sheet composition. */
+.desktop-filter-dialog .filter-control {
+	display: flex;
+	align-items: center;
+	gap: var(--bc-space-3);
+	min-height: var(--bc-control-height-hero);
+	padding: var(--bc-space-3) var(--bc-space-4);
+	border: 1px solid var(--bc-border);
+	border-radius: var(--bc-radius-md);
+	background: var(--bc-surface);
+	color: var(--bc-ink);
+	font: var(--bc-weight-control) var(--bc-text-control)/var(--bc-leading-control)
+		var(--bc-font-body);
+}
+.desktop-filter-dialog .filter-control:hover {
+	border-color: var(--bc-border-strong);
+}
+.desktop-filter-dialog .filter-control:focus-within,
+.desktop-filter-dialog .filter-control:focus-visible {
+	outline: 2px solid var(--bc-focus);
+	outline-offset: 0;
+}
+.desktop-filter-dialog .filter-control input:not([type='checkbox']) {
+	min-width: 0;
+	width: 100%;
+	padding: 0;
+	border: 0;
+	border-radius: 0;
+	background: transparent;
+	color: inherit;
+	font: inherit;
+}
+.desktop-filter-dialog .filter-control input:not([type='checkbox']):focus-visible {
+	/* The enclosing control owns the ring, including the global keyboard-focus override. */
+	outline: none !important;
+	box-shadow: none !important;
+}
+.desktop-filter-dialog .filter-control input::placeholder {
+	color: var(--bc-copy);
+	opacity: 1;
+}
+.desktop-filter-dialog .filter-control input[type='number'] {
+	appearance: textfield;
+}
+.desktop-filter-dialog .filter-control input[type='number']::-webkit-inner-spin-button,
+.desktop-filter-dialog .filter-control input[type='number']::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+.desktop-filter-dialog .site-dialog__footer {
+	padding-top: var(--bc-space-6);
+}
+.desktop-filter-dialog .site-dialog__footer .site-action {
+	font-size: var(--bc-text-control);
+	border-radius: var(--bc-radius-md);
+	min-height: var(--bc-control-height-primary);
+}
+.desktop-filter-dialog .site-dialog__footer .primary {
+	padding-inline: var(--bc-space-8);
+}

@@ -10,10 +10,11 @@
 	import { linkHref } from '$lib/utils/links';
 	import Action from '$lib/components/common/Action.svelte';
 	import Modal from '$lib/components/common/Modal.svelte';
-	import InventoryFilterGroup from './InventoryFilterGroup.svelte';
+	import DesktopFilterPicker from './DesktopFilterPicker.svelte';
+	import '$lib/styles/desktop-filters.css';
 	let { filter, english = false }: { filter: AuxeroInventoryFilter; english?: boolean } = $props();
 	let open = $state(false);
-	let selection = $state<string[] | null>(null);
+	let selection = $state<string[]>([]);
 	const formId = $props.id();
 	const canonicalName = $derived(inventoryFilterParam(filter.name));
 	const keep = $derived(
@@ -39,7 +40,7 @@
 		>{filter.selectedValues.length ? filter.selectedSummary : filter.label}</span
 	><ChevronDown size={18} aria-hidden="true" />
 </button>
-<Modal bind:open title={filter.label} class="filter-picker-dialog">
+<Modal bind:open title={filter.label} class="filter-picker-dialog desktop-filter-dialog">
 	<form
 		id={formId}
 		class="site-filter-dialog"
@@ -47,18 +48,11 @@
 		onsubmit={() => (open = false)}
 	>
 		{#each keep as [name, value], i (i)}<input type="hidden" {name} {value} />{/each}
-		<InventoryFilterGroup
-			{filter}
-			{english}
-			bind:selection
-			expandedInitially
-			showTitle={false}
-			framed={false}
-		/>
+		<DesktopFilterPicker {filter} {english} bind:selection serialize />
 	</form>
 	{#snippet footer()}
 		<div class="filter-actions">
-			<Action variant="secondary" onclick={() => (selection = [])}
+			<Action variant="quiet" onclick={() => (selection = [])}
 				>{english ? 'Clear' : 'Изчисти'}</Action
 			>
 			<Action type="submit" form={formId}>{english ? 'Apply' : 'Приложи'}</Action>
