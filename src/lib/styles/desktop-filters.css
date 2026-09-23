@@ -53,11 +53,12 @@
 	.desktop-filter-dialog .filter-control {
 		min-height: var(--bc-control-height-primary);
 		padding: var(--bc-space-2) var(--bc-space-3);
+		font-size: var(--bc-text-label);
 	}
 	.desktop-filter-dialog .filter-control:focus-within,
 	.desktop-filter-dialog .filter-control:focus-visible {
-		border-color: var(--bc-focus);
-		outline: 1px solid var(--bc-focus);
+		border-color: var(--bc-border-strong);
+		outline: 3px solid rgb(185 22 28 / 0.15);
 		outline-offset: 0;
 	}
 	.desktop-filter-dialog .filter-choice {

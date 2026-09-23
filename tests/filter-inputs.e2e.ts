@@ -5,16 +5,15 @@ test.beforeEach(({ isMobile }) => {
 	test.skip(Boolean(isMobile), 'Desktop filter composition only.');
 });
 
-test('sidebar switches categories without another dialog and keeps actions stationary', async ({
-	page
-}) => {
+test('category tabs keep actions visible while long choices scroll', async ({ page }) => {
 	await page.setViewportSize({ width: 1440, height: 600 });
 	await visit(page, '/en/inventory');
 	await page.getByRole('button', { name: 'All filters', exact: true }).click();
 	const dialog = page.getByRole('dialog');
 	await expect(dialog.getByRole('searchbox')).toBeFocused();
-	const footer = await dialog.locator('.site-dialog__footer').boundingBox();
+	await expect(dialog.getByRole('tablist')).toHaveAttribute('aria-orientation', 'horizontal');
 	await dialog.getByRole('tab', { name: 'Model', exact: true }).click();
+	const footer = await dialog.locator('.site-dialog__footer').boundingBox();
 	await dialog.locator('.inventory-all__panel').evaluate((n) => (n.scrollTop = n.scrollHeight));
 	expect((await dialog.locator('.site-dialog__footer').boundingBox())!.y).toBe(footer!.y);
 	await dialog.getByRole('tab', { name: 'Price', exact: true }).click();
@@ -28,7 +27,7 @@ test('sidebar switches categories without another dialog and keeps actions stati
 	await expect(dialog.getByRole('searchbox')).toHaveCount(0);
 	await expect(dialog.getByRole('checkbox', { name: 'Petrol', exact: true })).toBeVisible();
 	await expect(page.getByRole('dialog')).toHaveCount(1);
-	await dialog.getByRole('tab', { name: 'Fuel', exact: true }).press('ArrowUp');
+	await dialog.getByRole('tab', { name: 'Fuel', exact: true }).press('ArrowLeft');
 	await expect(dialog.getByRole('tab', { name: 'Gearbox', exact: true })).toBeFocused();
 	await page.keyboard.press('Escape');
 	await expect(dialog).not.toBeVisible();
