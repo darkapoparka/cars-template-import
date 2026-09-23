@@ -25,9 +25,9 @@
 	gap: var(--bc-space-3);
 	min-height: var(--bc-control-height-hero);
 	padding: var(--bc-space-3) var(--bc-space-4);
-	border: 1px solid var(--bc-border);
+	border: 1px solid transparent;
 	border-radius: var(--bc-radius-md);
-	background: var(--bc-surface-raised);
+	background: var(--bc-bg-strong);
 	color: var(--bc-ink);
 	font: var(--bc-weight-control) var(--bc-text-entry)/var(--bc-leading-control) var(--bc-font-body);
 }
@@ -37,9 +37,12 @@
 }
 .desktop-filter-dialog .filter-control:focus-within,
 .desktop-filter-dialog .filter-control:focus-visible {
-	border-color: var(--bc-ink);
-	outline: 2px solid var(--bc-ink);
-	outline-offset: -2px;
+	border-color: var(--bc-accent);
+	outline: 3px solid var(--bc-accent-tint);
+	outline-offset: 0;
+}
+.desktop-filter-dialog .filter-control:focus-within > svg {
+	color: var(--bc-accent);
 }
 .desktop-filter-dialog .filter-control input:not([type='checkbox']) {
 	min-width: 0;
@@ -70,12 +73,6 @@
 }
 
 @media (min-width: 768px) {
-	.desktop-filter-dialog .filter-control:focus-within,
-	.desktop-filter-dialog .filter-control:focus-visible {
-		border-color: var(--bc-border-strong);
-		outline: 3px solid rgb(185 22 28 / 0.15);
-		outline-offset: 0;
-	}
 	.desktop-filter-dialog .filter-choice {
 		min-width: 0;
 		position: relative;
@@ -83,17 +80,18 @@
 		padding: var(--bc-space-3);
 		border: 1px solid transparent;
 		border-radius: var(--bc-radius-md);
-		background: var(--bc-surface-raised);
+		background: var(--bc-surface);
 		font-size: var(--bc-text-entry);
 		line-height: var(--bc-leading-control);
 		font-weight: var(--bc-weight-control);
 	}
 	.desktop-filter-dialog .filter-choice:hover {
-		background: var(--bc-surface);
+		border-color: var(--bc-border-strong);
+		background: var(--bc-surface-hover);
 	}
 	.desktop-filter-dialog .filter-choice:has(:checked) {
 		border-color: var(--bc-accent);
-		background: color-mix(in srgb, var(--bc-accent) 4%, var(--bc-surface-raised));
+		background: color-mix(in srgb, var(--bc-accent) 8%, var(--bc-surface-raised));
 		font-weight: var(--bc-weight-control);
 	}
 	.desktop-filter-dialog .filter-choice img {
