@@ -159,7 +159,7 @@ test('all-filters search preserves hidden selected models and replaces canonical
 	const choice = model.getByRole('checkbox').first();
 	await choice.check();
 	await search.fill('no-matching-model');
-	await model.getByRole('button', { name: 'Готово', exact: true }).click();
+	await model.getByRole('button', { name: 'Всички филтри', exact: true }).click();
 	await expect(dialog.locator('input[type="hidden"][name="q"]')).toHaveValue(selected!);
 	await dialog.getByRole('spinbutton', { name: 'Максимална цена (EUR)' }).fill('30000');
 	await dialog

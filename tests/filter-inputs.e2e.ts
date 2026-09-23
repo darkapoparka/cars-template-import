@@ -5,6 +5,29 @@ test.beforeEach(({ isMobile }) => {
 	test.skip(Boolean(isMobile), 'These filters belong to the desktop inventory composition.');
 });
 
+test('option view has one apply action and reveals invalid numeric fields before submitting', async ({
+	page
+}) => {
+	await visit(page, '/en/inventory');
+	await page.getByRole('button', { name: 'All filters', exact: true }).click();
+	const dialog = page.getByRole('dialog');
+	await expect(dialog.getByRole('button', { name: 'Clear', exact: true })).toHaveCount(0);
+	const price = dialog.getByRole('spinbutton', { name: 'Maximum price (EUR)', exact: true });
+	await price.fill('-1');
+	await dialog.getByRole('button', { name: /^Make / }).click();
+	await expect(dialog.locator('.site-dialog__footer').getByRole('button')).toHaveCount(1);
+	await dialog.getByRole('checkbox', { name: 'BMW', exact: true }).check();
+	await dialog.getByRole('button', { name: 'Show cars', exact: true }).click();
+	await expect(price).toBeFocused();
+	await expect(page).not.toHaveURL(/brand=BMW/);
+	await price.fill('42500');
+	await dialog.getByRole('button', { name: /^Make / }).click();
+	await dialog.getByRole('button', { name: 'Show cars', exact: true }).click();
+	await expect(page).toHaveURL(
+		(url) => url.searchParams.get('brand') === 'BMW' && url.searchParams.get('maxPrice') === '42500'
+	);
+});
+
 test('filter dialog keeps navigation and actions visible and discards an unapplied draft', async ({
 	page
 }) => {
@@ -66,7 +89,6 @@ test('every filter has a useful input and searching preserves selected makes', a
 	await make.getByRole('checkbox', { name: 'BMW', exact: true }).check();
 	await make.getByRole('searchbox').fill('no-such-make');
 	await expect(make.getByRole('status')).toHaveText('No matches');
-	await make.getByRole('button', { name: 'Done', exact: true }).click();
 	await dialog.getByRole('button', { name: 'Show cars', exact: true }).click();
 	await expect(page).toHaveURL((url) => url.searchParams.get('brand') === 'BMW');
 	await expect(page).toHaveURL((url) => url.searchParams.get('lang') === 'en');

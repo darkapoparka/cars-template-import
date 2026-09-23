@@ -62,10 +62,13 @@
 	</form>
 	{#snippet footer()}
 		<div class="filter-actions">
-			<Action variant="quiet" disabled={!selection.length} onclick={() => (selection = [])}
-				>{english ? 'Clear' : 'Изчисти'}</Action
+			{#if selection.length}<Action variant="quiet" onclick={() => (selection = [])}
+					>{english ? 'Clear' : 'Изчисти'}</Action
+				>
+			{/if}
+			<Action class="filter-apply" type="submit" form={formId}
+				>{english ? 'Apply' : 'Приложи'}</Action
 			>
-			<Action type="submit" form={formId}>{english ? 'Apply' : 'Приложи'}</Action>
 		</div>
 	{/snippet}
 </Modal>
@@ -99,6 +102,9 @@
 		min-width: 0;
 		overflow: hidden;
 		text-overflow: ellipsis;
+	}
+	.filter-actions :global(.filter-apply) {
+		margin-left: auto;
 	}
 	.filter-actions {
 		display: flex;

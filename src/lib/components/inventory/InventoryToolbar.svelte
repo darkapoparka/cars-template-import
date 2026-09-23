@@ -30,6 +30,12 @@
 	let returnTrigger: HTMLButtonElement | undefined;
 	let picker = $state<DesktopFilterPicker>();
 	let keywordInput = $state<HTMLInputElement>();
+	let filterForm = $state<HTMLFormElement>();
+	async function applyFilters() {
+		activeFilter = null;
+		await tick();
+		filterForm?.requestSubmit();
+	}
 	async function chooseFilter(filter: AuxeroInventoryFilter, trigger: HTMLButtonElement) {
 		returnTrigger = trigger;
 		activeFilter = filter;
@@ -178,6 +184,7 @@
 	<form
 		style:display={activeFilter ? 'none' : undefined}
 		class="inventory-all__form"
+		bind:this={filterForm}
 		id={formId}
 		action={linkHref('/inventory')}
 		onsubmit={() => (allOpen = false)}
@@ -207,25 +214,18 @@
 	</form>
 	{#snippet footer()}
 		<div class="inventory-all__actions">
-			<Action
-				variant="quiet"
-				disabled={activeFilter
-					? !draft[activeFilter.id]?.length
-					: !keyword && !Object.values(draft).some((values) => values.length)}
-				onclick={() => {
-					if (activeFilter) {
-						draft[activeFilter.id] = [];
-						return;
-					}
-					keyword = '';
-					draft = Object.fromEntries(desktop.filters.map((filter) => [filter.id, []]));
-				}}>{desktop.sidebar.actions.clearLabel}</Action
-			>
-			{#if activeFilter}
-				<Action onclick={backToFilters}>{english ? 'Done' : 'Готово'}</Action>
-			{:else}
-				<Action type="submit" form={formId}>{english ? 'Show cars' : 'Покажи автомобили'}</Action>
+			{#if !activeFilter && (keyword || Object.values(draft).some((values) => values.length))}
+				<Action
+					variant="quiet"
+					onclick={() => {
+						keyword = '';
+						draft = Object.fromEntries(desktop.filters.map((filter) => [filter.id, []]));
+					}}>{desktop.sidebar.actions.clearLabel}</Action
+				>
 			{/if}
+			<Action class="inventory-all__apply" onclick={applyFilters}
+				>{english ? 'Show cars' : 'Покажи автомобили'}</Action
+			>
 		</div>
 	{/snippet}
 </Modal>
@@ -324,6 +324,9 @@
 		gap: var(--bc-space-3);
 	}
 
+	.inventory-all__actions :global(.inventory-all__apply) {
+		margin-left: auto;
+	}
 	.inventory-toolbar {
 		position: sticky;
 		top: 0;
