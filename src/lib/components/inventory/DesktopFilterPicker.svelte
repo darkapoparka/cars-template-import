@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Search from '@lucide/svelte/icons/search';
+	import Check from '@lucide/svelte/icons/check';
 	import { assetHref } from '$lib/utils/assets';
 	import { inventoryFilterParam } from '$lib/domain/inventory-query';
 	import type { AuxeroInventoryFilter } from '$lib/server/inventory-options';
@@ -64,7 +65,7 @@
 					bind:this={input}
 					type="search"
 					bind:value={query}
-					placeholder={(english ? 'Search in ' : 'Търси в ') + filter.label}
+					placeholder={english ? 'Search options' : 'Търсене в опциите'}
 					autocomplete="off"
 				/>
 			{/if}
@@ -80,15 +81,21 @@
 	<div class="desktop-picker__options">
 		{#each matching as option (option.value)}
 			<label class="desktop-picker__option">
+				<span
+					class="desktop-picker__check"
+					class:desktop-picker__check--radio={filter.mode === 'single'}
+				>
+					<input
+						type={filter.mode === 'single' ? 'radio' : 'checkbox'}
+						name={id + '-choice'}
+						form={id + '-options'}
+						checked={selection.includes(option.value)}
+						onchange={() => toggle(option.value)}
+					/>
+					<Check size={14} strokeWidth={3} aria-hidden="true" />
+				</span>
 				{#if option.image}<img src={assetHref(option.image)} alt="" width="36" height="28" />{/if}
-				<span>{option.label}</span>
-				<input
-					type={filter.mode === 'single' ? 'radio' : 'checkbox'}
-					name={id + '-choice'}
-					form={id + '-options'}
-					checked={selection.includes(option.value)}
-					onchange={() => toggle(option.value)}
-				/>
+				<span class="desktop-picker__label">{option.label}</span>
 			</label>
 		{:else}<p role="status">{english ? 'No matches' : 'Няма съвпадения'}</p>{/each}
 	</div>
@@ -119,7 +126,7 @@
 		font-size: var(--bc-text-control);
 		cursor: pointer;
 	}
-	.desktop-picker__option span {
+	.desktop-picker__label {
 		flex: 1;
 	}
 	.desktop-picker__option:hover {
@@ -133,12 +140,40 @@
 		outline: 2px solid var(--bc-focus);
 		outline-offset: 2px;
 	}
-	.desktop-picker__option input {
-		margin: 0;
-		width: var(--bc-text-control);
-		height: var(--bc-text-control);
+	.desktop-picker__check {
+		position: relative;
+		display: grid;
+		place-items: center;
+		width: var(--bc-space-5);
+		height: var(--bc-space-5);
 		flex-shrink: 0;
-		accent-color: var(--bc-ink);
+		border: 1px solid var(--bc-muted);
+		border-radius: var(--bc-radius-sm);
+		background: var(--bc-surface-raised);
+		color: var(--bc-white);
+	}
+	.desktop-picker__check--radio {
+		border-radius: var(--bc-radius-pill);
+	}
+	.desktop-picker__check :global(svg) {
+		visibility: hidden;
+		pointer-events: none;
+	}
+	.desktop-picker__check:has(:checked) {
+		background: var(--bc-ink);
+		border-color: var(--bc-ink);
+	}
+	.desktop-picker__check:has(:checked) :global(svg) {
+		visibility: visible;
+	}
+	.desktop-picker__check input {
+		position: absolute;
+		inset: 0;
+		opacity: 0;
+		cursor: pointer;
+		margin: 0;
+		width: 100%;
+		height: 100%;
 	}
 	.desktop-picker__option img {
 		object-fit: contain;

@@ -187,7 +187,7 @@
 		overflow: hidden;
 	}
 	:global(.site-dialog--filter) .site-dialog__header {
-		padding: var(--bc-space-6);
+		padding: var(--bc-space-5) var(--bc-space-6) var(--bc-space-4);
 		gap: var(--bc-space-3);
 	}
 	:global(.site-dialog--filter .site-dialog__title) {
@@ -204,7 +204,7 @@
 	:global(.site-dialog--filter) .site-dialog__footer :global(.site-action) {
 		font-size: var(--bc-text-control);
 		border-radius: var(--bc-radius-md);
-		min-height: var(--bc-control-height-primary);
+		min-height: var(--bc-control-height-standard);
 	}
 	:global(.site-dialog--filter) .site-dialog__footer :global(.primary) {
 		padding-inline: var(--bc-space-8);

@@ -209,6 +209,9 @@
 		<div class="inventory-all__actions">
 			<Action
 				variant="quiet"
+				disabled={activeFilter
+					? !draft[activeFilter.id]?.length
+					: !keyword && !Object.values(draft).some((values) => values.length)}
 				onclick={() => {
 					if (activeFilter) {
 						draft[activeFilter.id] = [];

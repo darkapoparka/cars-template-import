@@ -62,7 +62,7 @@
 	</form>
 	{#snippet footer()}
 		<div class="filter-actions">
-			<Action variant="quiet" onclick={() => (selection = [])}
+			<Action variant="quiet" disabled={!selection.length} onclick={() => (selection = [])}
 				>{english ? 'Clear' : 'Изчисти'}</Action
 			>
 			<Action type="submit" form={formId}>{english ? 'Apply' : 'Приложи'}</Action>

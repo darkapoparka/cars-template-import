@@ -154,7 +154,7 @@ test('all-filters search preserves hidden selected models and replaces canonical
 	const model = page.locator('.inventory-filters-dialog--options');
 	const search = model.getByRole('searchbox');
 	const firstChoice = model.getByRole('checkbox').first();
-	const selected = await firstChoice.locator('..').innerText();
+	const selected = await firstChoice.locator('xpath=ancestor::label').innerText();
 	await search.fill(selected!);
 	const choice = model.getByRole('checkbox').first();
 	await choice.check();
