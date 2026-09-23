@@ -7,7 +7,7 @@
 	padding: var(--bc-space-3) var(--bc-space-4);
 	border: 1px solid var(--bc-border);
 	border-radius: var(--bc-radius-md);
-	background: var(--bc-surface);
+	background: var(--bc-surface-raised);
 	color: var(--bc-ink);
 	font: var(--bc-weight-control) var(--bc-text-control)/var(--bc-leading-control)
 		var(--bc-font-body);

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { tick } from 'svelte';
+	import { SvelteURLSearchParams } from 'svelte/reactivity';
 	import DesktopFilterPicker from './DesktopFilterPicker.svelte';
 	import '$lib/styles/desktop-filters.css';
 	import { page } from '$app/state';
@@ -31,6 +32,91 @@
 	let picker = $state<DesktopFilterPicker>();
 	let keywordInput = $state<HTMLInputElement>();
 	let filterForm = $state<HTMLFormElement>();
+	let resultCount = $state<number | null>(null);
+	let counting = $state(false);
+	const draftFilters = $derived.by(() => {
+		const make = desktop.filters.find((filter) => filter.name === 'brand');
+		const brands = make ? (draft[make.id] ?? []) : [];
+		return desktop.filters.map((filter) =>
+			filter.modelCatalog
+				? {
+						...filter,
+						options: filter.modelCatalog
+							.filter(
+								(option) =>
+									!brands.length ||
+									option.brands.some((brand) =>
+										brands.some((selected) => selected.toLowerCase() === brand.toLowerCase())
+									)
+							)
+							.map((option) => ({
+								...option,
+								label:
+									brands.length === 1
+										? option.value
+										: `${option.brands.join(' / ')} ${option.value}`
+							}))
+							.sort((a, b) => a.label.localeCompare(b.label))
+					}
+				: filter
+		);
+	});
+	const currentFilter = $derived(draftFilters.find((filter) => filter.id === activeFilter?.id));
+	const orderedFilters = $derived(
+		[...draftFilters].sort((a, b) => {
+			const order = [
+				'brand',
+				'model',
+				'priceTo',
+				'mileageTo',
+				'bodyType',
+				'transmission',
+				'fuel',
+				'feature'
+			];
+			return order.indexOf(a.name) - order.indexOf(b.name);
+		})
+	);
+	function updateSelection(filter: AuxeroInventoryFilter, values: string[]) {
+		draft[filter.id] = values;
+		if (filter.name === 'brand') {
+			const model = draftFilters.find((item) => item.name === 'model');
+			if (model)
+				draft[model.id] = (draft[model.id] ?? []).filter((value) =>
+					model.options.some((option) => option.value === value)
+				);
+		}
+	}
+	$effect(() => {
+		if (!allOpen) return;
+		const params = new SvelteURLSearchParams(passthrough);
+		if (keyword.trim()) params.set('keyword', keyword.trim());
+		for (const filter of desktop.filters) {
+			for (const value of draft[filter.id] ?? [])
+				params.append(inventoryFilterParam(filter.name), value);
+		}
+		const controller = new AbortController();
+		counting = true;
+		resultCount = null;
+		const timer = setTimeout(async () => {
+			try {
+				const response = await fetch(`${linkHref('/api/inventory/count')}?${params}`, {
+					signal: controller.signal
+				});
+				if (!response.ok) throw new Error('Inventory count unavailable');
+				const data = await response.json();
+				if (!controller.signal.aborted && Number.isInteger(data.count)) resultCount = data.count;
+			} catch {
+				// Filtering still works through the form when the preview is unavailable.
+			} finally {
+				if (!controller.signal.aborted) counting = false;
+			}
+		}, 180);
+		return () => {
+			clearTimeout(timer);
+			controller.abort();
+		};
+	});
 	async function applyFilters() {
 		activeFilter = null;
 		await tick();
@@ -172,12 +258,14 @@
 		.filter(Boolean)
 		.join(' ')}
 >
-	{#if activeFilter}
+	{#if activeFilter && currentFilter}
 		{#key activeFilter.id}<DesktopFilterPicker
 				bind:this={picker}
-				filter={activeFilter}
+				filter={currentFilter}
 				{english}
-				bind:selection={draft[activeFilter.id]}
+				bind:selection={
+					() => draft[currentFilter.id] ?? [], (values) => updateSelection(currentFilter, values)
+				}
 			/>{/key}
 	{/if}
 
@@ -205,15 +293,24 @@
 			/>
 		</div>
 		<div class="inventory-all">
-			{#each desktop.filters as filter (filter.id)}<InventoryCompactField
+			{#each orderedFilters as filter (filter.id)}<InventoryCompactField
 					{filter}
 					onchoose={(trigger) => chooseFilter(filter, trigger)}
-					bind:selection={draft[filter.id]}
+					bind:selection={() => draft[filter.id] ?? [], (values) => updateSelection(filter, values)}
 				/>{/each}
 		</div>
 	</form>
 	{#snippet footer()}
 		<div class="inventory-all__actions">
+			<span class="sr-only" aria-live="polite"
+				>{counting
+					? ''
+					: resultCount === null
+						? ''
+						: english
+							? `${resultCount} matching cars`
+							: `${resultCount} намерени автомобила`}</span
+			>
 			{#if !activeFilter && (keyword || Object.values(draft).some((values) => values.length))}
 				<Action
 					variant="quiet"
@@ -224,9 +321,17 @@
 				>
 			{/if}
 			<Action class="inventory-all__apply" onclick={applyFilters}
-				>{english ? 'Show cars' : 'Покажи автомобили'}</Action
+				>{english ? 'Show cars' : 'Покажи автомобили'}{#if resultCount !== null}<span
+						class="inventory-all__count"
+						aria-hidden="true">{resultCount}</span
+					>{/if}</Action
 			>
 		</div>
+		{#if resultCount === 0}<p class="inventory-all__empty">
+				{english
+					? 'No cars match these filters. Try a different make or a higher budget.'
+					: 'Няма автомобили с тези филтри. Опитайте друга марка или по-висок бюджет.'}
+			</p>{/if}
 	{/snippet}
 </Modal>
 
@@ -326,6 +431,16 @@
 
 	.inventory-all__actions :global(.inventory-all__apply) {
 		margin-left: auto;
+	}
+	.inventory-all__count {
+		font-variant-numeric: tabular-nums;
+		opacity: 0.85;
+	}
+	.inventory-all__empty {
+		margin: var(--bc-space-3) 0 0;
+		color: var(--bc-copy);
+		font-size: var(--bc-text-label);
+		text-align: right;
 	}
 	.inventory-toolbar {
 		position: sticky;

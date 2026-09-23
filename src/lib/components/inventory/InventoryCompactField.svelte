@@ -1,4 +1,5 @@
 <script lang="ts">
+	import InventoryFilterChoice from './InventoryFilterChoice.svelte';
 	import ChevronRight from '@lucide/svelte/icons/chevron-right';
 	import type { AuxeroInventoryFilter } from '$lib/server/inventory-options';
 	import { inventoryFilterParam } from '$lib/domain/inventory-query';
@@ -12,6 +13,9 @@
 		onchoose: (trigger: HTMLButtonElement) => void;
 	} = $props();
 	const id = $props.id();
+	const inlineOptions = $derived(
+		['fuel', 'transmission'].includes(filter.name) && filter.options.length <= 4
+	);
 	const summary = $derived(
 		selection
 			.map((value) => filter.options.find((option) => option.value === value)?.label ?? value)
@@ -32,7 +36,8 @@
 <div
 	class={[
 		'compact-field',
-		filter.name === 'feature' && filter.options.length > 1 && 'compact-field--features'
+		(filter.name === 'feature' || (filter.name === 'fuel' && inlineOptions)) &&
+			'compact-field--features'
 	]}
 >
 	{#each selection as value (value)}<input
@@ -41,28 +46,22 @@
 			{value}
 		/>{/each}
 	{#if filter.name === 'feature' && filter.options.length === 1}
-		<label class="compact-field__feature filter-control"
-			><input
-				type="checkbox"
-				checked={selection.includes(filter.options[0].value)}
-				onchange={() => toggle(filter.options[0].value)}
-			/><span class="compact-field__text"
-				><span class="sr-only">{filter.label}</span><span class="compact-field__value"
-					>{filter.options[0].label}</span
-				></span
-			></label
-		>
-	{:else if filter.name === 'feature'}
+		<InventoryFilterChoice
+			inline
+			label={filter.options[0].label}
+			checked={selection.includes(filter.options[0].value)}
+			onchange={() => toggle(filter.options[0].value)}
+		/>
+	{:else if filter.name === 'feature' || inlineOptions}
 		<fieldset class="compact-features">
 			<legend>{filter.label}</legend>
 			<div>
-				{#each filter.options as option (option.value)}<label
-						><input
-							type="checkbox"
-							checked={selection.includes(option.value)}
-							onchange={() => toggle(option.value)}
-						/><span>{option.label}</span></label
-					>{/each}
+				{#each filter.options as option (option.value)}<InventoryFilterChoice
+						inline
+						label={option.label}
+						checked={selection.includes(option.value)}
+						onchange={() => toggle(option.value)}
+					/>{/each}
 			</div>
 		</fieldset>
 	{:else if filter.numericInput}
@@ -76,7 +75,7 @@
 					min="1"
 					step="1"
 					inputmode="numeric"
-					placeholder="—"
+					placeholder={filter.allLabel}
 					value={selection[0] ?? ''}
 					oninput={(event) => {
 						const value = event.currentTarget.valueAsNumber;
@@ -97,7 +96,7 @@
 			<span class="compact-field__text"
 				><span id={id + '-label'} class="compact-field__label">{filter.label}</span><span
 					class="compact-field__value"
-					class:sr-only={!summary}
+					class:compact-field__value--empty={!summary}
 					id={id + '-value'}>{summary || filter.allLabel}</span
 				></span
 			><ChevronRight size={16} aria-hidden="true" />
@@ -106,45 +105,29 @@
 </div>
 
 <style>
-	.compact-field__feature input {
-		accent-color: var(--bc-ink);
-	}
 	.compact-field--features {
 		grid-column: 1 / -1;
 	}
 	.compact-features {
 		margin: 0;
 		min-width: 0;
-		padding: var(--bc-space-5);
+		padding: var(--bc-space-2) 0 0;
 		border: 0;
 		border-radius: var(--bc-radius-card);
-		background: var(--bc-surface);
+		background: transparent;
 	}
 	.compact-features legend {
 		float: left;
 		width: 100%;
-		padding: 0 0 var(--bc-space-4);
-		font-weight: var(--bc-weight-heading);
+		padding: 0;
+		color: var(--bc-copy);
+		font-size: var(--bc-text-label);
 	}
 	.compact-features > div {
 		clear: both;
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
-		gap: var(--bc-space-2);
-	}
-	.compact-features label {
 		display: flex;
-		align-items: center;
-		gap: var(--bc-space-2);
-		padding: var(--bc-space-3);
-		min-height: var(--bc-control-height-standard);
-		background: var(--bc-surface-raised);
-		border-radius: var(--bc-radius-md);
-		font-size: var(--bc-text-label);
-		cursor: pointer;
-	}
-	.compact-features input {
-		accent-color: var(--bc-ink);
+		flex-wrap: wrap;
+		gap: var(--bc-space-2) var(--bc-space-5);
 	}
 	.compact-field {
 		display: grid;
@@ -154,7 +137,7 @@
 	}
 	.compact-field__label {
 		color: var(--bc-ink);
-		font-size: var(--bc-text-control);
+		font-size: var(--bc-text-label);
 		font-weight: var(--bc-weight-control);
 	}
 	.compact-field :global(.compact-field__trigger) {
@@ -163,9 +146,10 @@
 	}
 	.compact-field__text {
 		display: flex;
-		align-items: center;
+		align-items: stretch;
+		flex-direction: column;
 		line-height: var(--bc-leading-label);
-		gap: var(--bc-space-2);
+		gap: var(--bc-space-1);
 		min-width: 0;
 		flex: 1;
 	}
@@ -176,33 +160,29 @@
 		white-space: nowrap;
 		font-size: var(--bc-text-control);
 		color: var(--bc-ink);
-		font-weight: var(--bc-weight-heading);
-		margin-left: auto;
+		font-weight: var(--bc-weight-control);
 	}
 	.compact-field :global(.compact-field__trigger > svg) {
 		flex: none;
 	}
 	.compact-field__number input {
-		text-align: right;
+		text-align: left;
 	}
 	.compact-field__number input::placeholder {
-		color: var(--bc-ink);
+		color: var(--bc-copy);
 		opacity: 1;
 	}
 	.compact-field__label {
 		flex-shrink: 0;
-	}
-	.compact-field__feature .compact-field__value {
-		margin-left: 0;
-		font-weight: var(--bc-weight-control);
-		font-size: var(--bc-text-control);
-		color: var(--bc-ink);
 	}
 	.compact-field__unit {
 		color: var(--bc-muted);
 		font-size: var(--bc-text-label);
 	}
 	.compact-field__trigger--selected .compact-field__label {
+		color: var(--bc-copy);
+	}
+	.compact-field__value--empty {
 		color: var(--bc-copy);
 	}
 </style>

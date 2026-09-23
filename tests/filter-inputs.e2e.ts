@@ -5,6 +5,42 @@ test.beforeEach(({ isMobile }) => {
 	test.skip(Boolean(isMobile), 'These filters belong to the desktop inventory composition.');
 });
 
+test('draft makes update models and the preview matches the submitted filters', async ({
+	page
+}) => {
+	await visit(page, '/en/inventory?brand=BMW');
+	await page.getByRole('button', { name: 'All filters', exact: true }).click();
+	const dialog = page.getByRole('dialog');
+	await dialog.getByRole('button', { name: /^Model / }).click();
+	await dialog.getByRole('checkbox').first().check();
+	await page.keyboard.press('Escape');
+	await expect(dialog.getByRole('button', { name: /^Model / })).not.toHaveText('ModelAll models');
+	await dialog.getByRole('button', { name: /^Make / }).click();
+	await dialog.getByRole('checkbox', { name: 'BMW', exact: true }).uncheck();
+	await dialog.getByRole('checkbox', { name: 'Mazda', exact: true }).check();
+	await page.keyboard.press('Escape');
+	await expect(dialog.getByRole('button', { name: /^Model / })).toContainText('All models');
+	await dialog.getByRole('button', { name: /^Model / }).click();
+	const models = await dialog.getByRole('checkbox').count();
+	expect(models).toBeGreaterThan(0);
+	await dialog.getByRole('checkbox').first().check();
+	await page.keyboard.press('Escape');
+	await dialog.getByRole('checkbox', { name: 'Petrol', exact: true }).check();
+	await dialog.getByRole('spinbutton', { name: 'Maximum price (EUR)', exact: true }).fill('1');
+	await expect(dialog.locator('.inventory-all__count')).toHaveText('0');
+	await expect(dialog.getByText('No cars match these filters.', { exact: false })).toBeVisible();
+	await dialog.getByRole('spinbutton', { name: 'Maximum price (EUR)', exact: true }).fill('');
+	await expect(dialog.locator('.inventory-all__count')).not.toHaveText('0');
+	const count = Number(await dialog.locator('.inventory-all__count').innerText());
+	await dialog.getByRole('button', { name: 'Show cars', exact: true }).click();
+	await expect(page).toHaveURL(
+		(url) => url.searchParams.get('brand') === 'Mazda' && url.searchParams.has('q')
+	);
+	const params = new URL(page.url()).searchParams;
+	const response = await page.request.get(`/api/inventory/count?${params}`);
+	expect((await response.json()).count).toBe(count);
+});
+
 test('option view has one apply action and reveals invalid numeric fields before submitting', async ({
 	page
 }) => {
