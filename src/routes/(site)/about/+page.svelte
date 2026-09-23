@@ -91,7 +91,7 @@
 		}
 		.about-team {
 			width: 100%;
-			max-width: 1120px;
+			max-width: 900px;
 			margin-inline: auto;
 		}
 	}

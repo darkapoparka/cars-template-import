@@ -62,37 +62,68 @@
 	}
 	@media (min-width: 768px) {
 		.team-card {
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			padding: var(--bc-space-8) var(--bc-space-5);
+			display: grid;
+			grid-template-columns: minmax(0, 1fr);
+			grid-template-rows: 200px auto 1fr;
+			padding: var(--bc-space-3);
 			border: 1px solid var(--bc-border);
 			background: var(--bc-surface-raised);
-			box-shadow: var(--bc-shadow-subtle);
+			transition: box-shadow var(--bc-motion-standard);
+		}
+		.team-card:hover,
+		.team-card:focus-within {
+			box-shadow: var(--bc-shadow-card);
 		}
 		.team-card__portrait {
-			width: 144px;
-			height: 144px;
-			border-radius: 50%;
+			grid-area: 1 / 1;
+			height: 100%;
+			border-radius: var(--bc-radius-card);
 		}
 		.team-card__body {
-			flex: 1;
-			width: 100%;
-			grid-template-rows: auto 1fr auto;
-			gap: var(--bc-space-2);
-			padding: var(--bc-space-6) 0 0;
+			display: contents;
 		}
 		h3 {
-			margin: 0;
+			grid-area: 2 / 1;
+			margin: var(--bc-space-4) var(--bc-space-1) 0;
+			font-size: 20px;
+			text-align: left;
 		}
 		p {
-			line-height: var(--bc-leading-body-lg);
-			max-width: 26ch;
-			text-wrap: balance;
+			grid-area: 3 / 1;
+			margin: var(--bc-space-1) var(--bc-space-1);
+			font-size: 14px;
+			line-height: 1.5;
+			text-align: left;
 		}
 		.team-card__socials {
 			display: block;
-			margin-top: var(--bc-space-4);
+			grid-area: 1 / 1;
+			align-self: end;
+			justify-self: center;
+			z-index: 1;
+			margin-bottom: var(--bc-space-3);
+			transition:
+				opacity var(--bc-motion-standard),
+				transform var(--bc-motion-standard);
+		}
+	}
+	@media (min-width: 768px) and (hover: hover) and (pointer: fine) {
+		.team-card__socials {
+			opacity: 0;
+			transform: translateY(var(--bc-space-2));
+			pointer-events: none;
+		}
+		.team-card:hover .team-card__socials,
+		.team-card:focus-within .team-card__socials {
+			opacity: 1;
+			transform: translateY(0);
+			pointer-events: auto;
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.team-card,
+		.team-card__socials {
+			transition: none;
 		}
 	}
 </style>
