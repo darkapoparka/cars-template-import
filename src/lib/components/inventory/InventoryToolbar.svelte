@@ -294,6 +294,10 @@
 		justify-content: space-between;
 		gap: var(--bc-space-3);
 	}
+	.inventory-all__actions :global(.site-action) {
+		font-size: var(--bc-text-control);
+		border-radius: var(--bc-radius-md);
+	}
 	.inventory-toolbar {
 		position: sticky;
 		top: 0;

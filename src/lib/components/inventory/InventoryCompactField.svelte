@@ -58,7 +58,7 @@
 				checked={selection.includes(filter.options[0].value)}
 				onchange={() => toggle(filter.options[0].value)}
 			/><span class="compact-field__text"
-				><span class="compact-field__label">{filter.label}</span><span class="compact-field__value"
+				><span class="sr-only">{filter.label}</span><span class="compact-field__value"
 					>{filter.options[0].label}</span
 				></span
 			></label
@@ -79,7 +79,9 @@
 	{:else if filter.numericInput}
 		<div class="compact-field__number">
 			<div class="compact-field__text">
-				<label class="compact-field__label" for={id}>{filter.numericInput.label}</label>
+				<label class="compact-field__label" class:sr-only={!selection.length} for={id}
+					>{filter.label}</label
+				>
 				<input
 					{id}
 					type="number"
@@ -87,7 +89,7 @@
 					min="1"
 					step="1"
 					inputmode="numeric"
-					placeholder={english ? 'Any' : 'Без лимит'}
+					placeholder={filter.numericInput.label}
 					value={selection[0] ?? ''}
 					list={id + '-presets'}
 					oninput={(event) => {
@@ -178,7 +180,7 @@
 		display: flex;
 		align-items: center;
 		gap: var(--bc-space-2);
-		min-height: 72px;
+		min-height: var(--bc-control-height-primary);
 		padding: var(--bc-space-2) var(--bc-space-3);
 		border: 1px solid var(--bc-border);
 		border-radius: var(--bc-radius-md);
@@ -237,7 +239,7 @@
 	.compact-field__label {
 		color: var(--bc-ink);
 		font-size: var(--bc-text-control);
-		font-weight: var(--bc-weight-heading);
+		font-weight: var(--bc-weight-control);
 	}
 	.compact-field :global(.compact-field__trigger),
 	.compact-field__number {
@@ -245,7 +247,7 @@
 		align-items: center;
 		gap: var(--bc-space-2);
 		width: 100%;
-		min-height: 72px;
+		min-height: var(--bc-control-height-primary);
 		padding: var(--bc-space-2) var(--bc-space-3);
 		border: 1px solid var(--bc-route-pill-border);
 		border-radius: var(--bc-radius-md);
@@ -258,13 +260,15 @@
 		text-align: left;
 	}
 	.compact-field__text {
-		display: grid;
+		display: flex;
+		align-items: center;
 		line-height: var(--bc-leading-label);
-		gap: var(--bc-space-1);
+		gap: var(--bc-space-2);
 		min-width: 0;
 		flex: 1;
 	}
 	.compact-field__value {
+		min-width: 0;
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
@@ -282,7 +286,18 @@
 		background: transparent;
 		color: inherit;
 		font: inherit;
-		font-size: var(--bc-text-label);
+		font-size: var(--bc-text-control);
+	}
+	.compact-field__number input::placeholder {
+		color: var(--bc-ink);
+		opacity: 1;
+	}
+	.compact-field__label {
+		flex-shrink: 0;
+	}
+	.compact-field__feature .compact-field__value {
+		font-size: var(--bc-text-control);
+		color: var(--bc-ink);
 	}
 	.compact-field__unit {
 		color: var(--bc-muted);
