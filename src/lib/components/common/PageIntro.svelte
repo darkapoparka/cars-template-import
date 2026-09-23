@@ -6,12 +6,16 @@
 		description,
 		image,
 		align = 'start',
+		desktopDescription,
+		desktopActions,
 		children
 	}: {
 		title: string;
 		description?: string;
 		image?: string;
 		align?: 'start' | 'center';
+		desktopDescription?: string;
+		desktopActions?: Snippet;
 		children?: Snippet;
 	} = $props();
 </script>
@@ -20,6 +24,7 @@
 	class="site-intro"
 	class:site-intro--image={Boolean(image)}
 	class:site-intro--center={align === 'center'}
+	class:site-intro--interactive={Boolean(desktopActions)}
 >
 	{#if image}<img
 			src={assetHref(image)}
@@ -30,13 +35,25 @@
 		/>{/if}
 	<div class="site-container site-intro__content">
 		<h1>{title}</h1>
-		{#if description}<p>{description}</p>{/if}{#if children}<div class="site-intro__actions">
+		{#if description}<p>{description}</p>{:else if desktopDescription}<p
+				class="site-intro__desktop-description"
+			>
+				{desktopDescription}
+			</p>{/if}
+		{#if desktopActions}<div class="site-intro__desktop-actions">
+				{@render desktopActions()}
+			</div>{/if}
+		{#if children}<div class="site-intro__actions">
 				{@render children()}
 			</div>{/if}
 	</div>
 </section>
 
 <style>
+	.site-intro__desktop-description,
+	.site-intro__desktop-actions {
+		display: none;
+	}
 	.site-intro {
 		position: relative;
 		isolation: isolate;
@@ -88,5 +105,34 @@
 	}
 	.site-intro--center.site-intro--image::after {
 		background: linear-gradient(180deg, rgb(9 10 11 / 0.62), rgb(9 10 11 / 0.72));
+	}
+	@media (min-width: 768px) {
+		.site-intro--image {
+			display: flex;
+			align-items: center;
+			min-height: var(--bc-desktop-page-hero-height);
+			padding-block: var(--bc-space-8);
+		}
+		.site-intro--interactive .site-intro__content {
+			display: grid;
+			gap: var(--bc-space-5);
+		}
+		.site-intro--interactive p {
+			min-height: 2lh;
+			margin-block: 0;
+		}
+		.site-intro__desktop-description {
+			display: block;
+		}
+		.site-intro__desktop-actions {
+			display: flex;
+			align-items: center;
+			flex-wrap: wrap;
+			gap: var(--bc-space-3);
+			min-height: var(--bc-control-height-hero);
+		}
+		.site-intro--center .site-intro__desktop-actions {
+			justify-content: center;
+		}
 	}
 </style>

@@ -5,6 +5,7 @@
 	import ProcessSteps from '$lib/components/common/ProcessSteps.svelte';
 	import ContactBanner from '$lib/components/common/ContactBanner.svelte';
 	import SocialLinks from '$lib/components/common/SocialLinks.svelte';
+	import Action from '$lib/components/common/Action.svelte';
 	let { data }: PageProps = $props();
 	const english = $derived(data.locale === 'en');
 	const about = $derived(data.about);
@@ -22,8 +23,15 @@
 		description={about.hero.description}
 		image={about.hero.image}
 		align="center"
-	/>
-	<div class="site-container about-socials"><SocialLinks /></div>
+	>
+		{#snippet desktopActions()}
+			<Action href="/contact" size="hero"
+				>{english ? 'Contact our team' : 'Свържи се с екипа'}</Action
+			>
+			<SocialLinks tone="dark" />
+		{/snippet}
+	</PageIntro>
+	<div class="site-container about-socials site-mobile-only"><SocialLinks /></div>
 	<section class="site-section site-container site-stack" id="about-team">
 		<header class="about-heading">
 			<h2 class="site-heading">{english ? 'The team' : 'Екипът'}</h2>

@@ -10,6 +10,8 @@ src/lib/config/dealer.ts is the dealer adaptation source. src/lib/config/site.ts
 
 ## Styling ownership
 
+`PageIntro.svelte` owns image hero geometry through `--bc-desktop-page-hero-height` and a desktop action slot; About, Contact and Services supply actions without duplicating banner layouts. Mobile retains the existing content-driven banners and contact composition. `SearchField.svelte` provides the shared search control. The services directory reads stable service IDs from `content/services.ts` and localized descriptions of included work and destinations from `content/service-directory.ts`; its GET search also renders filtered results without JavaScript. Navigation active indicators belong to the text link, independently of the dropdown trigger.
+
 src/lib/styles/app.css is the only Tailwind generation entry. It includes shared base styles, semantic tokens, form contracts and the Tailwind theme mappings. tokens.css owns design values; components own their composition. Utilities are not a second source of brand values. Portal content inherits the root theme. The native storefront does not load the legacy app.css or script-replay runtime.
 
 Use Action for buttons/links, Modal for desktop dialogs, and the retained MobileSheet/mobile navigation primitives for touch overlays. Keep control roles compact; typography, radii and spacing changes must be reviewed visually rather than expanded globally. Do not remove legitimate layout-specific dimensions merely to obtain a zero-literal metric.

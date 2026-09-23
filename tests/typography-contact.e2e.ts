@@ -39,8 +39,11 @@ test('About opens with the team, not a wall of duplicate introduction copy', asy
 	await visit(page, '/about');
 	await expect(page.locator('.about-overview')).toHaveCount(0);
 	await expect(page.locator('.about-team article')).toHaveCount(3);
-	await expect(page.locator('.about-socials .social-links a')).toHaveCount(3);
-	for (const link of await page.locator('.about-socials .social-links a').all()) {
+	const socials = page.locator(
+		'.about-socials .social-links a:visible, .site-intro .social-links a:visible'
+	);
+	await expect(socials).toHaveCount(3);
+	for (const link of await socials.all()) {
 		await expect(link).toHaveAttribute('href', /^https:/);
 		expect((await link.boundingBox())!.height).toBeGreaterThanOrEqual(48);
 		await expect(link.locator('img')).toHaveAttribute('src', /assets\/icons\/brands\//);

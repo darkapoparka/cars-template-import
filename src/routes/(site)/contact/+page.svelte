@@ -6,6 +6,7 @@
 		nativeMessage(page.data.locale === 'en' ? 'en' : 'bg', key);
 	import type { PageProps } from './$types';
 	import PageIntro from '$lib/components/common/PageIntro.svelte';
+	import Action from '$lib/components/common/Action.svelte';
 	import LeadForm from '$lib/components/common/LeadForm.svelte';
 	import SocialLinks from '$lib/components/common/SocialLinks.svelte';
 	import ContactMobilePage from '$lib/components/contact/ContactMobilePage.svelte';
@@ -48,9 +49,21 @@
 			description={data.site.contact.appointment}
 			image="/assets/daynight/proof-studio-import-handoff.webp"
 			align="center"
-		/>
+		>
+			{#snippet desktopActions()}
+				<Action href={data.site.contact.phoneHref} size="hero"
+					><Phone size={20} aria-hidden="true" />{english ? 'Call us' : 'Обади се'}</Action
+				>
+				<Action href={data.site.contact.mapHref} variant="inverse" size="hero"
+					><MapPin size={20} aria-hidden="true" />{english
+						? 'Get directions'
+						: 'Как да стигнеш'}</Action
+				>
+			{/snippet}
+		</PageIntro>
 		<section
 			class="site-section site-container contact-overview"
+			id="contact-details"
 			aria-label={english ? 'Contact details' : 'Връзка с нас'}
 		>
 			<div class="contact-channels">
