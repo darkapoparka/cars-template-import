@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { tick } from 'svelte';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
+	import DesktopFilterRange from './DesktopFilterRange.svelte';
 	import DesktopFilterPicker from './DesktopFilterPicker.svelte';
 	import '$lib/styles/desktop-filters.css';
 	import { page } from '$app/state';
@@ -12,7 +13,6 @@
 		AuxeroInventoryFilter
 	} from '$lib/server/inventory-options';
 	import InventoryFilter from './InventoryFilter.svelte';
-	import InventoryCompactField from './InventoryCompactField.svelte';
 	import Search from '@lucide/svelte/icons/search';
 	import {
 		inventoryFilterParam,
@@ -25,10 +25,14 @@
 	let { desktop, english = false }: { desktop: AuxeroInventoryDesktopData; english?: boolean } =
 		$props();
 	let allOpen = $state(false);
+	let cleared = $state(false);
 	let draft = $state<Record<string, string[]>>({});
 	let keyword = $state('');
+	let minimums = $state<Record<string, string>>({});
+	let rangePicker = $state<DesktopFilterRange>();
+	const minimumParam = (filter: AuxeroInventoryFilter) =>
+		filter.name === 'priceTo' ? 'minPrice' : 'minMileage';
 	let activeFilter = $state<AuxeroInventoryFilter | null>(null);
-	let returnTrigger: HTMLButtonElement | undefined;
 	let picker = $state<DesktopFilterPicker>();
 	let keywordInput = $state<HTMLInputElement>();
 	let filterForm = $state<HTMLFormElement>();
@@ -92,6 +96,8 @@
 		const params = new SvelteURLSearchParams(passthrough);
 		if (keyword.trim()) params.set('keyword', keyword.trim());
 		for (const filter of desktop.filters) {
+			if (filter.numericInput && minimums[filter.id])
+				params.set(minimumParam(filter), minimums[filter.id]);
 			for (const value of draft[filter.id] ?? [])
 				params.append(inventoryFilterParam(filter.name), value);
 		}
@@ -118,27 +124,81 @@
 		};
 	});
 	async function applyFilters() {
-		activeFilter = null;
-		await tick();
-		filterForm?.requestSubmit();
+		if (rangePicker && !rangePicker.validate()) return;
+		const invalid = draftFilters.find(
+			(filter) =>
+				filter.numericInput &&
+				([...(draft[filter.id] ?? []), ...(minimums[filter.id] ? [minimums[filter.id]] : [])].some(
+					(value) => !Number.isInteger(Number(value)) || Number(value) < 1
+				) ||
+					Boolean(
+						minimums[filter.id] &&
+						draft[filter.id]?.[0] &&
+						Number(minimums[filter.id]) > Number(draft[filter.id][0])
+					))
+		);
+		if (invalid) {
+			activeFilter = invalid;
+			await tick();
+			rangePicker?.validate();
+			return;
+		}
+		filterForm?.submit();
 	}
-	async function chooseFilter(filter: AuxeroInventoryFilter, trigger: HTMLButtonElement) {
-		returnTrigger = trigger;
+	function chooseFilter(filter: AuxeroInventoryFilter | null) {
 		activeFilter = filter;
-		await tick();
-		picker?.focusSearch();
 	}
-	async function backToFilters() {
-		activeFilter = null;
+	async function navigateFilters(event: KeyboardEvent, index: number) {
+		const keys = ['ArrowDown', 'ArrowUp', 'Home', 'End'];
+		if (!keys.includes(event.key)) return;
+		event.preventDefault();
+		const tabs = [null, ...orderedFilters];
+		const next =
+			event.key === 'Home'
+				? 0
+				: event.key === 'End'
+					? tabs.length - 1
+					: (index + (event.key === 'ArrowDown' ? 1 : -1) + tabs.length) % tabs.length;
+		activeFilter = tabs[next];
 		await tick();
-		returnTrigger?.focus({ preventScroll: true });
+		filterForm?.querySelector<HTMLButtonElement>('[role="tab"][aria-selected="true"]')?.focus();
 	}
-	function openFilters() {
-		activeFilter = null;
+	function selectionSummary(filter: AuxeroInventoryFilter) {
+		const values = draft[filter.id] ?? [];
+		if (filter.numericInput) {
+			const min = minimums[filter.id];
+			const format = (value: string) => Number(value).toLocaleString(english ? 'en' : 'bg');
+			return min || values.length
+				? `${min ? format(min) : '—'} – ${values[0] ? format(values[0]) : '—'} ${filter.numericInput.unit}`
+				: '';
+		}
+		return values
+			.map((value) => filter.options.find((option) => option.value === value)?.label ?? value)
+			.join(', ');
+	}
+	function appliedRangeSummary(filter: AuxeroInventoryFilter) {
+		if (!filter.numericInput) return undefined;
+		const min = page.url.searchParams.get(minimumParam(filter));
+		if (!min) return undefined;
+		const format = (value: string) => Number(value).toLocaleString(english ? 'en' : 'bg');
+		return `${filter.selectedValues[0] ? format(min) + ' – ' + format(filter.selectedValues[0]) : (english ? 'From ' : 'От ') + format(min)} ${filter.numericInput.unit}`;
+	}
+	function openFilters(filter?: AuxeroInventoryFilter) {
+		cleared = false;
+		activeFilter = filter ?? desktop.filters[0];
 		draft = Object.fromEntries(
 			desktop.filters.map((filter) => [filter.id, [...filter.selectedValues]])
 		);
-		keyword = page.url.searchParams.get('keyword') ?? '';
+		keyword =
+			page.url.searchParams.get('keyword') ??
+			(!desktop.filters.find((filter) => filter.name === 'model')?.selectedValues.length
+				? (page.url.searchParams.get('q') ?? '')
+				: '');
+		minimums = Object.fromEntries(
+			desktop.filters
+				.filter((filter) => filter.numericInput)
+				.map((filter) => [filter.id, page.url.searchParams.get(minimumParam(filter)) ?? ''])
+		);
 		allOpen = true;
 	}
 	let viewMenu: HTMLDetailsElement;
@@ -171,8 +231,14 @@
 	);
 	const passthrough = $derived(
 		[
-			...serializeInventoryQuery(parseInventoryQuery(page.url.searchParams), page.url.searchParams)
-		].filter(([name]) => !fieldNames.has(name) && name !== 'keyword' && name !== 'page')
+			...serializeInventoryQuery(
+				{ ...parseInventoryQuery(page.url.searchParams), ...(cleared ? { filters: {} } : {}) },
+				page.url.searchParams
+			)
+		].filter(
+			([name]) =>
+				!fieldNames.has(name) && !['keyword', 'page', 'minPrice', 'minMileage'].includes(name)
+		)
 	);
 </script>
 
@@ -189,13 +255,18 @@
 			class="inventory-toolbar__all"
 			aria-haspopup="dialog"
 			aria-expanded={allOpen}
-			onclick={openFilters}
+			onclick={() => openFilters()}
 			><SlidersHorizontal size={18} aria-hidden="true" />{english
 				? 'All filters'
 				: 'Всички филтри'}</Action
 		>
 		<div class="inventory-toolbar__filters">
-			{#each quickFilters as filter (filter.id)}<InventoryFilter {filter} {english} />{/each}
+			{#each quickFilters as filter (filter.id)}<InventoryFilter
+					{filter}
+					summary={appliedRangeSummary(filter)}
+					expanded={allOpen && activeFilter?.id === filter.id}
+					onopen={() => openFilters(filter)}
+				/>{/each}
 		</div>
 		<form action={linkHref('/inventory')} class="inventory-toolbar__sort">
 			{#each [...page.url.searchParams].filter(([name]) => name !== 'sort') as [name, value], i (i)}<input
@@ -237,67 +308,120 @@
 <Modal
 	bind:open={allOpen}
 	variant="filter"
-	onBack={activeFilter ? backToFilters : undefined}
-	backLabel={english ? 'All filters' : 'Всички филтри'}
 	onOpenAutoFocus={(event) => {
 		event.preventDefault();
-		keywordInput?.focus({ preventScroll: true });
+		(currentFilter?.numericInput ? rangePicker : picker)?.focusSearch();
 	}}
-	title={activeFilter?.label ?? (english ? 'Find a car' : 'Търсене на автомобили')}
-	onEscapeKeydown={(event) => {
-		if (activeFilter) {
-			event.preventDefault();
-			void backToFilters();
-		}
-	}}
+	title={english ? 'Find a car' : 'Търсене на автомобили'}
 	wide
-	class={[
-		'inventory-filters-dialog desktop-filter-dialog',
-		activeFilter && 'inventory-filters-dialog--options'
-	]
-		.filter(Boolean)
-		.join(' ')}
+	class="inventory-filters-dialog desktop-filter-dialog"
 >
-	{#if activeFilter && currentFilter}
-		{#key activeFilter.id}<DesktopFilterPicker
-				bind:this={picker}
-				filter={currentFilter}
-				{english}
-				bind:selection={
-					() => draft[currentFilter.id] ?? [], (values) => updateSelection(currentFilter, values)
-				}
-			/>{/key}
-	{/if}
-
 	<form
-		style:display={activeFilter ? 'none' : undefined}
 		class="inventory-all__form"
 		bind:this={filterForm}
 		id={formId}
 		action={linkHref('/inventory')}
-		onsubmit={() => (allOpen = false)}
+		onsubmit={(event) => {
+			event.preventDefault();
+			void applyFilters();
+		}}
 	>
 		{#each passthrough as [name, value], i (i)}<input type="hidden" {name} {value} />{/each}
-		<div class="inventory-all__search filter-control">
-			<Search size={20} aria-hidden="true" />
-			<label class="sr-only" for={formId + '-keyword'}
-				>{english ? 'Make, model or keyword' : 'Марка, модел или ключова дума'}</label
+		<input type="hidden" name="keyword" value={keyword} />
+		{#each desktop.filters.filter((filter) => filter.numericInput && minimums[filter.id]) as filter (filter.id)}<input
+				type="hidden"
+				name={minimumParam(filter)}
+				value={minimums[filter.id]}
+			/>{/each}
+		{#each desktop.filters as filter (filter.id)}{#each draft[filter.id] ?? [] as value (value)}<input
+					type="hidden"
+					name={inventoryFilterParam(filter.name)}
+					{value}
+				/>{/each}{/each}
+		<div
+			class="inventory-all__navigation"
+			role="tablist"
+			aria-orientation="vertical"
+			aria-label={english ? 'Filters' : 'Филтри'}
+		>
+			<button
+				type="button"
+				role="tab"
+				id={formId + '-keyword-tab'}
+				aria-selected={!activeFilter}
+				aria-controls={formId + '-panel'}
+				tabindex={!activeFilter ? 0 : -1}
+				onclick={() => chooseFilter(null)}
+				onkeydown={(event) => navigateFilters(event, 0)}
 			>
-			<input
-				bind:this={keywordInput}
-				id={formId + '-keyword'}
-				type="search"
-				name="keyword"
-				bind:value={keyword}
-				placeholder={english ? 'Make, model or keyword' : 'Марка, модел или ключова дума'}
-			/>
+				<span>{english ? 'Search' : 'Търсене'}</span>{#if keyword}<small>{keyword}</small>{/if}
+			</button>
+			{#each orderedFilters as filter, index (filter.id)}
+				<button
+					type="button"
+					role="tab"
+					id={formId + '-' + filter.id}
+					aria-selected={activeFilter?.id === filter.id}
+					aria-controls={formId + '-panel'}
+					tabindex={activeFilter?.id === filter.id ? 0 : -1}
+					onclick={() => chooseFilter(filter)}
+					onkeydown={(event) => navigateFilters(event, index + 1)}
+					title={selectionSummary(filter) || undefined}
+				>
+					<span
+						>{filter.label}{#if draft[filter.id]?.length || minimums[filter.id]}<span
+								class="inventory-all__selected"
+								aria-hidden="true"
+							></span>{/if}</span
+					>
+					{#if draft[filter.id]?.length || minimums[filter.id]}<small
+							>{selectionSummary(filter)}</small
+						>{/if}
+				</button>
+			{/each}
 		</div>
-		<div class="inventory-all">
-			{#each orderedFilters as filter (filter.id)}<InventoryCompactField
-					{filter}
-					onchoose={(trigger) => chooseFilter(filter, trigger)}
-					bind:selection={() => draft[filter.id] ?? [], (values) => updateSelection(filter, values)}
-				/>{/each}
+		<div
+			class="inventory-all__panel"
+			role="tabpanel"
+			id={formId + '-panel'}
+			aria-labelledby={activeFilter ? formId + '-' + activeFilter.id : formId + '-keyword-tab'}
+			tabindex="0"
+		>
+			<h2>
+				{currentFilter?.label ?? (english ? 'Search' : 'Търсене')}
+			</h2>
+			{#if currentFilter}
+				{#key currentFilter.id}{#if currentFilter.numericInput}<DesktopFilterRange
+							bind:this={rangePicker}
+							filter={currentFilter}
+							{english}
+							bind:minimum={minimums[currentFilter.id]}
+							bind:selection={
+								() => draft[currentFilter.id] ?? [],
+								(values) => updateSelection(currentFilter, values)
+							}
+						/>{:else}<DesktopFilterPicker
+							bind:this={picker}
+							filter={currentFilter}
+							{english}
+							bind:selection={
+								() => draft[currentFilter.id] ?? [],
+								(values) => updateSelection(currentFilter, values)
+							}
+						/>{/if}{/key}
+			{:else}
+				<label class="inventory-all__search filter-control">
+					<Search size={20} aria-hidden="true" /><span class="sr-only"
+						>{english ? 'Make, model or keyword' : 'Марка, модел или ключова дума'}</span
+					>
+					<input
+						bind:this={keywordInput}
+						type="search"
+						bind:value={keyword}
+						placeholder={english ? 'Make, model or keyword' : 'Марка, модел или ключова дума'}
+					/>
+				</label>
+			{/if}
 		</div>
 	</form>
 	{#snippet footer()}
@@ -311,27 +435,29 @@
 							? `${resultCount} matching cars`
 							: `${resultCount} намерени автомобила`}</span
 			>
-			{#if !activeFilter && (keyword || Object.values(draft).some((values) => values.length))}
+			{#if (!cleared && desktop.activeFilters) || keyword || Object.values(draft).some((values) => values.length) || Object.values(minimums).some(Boolean)}
 				<Action
 					variant="quiet"
 					onclick={() => {
 						keyword = '';
+						cleared = true;
+						minimums = {};
 						draft = Object.fromEntries(desktop.filters.map((filter) => [filter.id, []]));
 					}}>{desktop.sidebar.actions.clearLabel}</Action
 				>
 			{/if}
-			<Action class="inventory-all__apply" onclick={applyFilters} aria-busy={counting}
+			{#if resultCount === 0}<p class="inventory-all__empty">
+					{english
+						? 'No cars match. Adjust or clear your filters.'
+						: 'Няма автомобили. Променете или изчистете филтрите.'}
+				</p>{/if}
+			<Action class="inventory-all__apply" type="submit" form={formId} aria-busy={counting}
 				>{english ? 'Show cars' : 'Покажи автомобили'}<span
 					class="inventory-all__count"
 					aria-hidden="true">{counting ? '…' : (resultCount ?? '')}</span
 				></Action
 			>
 		</div>
-		{#if resultCount === 0}<p class="inventory-all__empty">
-				{english
-					? 'No cars match these filters. Try a different make or a higher budget.'
-					: 'Няма автомобили с тези филтри. Опитайте друга марка или по-висок бюджет.'}
-			</p>{/if}
 	{/snippet}
 </Modal>
 
@@ -411,20 +537,95 @@
 		border-radius: var(--bc-radius-sm);
 		background: var(--bc-surface);
 	}
-	.inventory-all {
-		display: grid;
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: var(--bc-space-3);
-		padding-top: var(--bc-space-4);
-	}
 	:global(.site-dialog.inventory-filters-dialog) {
-		width: min(760px, calc(100vw - 2 * var(--bc-space-6)));
+		width: min(960px, calc(100vw - 2 * var(--bc-space-6)));
+		height: min(700px, calc(100dvh - 2 * var(--bc-space-6)));
+	}
+	:global(.site-dialog.inventory-filters-dialog .site-dialog__body) {
+		padding: 0;
+		overflow: hidden;
+		flex: 1;
 	}
 	.inventory-all__form {
-		padding: var(--bc-space-1);
+		display: grid;
+		grid-template-columns: 224px minmax(0, 1fr);
+		height: 100%;
+		min-height: 0;
 	}
+	.inventory-all__navigation {
+		overflow-y: auto;
+		padding: var(--bc-space-3);
+		background: var(--bc-surface);
+		scrollbar-width: thin;
+	}
+	.inventory-all__navigation button {
+		display: block;
+		width: 100%;
+		border: 0;
+		border-radius: var(--bc-radius-md);
+		padding: var(--bc-space-2) var(--bc-space-4);
+		background: transparent;
+		color: var(--bc-ink);
+		text-align: left;
+		font: inherit;
+		font-size: var(--bc-text-control);
+		cursor: pointer;
+	}
+	.inventory-all__navigation button:hover {
+		background: var(--bc-bg-strong);
+	}
+	.inventory-all__navigation button[aria-selected='true'] {
+		background: var(--bc-surface-raised);
+		font-weight: var(--bc-weight-heading);
+	}
+	.inventory-all__navigation button > span {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--bc-space-2);
+	}
+	.inventory-all__navigation small {
+		display: block;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		color: var(--bc-copy);
+		font-size: var(--bc-text-label);
+		font-weight: var(--bc-weight-control);
+		margin-top: var(--bc-space-1);
+	}
+	.inventory-all__selected {
+		width: var(--bc-space-2);
+		height: var(--bc-space-2);
+		border-radius: var(--bc-radius-pill);
+		background: var(--bc-accent);
+		flex: none;
+	}
+	.inventory-all__panel {
+		display: flex;
+		flex-direction: column;
+		min-width: 0;
+		min-height: 0;
+		padding: var(--bc-space-5) var(--bc-space-6);
+		overflow: auto;
+		scrollbar-width: thin;
+	}
+	.inventory-all__panel h2 {
+		margin: 0 0 var(--bc-space-4);
+		font: var(--bc-weight-heading) var(--bc-text-h4)/var(--bc-leading-h4) var(--bc-font-body);
+	}
+	@media (max-width: 899px) {
+		.inventory-all__form {
+			grid-template-columns: 190px minmax(0, 1fr);
+		}
+		.inventory-all__panel {
+			padding-inline: var(--bc-space-4);
+		}
+	}
+
 	.inventory-all__actions {
 		display: flex;
+		align-items: center;
 		justify-content: space-between;
 		gap: var(--bc-space-3);
 	}
@@ -439,10 +640,11 @@
 		opacity: 0.85;
 	}
 	.inventory-all__empty {
-		margin: var(--bc-space-3) 0 0;
+		margin: 0;
 		color: var(--bc-copy);
 		font-size: var(--bc-text-label);
-		text-align: right;
+		text-align: left;
+		flex: 1;
 	}
 	.inventory-toolbar {
 		position: sticky;
@@ -495,16 +697,6 @@
 			background: var(--bc-bg-strong);
 			border-radius: var(--bc-radius-md);
 			font-weight: var(--bc-weight-heading);
-		}
-	}
-	@media (max-width: 599px) {
-		.inventory-all {
-			grid-template-columns: 1fr;
-		}
-	}
-	@media (min-width: 600px) and (max-width: 899px) {
-		.inventory-all {
-			grid-template-columns: repeat(2, minmax(0, 1fr));
 		}
 	}
 </style>

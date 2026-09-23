@@ -17,6 +17,7 @@
 }
 .desktop-filter-dialog .filter-control:focus-within,
 .desktop-filter-dialog .filter-control:focus-visible {
+	border-color: var(--bc-focus);
 	outline: 2px solid var(--bc-focus);
 	outline-offset: 0;
 }

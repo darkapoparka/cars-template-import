@@ -1,29 +1,26 @@
 <script lang="ts">
 	import Search from '@lucide/svelte/icons/search';
 	import InventoryFilterChoice from './InventoryFilterChoice.svelte';
-	import { inventoryFilterParam } from '$lib/domain/inventory-query';
 	import type { AuxeroInventoryFilter } from '$lib/server/inventory-options';
 	let {
 		filter,
 		english = false,
-		selection = $bindable<string[]>([]),
-		serialize = false
-	}: {
-		filter: AuxeroInventoryFilter;
-		english?: boolean;
-		selection?: string[];
-		serialize?: boolean;
-	} = $props();
+		selection = $bindable<string[]>([])
+	}: { filter: AuxeroInventoryFilter; english?: boolean; selection?: string[] } = $props();
 	const id = $props.id();
 	let query = $state('');
 	let input = $state<HTMLInputElement>();
+	let root = $state<HTMLDivElement>();
+	const searchable = $derived(
+		['brand', 'model'].includes(filter.name) || filter.options.length > 8
+	);
 	const matching = $derived(
 		filter.options.filter((option) =>
 			option.label.toLocaleLowerCase().includes(query.trim().toLocaleLowerCase())
 		)
 	);
 	export function focusSearch() {
-		input?.focus({ preventScroll: true });
+		(input ?? root?.querySelector<HTMLInputElement>('input'))?.focus({ preventScroll: true });
 	}
 	function toggle(value: string) {
 		selection =
@@ -35,51 +32,25 @@
 	}
 </script>
 
-<div class="desktop-picker">
-	<div class="desktop-picker__search">
-		<label class="filter-control">
-			{#if !filter.numericInput}<Search size={20} aria-hidden="true" />{/if}
-			<span class="sr-only"
-				>{filter.numericInput
-					? `${filter.numericInput.label} (${filter.numericInput.unit})`
-					: (english ? 'Search in ' : 'Търси в ') + filter.label}</span
-			>
-			{#if filter.numericInput}
-				<input
-					bind:this={input}
-					type="number"
-					min="1"
-					step="1"
-					inputmode="numeric"
-					value={selection[0] ?? ''}
-					placeholder={filter.numericInput.label}
-					oninput={(event) => {
-						const value = event.currentTarget.valueAsNumber;
-						selection = Number.isFinite(value) ? [String(value)] : [];
-					}}
-				/>
-				<span class="desktop-picker__unit" aria-hidden="true">{filter.numericInput.unit}</span>
-			{:else}
-				<input
+<div class="desktop-picker" class:desktop-picker--models={filter.name === 'model'} bind:this={root}>
+	{#if searchable}<div class="desktop-picker__search">
+			<label class="filter-control"
+				><Search size={20} aria-hidden="true" /><span class="sr-only"
+					>{(english ? 'Search in ' : 'Търси в ') + filter.label}</span
+				><input
 					bind:this={input}
 					type="search"
 					bind:value={query}
 					placeholder={english ? 'Search options' : 'Търсене в опциите'}
 					autocomplete="off"
-				/>
-			{/if}
-		</label>
-	</div>
-	{#if serialize}
-		{#each selection as value (value)}<input
-				type="hidden"
-				name={inventoryFilterParam(filter.name)}
-				{value}
-			/>{/each}
-	{/if}
+					onkeydown={(event) => {
+						if (event.key === 'Enter') event.preventDefault();
+					}}
+				/></label
+			>
+		</div>{/if}
 	<div class="desktop-picker__options">
-		{#each matching as option (option.value)}
-			<InventoryFilterChoice
+		{#each matching as option (option.value)}<InventoryFilterChoice
 				label={option.label}
 				image={option.image}
 				mode={filter.mode}
@@ -87,12 +58,14 @@
 				form={id + '-options'}
 				checked={selection.includes(option.value)}
 				onchange={() => toggle(option.value)}
-			/>
-		{:else}<p role="status">{english ? 'No matches' : 'Няма съвпадения'}</p>{/each}
+			/>{:else}<p role="status">{english ? 'No matches' : 'Няма съвпадения'}</p>{/each}
 	</div>
 </div>
 
 <style>
+	.desktop-picker--models .desktop-picker__options {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
 	.desktop-picker__search {
 		position: sticky;
 		top: 0;
@@ -104,9 +77,5 @@
 		display: grid;
 		gap: var(--bc-space-1);
 		padding: var(--bc-space-1);
-	}
-	.desktop-picker__unit {
-		color: var(--bc-muted);
-		font-size: var(--bc-text-label);
 	}
 </style>

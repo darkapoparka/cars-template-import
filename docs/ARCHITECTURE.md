@@ -6,6 +6,8 @@ The public storefront lives in src/routes/(site). Route files load typed data an
 
 src/lib/config/dealer.ts is the dealer adaptation source. src/lib/config/site.ts defines and validates the public identity, contact, language, finance and theme contract. src/lib/content holds public editorial/service copy; src/lib/data holds inventory and other content. src/lib/domain owns pure financial estimates, inquiry/intake schemas, card presentation and URL-query logic. Server-only loading and persistence remain under src/lib/server. Reusable browser behaviours are in src/lib/browser.
 
+Desktop inventory quick filters and All filters share the dialog owned by `InventoryToolbar.svelte`: persistent category tabs, draft selections, dependent model options, live counts and canonical GET submission. `DesktopFilterPicker.svelte` owns searchable choices; `DesktopFilterRange.svelte` owns numeric ranges and validation. Mobile inventory keeps its separate sheet composition. Changes to shared overlay styling must be scoped to desktop media queries when mobile preservation is required.
+
 ## Styling ownership
 
 src/lib/styles/app.css is the only Tailwind generation entry. It includes shared base styles, semantic tokens, form contracts and the Tailwind theme mappings. tokens.css owns design values; components own their composition. Utilities are not a second source of brand values. Portal content inherits the root theme. The native storefront does not load the legacy app.css or script-replay runtime.

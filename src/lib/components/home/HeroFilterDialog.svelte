@@ -402,6 +402,14 @@
 		color: var(--bc-ink);
 	}
 	@media (min-width: 768px) {
+		.hfp__search:focus-within {
+			outline-offset: 0;
+			border-color: var(--bc-focus);
+		}
+		.hfp__grid {
+			grid-template-columns: 1fr;
+			gap: var(--bc-space-1);
+		}
 		.hfp-picker {
 			padding: 0;
 			border: 0;
@@ -410,28 +418,35 @@
 		.hfp__search {
 			min-height: var(--bc-control-height-primary);
 			border-radius: var(--bc-radius-md);
-			background: var(--bc-surface);
+			background: var(--bc-surface-raised);
 		}
 		.hfp__search input {
 			background: transparent;
+			font-size: var(--bc-text-control);
 		}
 		.hfp__list {
 			gap: var(--bc-space-1);
 		}
 		.hfp__row {
+			min-height: var(--bc-control-height-primary);
 			padding: var(--bc-space-2) var(--bc-space-3);
 			border-color: transparent;
 			background: transparent;
 			border-radius: var(--bc-radius-md);
 		}
 		.hfp__chip {
-			min-height: 80px;
-			padding: var(--bc-space-3);
+			min-height: var(--bc-control-height-primary);
+			padding: var(--bc-space-2) var(--bc-space-3);
+			flex-direction: row;
+			justify-content: flex-start;
+			gap: var(--bc-space-3);
+			text-align: left;
+			background: transparent;
 			border-radius: var(--bc-radius-md);
 			border-color: transparent;
 		}
 		.hfp__chip img {
-			width: 40px;
+			width: 36px;
 			height: 28px;
 		}
 		.hfp__option:hover,
@@ -439,6 +454,35 @@
 			background: var(--bc-bg-strong);
 			border-color: transparent;
 			box-shadow: none;
+		}
+		.hfp__chip .hfp__option-label {
+			flex: 1;
+		}
+		.hfp__tick,
+		.hfp__chip .hfp__tick {
+			position: static;
+			order: -1;
+			display: grid;
+			place-items: center;
+			opacity: 1;
+			width: var(--bc-space-5);
+			height: var(--bc-space-5);
+			flex: none;
+			border: 1px solid var(--bc-muted);
+			border-radius: var(--bc-radius-sm);
+			color: var(--bc-white);
+		}
+		.hfp__tick :global(svg) {
+			opacity: 0;
+			width: 14px;
+			height: 14px;
+		}
+		.hfp__option[aria-pressed='true'] .hfp__tick {
+			background: var(--bc-ink);
+			border-color: var(--bc-ink);
+		}
+		.hfp__option[aria-pressed='true'] .hfp__tick :global(svg) {
+			opacity: 1;
 		}
 	}
 </style>

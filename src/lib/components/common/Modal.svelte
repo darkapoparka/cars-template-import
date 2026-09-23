@@ -226,6 +226,32 @@
 		color: var(--bc-ink);
 	}
 	@media (min-width: 768px) {
+		:global(.site-dialog__title) {
+			font-family: var(--bc-font-body);
+			line-height: var(--bc-leading-h4);
+		}
+		:global(.site-dialog:not(.site-dialog--filter):not(.site-dialog--muted)) {
+			padding: 0;
+			overflow: hidden;
+		}
+		:global(.site-dialog:not(.site-dialog--filter):not(.site-dialog--muted)) .site-dialog__header {
+			padding: var(--bc-space-5) var(--bc-space-6);
+		}
+		:global(.site-dialog:not(.site-dialog--filter):not(.site-dialog--muted)) .site-dialog__body {
+			padding: 0 var(--bc-space-6) var(--bc-space-6);
+			scrollbar-width: thin;
+		}
+		:global(.site-dialog:not(.site-dialog--filter):not(.site-dialog--muted)) .site-dialog__footer {
+			padding: var(--bc-space-4) var(--bc-space-6) var(--bc-space-6);
+		}
+		.site-dialog__header :global(.bc-mobile-icon-action) {
+			--bc-mobile-icon-surface: transparent;
+			--bc-mobile-icon-border: none;
+			border-radius: var(--bc-radius-md);
+		}
+		.site-dialog__header :global(.bc-mobile-icon-action:hover) {
+			background: var(--bc-surface);
+		}
 		:global(.filter-picker-dialog) {
 			padding: var(--bc-space-6);
 		}

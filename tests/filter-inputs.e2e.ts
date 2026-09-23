@@ -2,243 +2,167 @@ import { expect, test } from '@playwright/test';
 import { visit } from './helpers';
 
 test.beforeEach(({ isMobile }) => {
-	test.skip(Boolean(isMobile), 'These filters belong to the desktop inventory composition.');
+	test.skip(Boolean(isMobile), 'Desktop filter composition only.');
 });
 
-test('multiple choices stay readable and the entire numeric field focuses its input', async ({
-	page
-}) => {
-	await visit(page, '/en/inventory');
-	await page.getByRole('button', { name: 'All filters', exact: true }).click();
-	const dialog = page.getByRole('dialog');
-	await dialog.getByRole('button', { name: /^Make / }).click();
-	for (const name of ['BMW', 'Mercedes', 'Audi'])
-		await dialog.getByRole('checkbox', { name, exact: true }).check();
-	await page.keyboard.press('Escape');
-	const make = dialog.getByRole('button', { name: 'Make BMW, Mercedes, Audi', exact: true });
-	await expect(make.locator('.compact-field__value')).toHaveText('BMW +2');
-	await expect(make).toHaveAttribute('title', 'BMW, Mercedes, Audi');
-	await dialog.locator('.compact-field__number').first().locator('.compact-field__unit').click();
-	await expect(
-		dialog.getByRole('spinbutton', { name: 'Maximum price (EUR)', exact: true })
-	).toBeFocused();
-});
-
-test('draft makes update models and the preview matches the submitted filters', async ({
-	page
-}) => {
-	await visit(page, '/en/inventory?brand=BMW');
-	await page.getByRole('button', { name: 'All filters', exact: true }).click();
-	const dialog = page.getByRole('dialog');
-	await dialog.getByRole('button', { name: /^Model / }).click();
-	await dialog.getByRole('checkbox').first().check();
-	await page.keyboard.press('Escape');
-	await expect(dialog.getByRole('button', { name: /^Model / })).not.toHaveText('ModelAll models');
-	await dialog.getByRole('button', { name: /^Make / }).click();
-	await dialog.getByRole('checkbox', { name: 'BMW', exact: true }).uncheck();
-	await dialog.getByRole('checkbox', { name: 'Mazda', exact: true }).check();
-	await page.keyboard.press('Escape');
-	await expect(dialog.getByRole('button', { name: /^Model / })).toContainText('All models');
-	await dialog.getByRole('button', { name: /^Model / }).click();
-	const models = await dialog.getByRole('checkbox').count();
-	expect(models).toBeGreaterThan(0);
-	await dialog.getByRole('checkbox').first().check();
-	await page.keyboard.press('Escape');
-	await dialog.getByRole('button', { name: /^Fuel / }).click();
-	await dialog.getByRole('checkbox', { name: 'Petrol', exact: true }).check();
-	await page.keyboard.press('Escape');
-	await dialog.getByRole('spinbutton', { name: 'Maximum price (EUR)', exact: true }).fill('1');
-	await expect(dialog.locator('.inventory-all__count')).toHaveText('0');
-	await expect(dialog.getByText('No cars match these filters.', { exact: false })).toBeVisible();
-	await dialog.getByRole('spinbutton', { name: 'Maximum price (EUR)', exact: true }).fill('');
-	await expect(dialog.getByRole('button', { name: 'Show cars', exact: true })).toHaveAttribute(
-		'aria-busy',
-		'false'
-	);
-	await expect(dialog.locator('.inventory-all__count')).not.toHaveText('0');
-	const count = Number(await dialog.locator('.inventory-all__count').innerText());
-	await dialog.getByRole('button', { name: 'Show cars', exact: true }).click();
-	await expect(page).toHaveURL(
-		(url) => url.searchParams.get('brand') === 'Mazda' && url.searchParams.has('q')
-	);
-	const params = new URL(page.url()).searchParams;
-	const response = await page.request.get(`/api/inventory/count?${params}`);
-	expect((await response.json()).count).toBe(count);
-});
-
-test('option view has one apply action and reveals invalid numeric fields before submitting', async ({
-	page
-}) => {
-	await visit(page, '/en/inventory');
-	await page.getByRole('button', { name: 'All filters', exact: true }).click();
-	const dialog = page.getByRole('dialog');
-	await expect(dialog.getByRole('button', { name: 'Clear', exact: true })).toHaveCount(0);
-	const price = dialog.getByRole('spinbutton', { name: 'Maximum price (EUR)', exact: true });
-	await price.fill('-1');
-	await dialog.getByRole('button', { name: /^Make / }).click();
-	await expect(dialog.locator('.site-dialog__footer').getByRole('button')).toHaveCount(1);
-	await dialog.getByRole('checkbox', { name: 'BMW', exact: true }).check();
-	await dialog.getByRole('button', { name: 'Show cars', exact: true }).click();
-	await expect(price).toBeFocused();
-	await expect(page).not.toHaveURL(/brand=BMW/);
-	await price.fill('42500');
-	await dialog.getByRole('button', { name: /^Make / }).click();
-	await dialog.getByRole('button', { name: 'Show cars', exact: true }).click();
-	await expect(page).toHaveURL(
-		(url) => url.searchParams.get('brand') === 'BMW' && url.searchParams.get('maxPrice') === '42500'
-	);
-});
-
-test('filter dialog keeps navigation and actions visible and discards an unapplied draft', async ({
+test('sidebar switches categories without another dialog and keeps actions stationary', async ({
 	page
 }) => {
 	await page.setViewportSize({ width: 1440, height: 600 });
 	await visit(page, '/en/inventory');
-	const trigger = page.getByRole('button', { name: 'All filters', exact: true });
-	await trigger.click();
+	await page.getByRole('button', { name: 'All filters', exact: true }).click();
 	const dialog = page.getByRole('dialog');
-	await dialog.getByRole('button', { name: /^Model / }).click();
 	await expect(dialog.getByRole('searchbox')).toBeFocused();
-	const searchBefore = await dialog.getByRole('searchbox').boundingBox();
-	const footer = dialog.locator('.site-dialog__footer');
-	const footerBefore = await footer.boundingBox();
-	await dialog.locator('.site-dialog__body').evaluate((node) => {
-		node.scrollTop = node.scrollHeight;
-	});
-	expect((await dialog.getByRole('searchbox').boundingBox())!.y).toBeCloseTo(searchBefore!.y, 0);
-	expect((await footer.boundingBox())!.y).toBe(footerBefore!.y);
-	await dialog.getByRole('button', { name: 'All filters', exact: true }).click();
-	await dialog.getByRole('button', { name: /^Make / }).click();
-	await dialog.getByRole('checkbox', { name: 'BMW', exact: true }).check();
-	await dialog.getByRole('button', { name: 'Close', exact: true }).click();
-	await expect(trigger).toBeFocused();
-	await trigger.click();
-	await dialog.getByRole('button', { name: /^Make / }).click();
-	await expect(dialog.getByRole('checkbox', { name: 'BMW', exact: true })).not.toBeChecked();
-	await page.keyboard.press('Escape');
-	await expect(dialog.getByRole('button', { name: /^Make / })).toBeFocused();
+	const footer = await dialog.locator('.site-dialog__footer').boundingBox();
+	await dialog.getByRole('tab', { name: 'Model', exact: true }).click();
+	await dialog.locator('.inventory-all__panel').evaluate((n) => (n.scrollTop = n.scrollHeight));
+	expect((await dialog.locator('.site-dialog__footer').boundingBox())!.y).toBe(footer!.y);
+	await dialog.getByRole('tab', { name: 'Fuel', exact: true }).click();
+	await expect(dialog.getByRole('searchbox')).toHaveCount(0);
+	await expect(dialog.getByRole('checkbox', { name: 'Petrol', exact: true })).toBeVisible();
+	await expect(page.getByRole('dialog')).toHaveCount(1);
+	await dialog.getByRole('tab', { name: 'Fuel', exact: true }).press('ArrowUp');
+	await expect(dialog.getByRole('tab', { name: 'Gearbox', exact: true })).toBeFocused();
 	await page.keyboard.press('Escape');
 	await expect(dialog).not.toBeVisible();
-	await expect(trigger).toBeFocused();
+	await expect(page.getByRole('button', { name: 'All filters', exact: true })).toBeFocused();
 });
 
-test('quick make picker preserves searched-out choices and submits only canonical fields', async ({
+test('draft makes update models and ranges submit the same filters as the preview', async ({
 	page
 }) => {
-	await visit(page, '/en/inventory?view=5');
-	await page.getByRole('button', { name: 'Make', exact: true }).click();
-	const picker = page.getByRole('dialog');
-	await picker.getByRole('checkbox', { name: 'BMW', exact: true }).check();
-	await picker.getByRole('searchbox').fill('no-match');
-	await expect(picker.getByRole('status')).toHaveText('No matches');
-	await picker.getByRole('button', { name: 'Apply', exact: true }).click();
-	await expect(page).toHaveURL(
-		(url) => url.searchParams.get('brand') === 'BMW' && url.searchParams.get('view') === '5'
+	await visit(page, '/en/inventory?brand=BMW&view=5');
+	await page.getByRole('button', { name: 'All filters', exact: true }).click();
+	const d = page.getByRole('dialog');
+	await d.getByRole('tab', { name: 'Model', exact: true }).click();
+	await d.getByRole('checkbox').first().check();
+	await d.getByRole('tab', { name: /^Make/ }).click();
+	await d.getByRole('checkbox', { name: 'BMW', exact: true }).uncheck();
+	await d.getByRole('checkbox', { name: 'Mazda', exact: true }).check();
+	await d.getByRole('tab', { name: 'Model', exact: true }).click();
+	await expect(d.getByRole('checkbox')).toHaveCount(1);
+	await d.getByRole('checkbox').check();
+	await d.getByRole('tab', { name: 'Price', exact: true }).click();
+	await d.getByRole('spinbutton', { name: 'Minimum price (EUR)', exact: true }).fill('10000');
+	await d.getByRole('spinbutton', { name: 'Maximum price (EUR)', exact: true }).fill('42500');
+	await d.getByRole('tab', { name: 'Mileage', exact: true }).click();
+	await d.getByRole('spinbutton', { name: 'Maximum mileage (km)', exact: true }).fill('125000');
+	await expect(d.getByRole('button', { name: 'Show cars', exact: true })).toHaveAttribute(
+		'aria-busy',
+		'false'
 	);
-	expect(
-		[...new URL(page.url()).searchParams.keys()].some((name) => name.endsWith('-choice'))
-	).toBe(false);
+	const count = Number(await d.locator('.inventory-all__count').innerText());
+	await d.getByRole('button', { name: 'Show cars', exact: true }).click();
+	await expect(page).toHaveURL(
+		(u) =>
+			u.searchParams.get('brand') === 'Mazda' &&
+			u.searchParams.get('q') === 'CX-9' &&
+			u.searchParams.get('minPrice') === '10000' &&
+			u.searchParams.get('maxPrice') === '42500' &&
+			u.searchParams.get('maxMileage') === '125000' &&
+			u.searchParams.get('view') === '5'
+	);
+	const r = await page.request.get('/api/inventory/count?' + new URL(page.url()).searchParams);
+	expect((await r.json()).count).toBe(count);
 });
 
-test('every filter has a useful input and searching preserves selected makes', async ({ page }) => {
-	await visit(page, '/inventory?lang=en&view=3');
-	await page.getByRole('button', { name: 'All filters', exact: true }).click();
-	const dialog = page.getByRole('dialog');
-	await dialog.getByRole('button', { name: /^Make / }).click();
-	const make = page.locator('.inventory-filters-dialog--options');
-	await make.getByRole('searchbox').fill('BMW');
-	await make.getByRole('checkbox', { name: 'BMW', exact: true }).check();
-	await make.getByRole('searchbox').fill('no-such-make');
-	await expect(make.getByRole('status')).toHaveText('No matches');
-	await dialog.getByRole('button', { name: 'Show cars', exact: true }).click();
-	await expect(page).toHaveURL((url) => url.searchParams.get('brand') === 'BMW');
-	await expect(page).toHaveURL((url) => url.searchParams.get('lang') === 'en');
-});
-
-test('inline options return focus and retain the draft until Show cars', async ({ page }) => {
-	await visit(page, '/en/inventory?view=5');
-	const initialUrl = page.url();
-	await page.getByRole('button', { name: 'All filters', exact: true }).click();
-	const all = page.locator('.inventory-filters-dialog');
-	const make = all.getByRole('button', { name: /^Make / });
-	await make.click();
-	const picker = page.locator('.inventory-filters-dialog--options');
-	await expect(picker.getByRole('searchbox')).toBeFocused();
-	await expect(page.getByRole('dialog')).toHaveCount(1);
-	await expect(page.locator('.site-dialog-backdrop')).toHaveCount(1);
-	await picker.getByRole('checkbox', { name: 'BMW', exact: true }).check();
-	await picker.getByRole('searchbox').fill('no-such-make');
-	await picker.getByRole('searchbox').press('Enter');
-	await expect(picker).toBeVisible();
-	await expect(page).toHaveURL(initialUrl);
-	await page.keyboard.press('Escape');
-	await expect(picker).not.toBeVisible();
-	await expect(all).toBeVisible();
-	await expect(make).toBeFocused();
-	await expect(make).toContainText('BMW');
-	await expect(page).toHaveURL(initialUrl);
-	await make.click();
-	await expect(picker.getByRole('searchbox')).toHaveValue('');
-	await expect(picker.getByRole('checkbox', { name: 'BMW', exact: true })).toBeChecked();
-	await picker.getByRole('button', { name: 'All filters', exact: true }).click();
-	await all.getByRole('button', { name: 'Show cars', exact: true }).click();
-	await expect(page).toHaveURL(
-		(url) => url.searchParams.get('brand') === 'BMW' && url.searchParams.get('view') === '5'
-	);
-});
-
-test('custom maxima replace presets once and survive navigation and reopening', async ({
-	page
-}) => {
-	await visit(page, '/inventory?lang=en&brand=BMW&maxPrice=50000&view=3');
-	await page.getByRole('button', { name: 'All filters', exact: true }).click();
-	const dialog = page.getByRole('dialog');
-	const price = dialog.getByRole('spinbutton', { name: 'Maximum price (EUR)', exact: true });
-	const mileage = dialog.getByRole('spinbutton', { name: 'Maximum mileage (km)', exact: true });
-	await expect(price).toHaveValue('50000');
-	await price.fill('42500');
-	await mileage.fill('125000');
-	await dialog.getByRole('button', { name: 'Show cars', exact: true }).click();
-	await expect(page).toHaveURL(
-		(url) =>
-			url.searchParams.getAll('maxPrice').join() === '42500' &&
-			url.searchParams.getAll('maxMileage').join() === '125000' &&
-			url.searchParams.get('brand') === 'BMW' &&
-			url.searchParams.get('view') === '3' &&
-			!url.searchParams.has('priceTo') &&
-			!url.searchParams.has('mileageTo')
-	);
-	await page.reload();
-	await expect(page.locator('html')).toHaveAttribute('data-daynight-hydrated', 'true');
-	await page.getByRole('button', { name: 'All filters', exact: true }).click();
-	await expect(price).toHaveValue('42500');
-	await expect(mileage).toHaveValue('125000');
-	await price.fill('30000');
-	await expect(price).toHaveValue('30000');
-	await mileage.fill('');
-	await dialog.getByRole('button', { name: 'Show cars', exact: true }).click();
-	await expect(page).toHaveURL(
-		(url) =>
-			url.searchParams.getAll('maxPrice').join() === '30000' && !url.searchParams.has('maxMileage')
-	);
-});
-
-test('quick-filter input validates a maximum and clear removes its value', async ({ page }) => {
-	await visit(page, '/inventory?lang=en');
+test('invalid ranges reveal their category and focus the invalid input', async ({ page }) => {
+	await visit(page, '/en/inventory');
 	await page.getByRole('button', { name: 'Price', exact: true }).click();
-	const dialog = page.getByRole('dialog');
-	const input = dialog.getByRole('spinbutton', { name: 'Maximum price (EUR)', exact: true });
-	await input.fill('-1');
-	await dialog.getByRole('button', { name: 'Apply', exact: true }).click();
-	await expect(dialog).toBeVisible();
-	await expect(input).toBeFocused();
-	await input.fill('42500');
-	await dialog.getByRole('button', { name: 'Apply', exact: true }).click();
-	await expect(page).toHaveURL((url) => url.searchParams.get('maxPrice') === '42500');
-	await page.getByRole('button', { name: /Up to.*42.*500.*EUR/ }).click();
-	await expect(input).toHaveValue('42500');
-	await dialog.getByRole('button', { name: 'Clear', exact: true }).click();
-	await expect(input).toHaveValue('');
-	await dialog.getByRole('button', { name: 'Apply', exact: true }).click();
-	await expect(page).toHaveURL((url) => !url.searchParams.has('maxPrice'));
+	const d = page.getByRole('dialog');
+	await expect(d.getByRole('tab', { name: 'Price', exact: true })).toHaveAttribute(
+		'aria-selected',
+		'true'
+	);
+	const low = d.getByRole('spinbutton', { name: 'Minimum price (EUR)', exact: true });
+	const high = d.getByRole('spinbutton', { name: 'Maximum price (EUR)', exact: true });
+	await low.fill('50000');
+	await high.fill('30000');
+	await d.getByRole('tab', { name: 'Make', exact: true }).click();
+	await d.getByRole('button', { name: 'Show cars', exact: true }).click();
+	await expect(high).toBeFocused();
+	await expect(page).not.toHaveURL(/maxPrice=/);
+	await high.fill('60000');
+	await high.press('Enter');
+	await expect(page).toHaveURL(
+		(u) => u.searchParams.get('minPrice') === '50000' && u.searchParams.get('maxPrice') === '60000'
+	);
+});
+
+test('searched-out choices survive switching categories and closing discards the draft', async ({
+	page
+}) => {
+	await visit(page, '/en/inventory');
+	const trigger = page.getByRole('button', { name: 'Make', exact: true });
+	await trigger.click();
+	const d = page.getByRole('dialog');
+	await d.getByRole('checkbox', { name: 'BMW', exact: true }).check();
+	await d.getByRole('searchbox').fill('no-match');
+	await expect(d.getByRole('status')).toHaveText('No matches');
+	await d.getByRole('searchbox').press('Enter');
+	await expect(d).toBeVisible();
+	await d.getByRole('tab', { name: 'Fuel', exact: true }).click();
+	await d.getByRole('tab', { name: /^Make/ }).click();
+	await expect(d.getByRole('checkbox', { name: 'BMW', exact: true })).toBeChecked();
+	await d.getByRole('button', { name: 'Close', exact: true }).click();
+	await expect(trigger).toBeFocused();
+	await trigger.click();
+	await expect(d.getByRole('checkbox', { name: 'BMW', exact: true })).not.toBeChecked();
+});
+
+test('clear removes visible and passthrough filters while retaining the view', async ({ page }) => {
+	await visit(page, '/en/inventory?brand=BMW&minYear=2018&minPrice=20000&keyword=X5&view=3');
+	await page.getByRole('button', { name: 'All filters', exact: true }).click();
+	const d = page.getByRole('dialog');
+	await d.getByRole('button', { name: 'Clear', exact: true }).click();
+	await expect(d.locator('.inventory-all__count')).toHaveText('42');
+	await d.getByRole('button', { name: 'Show cars', exact: true }).click();
+	await expect(page).toHaveURL(
+		(u) =>
+			!u.searchParams.has('brand') &&
+			!u.searchParams.has('minYear') &&
+			!u.searchParams.has('minPrice') &&
+			!u.searchParams.get('keyword') &&
+			u.searchParams.get('view') === '3'
+	);
+});
+
+test('zero results recover and unavailable counts do not block filtering', async ({ page }) => {
+	await visit(page, '/en/inventory');
+	await page.getByRole('button', { name: 'Price', exact: true }).click();
+	const d = page.getByRole('dialog');
+	const actionBounds = await d
+		.getByRole('button', { name: 'Show cars', exact: true })
+		.boundingBox();
+	await d.getByRole('spinbutton', { name: 'Maximum price (EUR)', exact: true }).fill('1');
+	await expect(d.locator('.inventory-all__count')).toHaveText('0');
+	await expect(d.locator('.inventory-all__empty')).toBeVisible();
+	expect((await d.getByRole('button', { name: 'Show cars', exact: true }).boundingBox())!.y).toBe(
+		actionBounds!.y
+	);
+	await page.route('**/api/inventory/count?**', (r) =>
+		r.fulfill({ status: 503, body: 'unavailable' })
+	);
+	await d.getByRole('spinbutton', { name: 'Maximum price (EUR)', exact: true }).fill('42500');
+	await expect(d.getByRole('button', { name: 'Show cars', exact: true })).toHaveAttribute(
+		'aria-busy',
+		'false'
+	);
+	await expect(d.locator('.inventory-all__count')).toBeEmpty();
+	await d.getByRole('button', { name: 'Show cars', exact: true }).click();
+	await expect(page).toHaveURL(/maxPrice=42500/);
+});
+
+test('free-text inventory search is retained when adding a filter', async ({ page }) => {
+	await visit(page, '/en/inventory?q=Sport');
+	await page.getByRole('button', { name: 'All filters', exact: true }).click();
+	const d = page.getByRole('dialog');
+	await d.getByRole('tab', { name: /^Search/ }).click();
+	await expect(d.getByRole('searchbox')).toHaveValue('Sport');
+	await d.getByRole('tab', { name: 'Make', exact: true }).click();
+	await d.getByRole('checkbox', { name: 'BMW', exact: true }).check();
+	await d.getByRole('button', { name: 'Show cars', exact: true }).click();
+	await expect(page).toHaveURL(
+		(u) => u.searchParams.get('brand') === 'BMW' && u.searchParams.get('keyword') === 'Sport'
+	);
 });
