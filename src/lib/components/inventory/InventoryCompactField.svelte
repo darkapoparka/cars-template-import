@@ -52,13 +52,16 @@
 			{value}
 		/>{/each}
 	{#if filter.name === 'feature' && filter.options.length === 1}
-		<span class="compact-field__label">{filter.label}</span>
 		<label class="compact-field__feature"
 			><input
 				type="checkbox"
 				checked={selection.includes(filter.options[0].value)}
 				onchange={() => toggle(filter.options[0].value)}
-			/>{filter.options[0].label}</label
+			/><span class="compact-field__text"
+				><span class="compact-field__label">{filter.label}</span><span class="compact-field__value"
+					>{filter.options[0].label}</span
+				></span
+			></label
 		>
 	{:else if filter.name === 'feature'}
 		<fieldset class="compact-features">
@@ -74,24 +77,26 @@
 			</div>
 		</fieldset>
 	{:else if filter.numericInput}
-		<label for={id}>{filter.numericInput.label}</label>
 		<div class="compact-field__number">
-			<input
-				{id}
-				type="number"
-				aria-label={filter.numericInput.label + ' (' + filter.numericInput.unit + ')'}
-				min="1"
-				step="1"
-				inputmode="numeric"
-				placeholder={english ? 'Any' : 'Без лимит'}
-				value={selection[0] ?? ''}
-				list={id + '-presets'}
-				oninput={(event) => {
-					const value = event.currentTarget.valueAsNumber;
-					selection = Number.isFinite(value) ? [String(value)] : [];
-				}}
-			/>
-			<span>{filter.numericInput.unit}</span>
+			<div class="compact-field__text">
+				<label class="compact-field__label" for={id}>{filter.numericInput.label}</label>
+				<input
+					{id}
+					type="number"
+					aria-label={filter.numericInput.label + ' (' + filter.numericInput.unit + ')'}
+					min="1"
+					step="1"
+					inputmode="numeric"
+					placeholder={english ? 'Any' : 'Без лимит'}
+					value={selection[0] ?? ''}
+					list={id + '-presets'}
+					oninput={(event) => {
+						const value = event.currentTarget.valueAsNumber;
+						selection = Number.isFinite(value) ? [String(value)] : [];
+					}}
+				/>
+			</div>
+			<span class="compact-field__unit">{filter.numericInput.unit}</span>
 		</div>
 		<datalist id={id + '-presets'}
 			>{#each filter.options as option (option.value)}<option value={option.value}
@@ -99,7 +104,6 @@
 				>{/each}</datalist
 		>
 	{:else}
-		<span id={id + '-label'} class="compact-field__label">{filter.label}</span>
 		<button
 			type="button"
 			class="compact-field__trigger"
@@ -111,10 +115,13 @@
 				open = true;
 			}}
 		>
-			<span id={id + '-value'}>{summary || filter.allLabel}</span><ChevronRight
-				size={16}
-				aria-hidden="true"
-			/>
+			<span class="compact-field__text"
+				><span id={id + '-label'} class="compact-field__label">{filter.label}</span><span
+					class="compact-field__value"
+					class:sr-only={!summary}
+					id={id + '-value'}>{summary || filter.allLabel}</span
+				></span
+			><ChevronRight size={16} aria-hidden="true" />
 		</button>
 		<Modal
 			bind:open
@@ -171,7 +178,7 @@
 		display: flex;
 		align-items: center;
 		gap: var(--bc-space-2);
-		min-height: var(--bc-control-height-standard);
+		min-height: 72px;
 		padding: var(--bc-space-2) var(--bc-space-3);
 		border: 1px solid var(--bc-border);
 		border-radius: var(--bc-radius-md);
@@ -227,10 +234,9 @@
 		min-width: 0;
 		align-content: start;
 	}
-	.compact-field > label,
 	.compact-field__label {
 		color: var(--bc-ink);
-		font-size: var(--bc-text-label);
+		font-size: var(--bc-text-control);
 		font-weight: var(--bc-weight-heading);
 	}
 	.compact-field :global(.compact-field__trigger),
@@ -239,7 +245,7 @@
 		align-items: center;
 		gap: var(--bc-space-2);
 		width: 100%;
-		min-height: var(--bc-control-height-primary);
+		min-height: 72px;
 		padding: var(--bc-space-2) var(--bc-space-3);
 		border: 1px solid var(--bc-route-pill-border);
 		border-radius: var(--bc-radius-md);
@@ -251,10 +257,19 @@
 		justify-content: space-between;
 		text-align: left;
 	}
-	.compact-field :global(.compact-field__trigger > span) {
+	.compact-field__text {
+		display: grid;
+		line-height: var(--bc-leading-label);
+		gap: var(--bc-space-1);
+		min-width: 0;
+		flex: 1;
+	}
+	.compact-field__value {
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
+		font-size: var(--bc-text-label);
+		color: var(--bc-copy);
 	}
 	.compact-field :global(.compact-field__trigger > svg) {
 		flex: none;
@@ -267,10 +282,19 @@
 		background: transparent;
 		color: inherit;
 		font: inherit;
+		font-size: var(--bc-text-label);
 	}
-	.compact-field__number span {
+	.compact-field__unit {
 		color: var(--bc-muted);
 		font-size: var(--bc-text-label);
+	}
+	.compact-field__number:focus-within {
+		outline: 2px solid var(--bc-focus);
+		outline-offset: 2px;
+	}
+	.compact-field__number input:focus-visible {
+		outline: none !important;
+		box-shadow: none !important;
 	}
 	.compact-field__search {
 		width: 100%;
