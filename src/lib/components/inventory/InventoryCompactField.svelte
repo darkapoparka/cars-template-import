@@ -1,6 +1,8 @@
 <script lang="ts">
-	import { Popover } from 'bits-ui';
-	import ChevronDown from '@lucide/svelte/icons/chevron-down';
+	import Modal from '$lib/components/common/Modal.svelte';
+	import Action from '$lib/components/common/Action.svelte';
+	import { assetHref } from '$lib/utils/assets';
+	import ChevronRight from '@lucide/svelte/icons/chevron-right';
 	import type { AuxeroInventoryFilter } from '$lib/server/inventory-options';
 	import { inventoryFilterParam } from '$lib/domain/inventory-query';
 	let {
@@ -14,6 +16,8 @@
 	} = $props();
 	const id = $props.id();
 	let query = $state('');
+	let open = $state(false);
+	let searchInput = $state<HTMLInputElement>();
 	const matching = $derived(
 		filter.options.filter((option) =>
 			option.label.toLocaleLowerCase().includes(query.trim().toLocaleLowerCase())
@@ -96,49 +100,69 @@
 		>
 	{:else}
 		<span id={id + '-label'} class="compact-field__label">{filter.label}</span>
-		<Popover.Root onOpenChange={() => (query = '')}>
-			<Popover.Trigger
-				class="compact-field__trigger"
-				aria-labelledby={id + '-label ' + id + '-value'}
-			>
-				<span id={id + '-value'}>{summary || filter.allLabel}</span><ChevronDown
-					size={16}
-					aria-hidden="true"
-				/>
-			</Popover.Trigger>
-			<Popover.Portal>
-				<Popover.Content
-					class="compact-field__popover"
-					sideOffset={8}
-					align="start"
-					aria-label={filter.label}
-				>
+		<button
+			type="button"
+			class="compact-field__trigger"
+			aria-labelledby={id + '-label ' + id + '-value'}
+			aria-haspopup="dialog"
+			aria-expanded={open}
+			onclick={() => {
+				query = '';
+				open = true;
+			}}
+		>
+			<span id={id + '-value'}>{summary || filter.allLabel}</span><ChevronRight
+				size={16}
+				aria-hidden="true"
+			/>
+		</button>
+		<Modal
+			bind:open
+			class="filter-picker-dialog compact-field__dialog"
+			title={filter.label}
+			onOpenAutoFocus={(event) => {
+				event.preventDefault();
+				searchInput?.focus({ preventScroll: true });
+			}}
+		>
+			{#snippet headerContent()}
+				<div class="compact-field__search-wrap">
 					<input
+						bind:this={searchInput}
 						class="compact-field__search"
 						type="search"
 						bind:value={query}
 						aria-label={(english ? 'Search in ' : 'Търси в ') + filter.label}
 						placeholder={english ? 'Search options' : 'Търси в опциите'}
 					/>
-					<div class="compact-field__options">
-						{#each matching as option (option.value)}
-							<label
-								><input
-									type="checkbox"
-									checked={selection.includes(option.value)}
-									onchange={() => toggle(option.value)}
-								/><span>{option.label}</span></label
-							>
-						{:else}<p role="status">{english ? 'No matches' : 'Няма съвпадения'}</p>{/each}
-					</div>
-					<div class="compact-field__actions">
-						<button type="button" onclick={() => (selection = [])}
-							>{english ? 'Clear' : 'Изчисти'}</button
-						><Popover.Close>{english ? 'Done' : 'Готово'}</Popover.Close>
-					</div>
-				</Popover.Content>
-			</Popover.Portal>
-		</Popover.Root>
+				</div>
+			{/snippet}
+			<div class="compact-field__options">
+				{#each matching as option (option.value)}
+					<label
+						><input
+							type={filter.mode === 'single' ? 'radio' : 'checkbox'}
+							name={id + '-option'}
+							checked={selection.includes(option.value)}
+							onchange={() => toggle(option.value)}
+						/>{#if option.image}<img
+								src={assetHref(option.image)}
+								alt=""
+								width="36"
+								height="28"
+							/>{/if}<span>{option.label}</span></label
+					>
+				{:else}<p role="status">{english ? 'No matches' : 'Няма съвпадения'}</p>{/each}
+			</div>
+			{#snippet footer()}
+				<div class="compact-field__actions">
+					<Action variant="secondary" onclick={() => (selection = [])}
+						>{english ? 'Clear' : 'Изчисти'}</Action
+					>
+					<Action onclick={() => (open = false)}>{english ? 'Done' : 'Готово'}</Action>
+				</div>
+			{/snippet}
+		</Modal>
 	{/if}
 </div>
 
@@ -248,19 +272,6 @@
 		color: var(--bc-muted);
 		font-size: var(--bc-text-label);
 	}
-	:global(.compact-field__popover) {
-		z-index: calc(var(--bc-z-dialog) + 10);
-		width: min(22rem, calc(100vw - 32px));
-		max-height: var(--bits-popover-content-available-height);
-		display: flex;
-		flex-direction: column;
-		gap: var(--bc-space-3);
-		padding: var(--bc-space-3);
-		border: 1px solid var(--bc-border);
-		border-radius: var(--bc-radius-panel);
-		background: var(--bc-surface-raised);
-		box-shadow: var(--bc-shadow-panel);
-	}
 	.compact-field__search {
 		width: 100%;
 		min-height: var(--bc-control-height-standard);
@@ -270,19 +281,31 @@
 		background: var(--bc-surface);
 		color: var(--bc-ink);
 		font: inherit;
+		font-size: var(--bc-text-control);
+	}
+	.compact-field__search-wrap {
+		padding: var(--bc-space-1) var(--bc-space-1) var(--bc-space-4);
+	}
+	.compact-field__options img {
+		object-fit: contain;
+		flex: 0 0 36px;
+	}
+	.compact-field__options input {
+		width: var(--bc-text-control);
+		height: var(--bc-text-control);
+		margin: 0;
+		flex-shrink: 0;
 	}
 	.compact-field__options {
 		min-height: 0;
-		max-height: 16rem;
-		overflow-y: auto;
-		overscroll-behavior: contain;
 	}
 	.compact-field__options label {
 		display: flex;
 		align-items: center;
 		gap: var(--bc-space-3);
-		min-height: var(--bc-control-height-standard);
+		min-height: var(--bc-control-height-primary);
 		padding: var(--bc-space-2);
+		font-size: var(--bc-text-control);
 		border-radius: var(--bc-radius-md);
 		cursor: pointer;
 	}
@@ -296,16 +319,5 @@
 	.compact-field__actions {
 		display: flex;
 		justify-content: space-between;
-		border-top: 1px solid var(--bc-border);
-		padding-top: var(--bc-space-2);
-	}
-	.compact-field__actions :global(button) {
-		min-height: var(--bc-control-height-standard);
-		padding: var(--bc-space-2) var(--bc-space-3);
-		border: 0;
-		border-radius: var(--bc-radius-md);
-		background: var(--bc-surface);
-		color: var(--bc-ink);
-		font: inherit;
 	}
 </style>

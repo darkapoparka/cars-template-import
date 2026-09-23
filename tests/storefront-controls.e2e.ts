@@ -151,7 +151,7 @@ test('all-filters search preserves hidden selected models and replaces canonical
 	await page.locator('.inventory-toolbar__all').click();
 	const dialog = page.getByRole('dialog');
 	await dialog.getByRole('button', { name: /^Модел / }).click();
-	const model = page.locator('.compact-field__popover');
+	const model = page.locator('.compact-field__dialog');
 	const search = model.getByRole('searchbox');
 	const firstChoice = model.getByRole('checkbox').first();
 	const selected = await firstChoice.locator('..').innerText();

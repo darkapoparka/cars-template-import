@@ -10,7 +10,7 @@ test('every filter has a useful input and searching preserves selected makes', a
 	await page.getByRole('button', { name: 'All filters', exact: true }).click();
 	const dialog = page.getByRole('dialog');
 	await dialog.getByRole('button', { name: /^Make / }).click();
-	const make = page.locator('.compact-field__popover');
+	const make = page.locator('.compact-field__dialog');
 	await make.getByRole('searchbox').fill('BMW');
 	await make.getByRole('checkbox', { name: 'BMW', exact: true }).check();
 	await make.getByRole('searchbox').fill('no-such-make');
@@ -19,6 +19,36 @@ test('every filter has a useful input and searching preserves selected makes', a
 	await dialog.getByRole('button', { name: 'Show cars', exact: true }).click();
 	await expect(page).toHaveURL((url) => url.searchParams.get('brand') === 'BMW');
 	await expect(page).toHaveURL((url) => url.searchParams.get('lang') === 'en');
+});
+
+test('nested options return focus and retain the draft until Show cars', async ({ page }) => {
+	await visit(page, '/en/inventory?view=5');
+	const initialUrl = page.url();
+	await page.getByRole('button', { name: 'All filters', exact: true }).click();
+	const all = page.locator('.inventory-filters-dialog');
+	const make = all.getByRole('button', { name: /^Make / });
+	await make.click();
+	const picker = page.locator('.compact-field__dialog');
+	await expect(picker.getByRole('searchbox')).toBeFocused();
+	await picker.getByRole('checkbox', { name: 'BMW', exact: true }).check();
+	await picker.getByRole('searchbox').fill('no-such-make');
+	await picker.getByRole('searchbox').press('Enter');
+	await expect(picker).toBeVisible();
+	await expect(page).toHaveURL(initialUrl);
+	await page.keyboard.press('Escape');
+	await expect(picker).not.toBeVisible();
+	await expect(all).toBeVisible();
+	await expect(make).toBeFocused();
+	await expect(make).toContainText('BMW');
+	await expect(page).toHaveURL(initialUrl);
+	await make.click();
+	await expect(picker.getByRole('searchbox')).toHaveValue('');
+	await expect(picker.getByRole('checkbox', { name: 'BMW', exact: true })).toBeChecked();
+	await picker.getByRole('button', { name: 'Done', exact: true }).click();
+	await all.getByRole('button', { name: 'Show cars', exact: true }).click();
+	await expect(page).toHaveURL(
+		(url) => url.searchParams.get('brand') === 'BMW' && url.searchParams.get('view') === '5'
+	);
 });
 
 test('custom maxima replace presets once and survive navigation and reopening', async ({

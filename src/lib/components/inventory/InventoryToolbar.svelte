@@ -126,7 +126,12 @@
 	wide
 	class="inventory-filters-dialog"
 >
-	<form id={formId} action={linkHref('/inventory')} onsubmit={() => (allOpen = false)}>
+	<form
+		class="inventory-all__form"
+		id={formId}
+		action={linkHref('/inventory')}
+		onsubmit={() => (allOpen = false)}
+	>
 		{#each passthrough as [name, value], i (i)}<input type="hidden" {name} {value} />{/each}
 		<div class="inventory-all__search">
 			<Search size={20} aria-hidden="true" />
@@ -246,15 +251,19 @@
 		padding-block: var(--bc-space-5);
 	}
 	:global(.site-dialog.inventory-filters-dialog) {
-		width: min(var(--bc-container-page), calc(100vw - 2 * var(--bc-space-6)));
+		width: min(1040px, calc(100vw - 2 * var(--bc-space-6)));
+	}
+	.inventory-all__form {
+		padding: var(--bc-space-1);
 	}
 	.inventory-all__search {
 		display: flex;
 		align-items: center;
 		gap: var(--bc-space-3);
-		padding: var(--bc-space-3) var(--bc-space-4);
-		border: 1px solid var(--bc-border);
-		border-radius: var(--bc-radius-pill);
+		padding: 0 var(--bc-space-3);
+		min-height: var(--bc-control-height-primary);
+		border: 1px solid var(--bc-route-pill-border);
+		border-radius: var(--bc-radius-md);
 		background: var(--bc-surface);
 		color: var(--bc-muted);
 	}
@@ -262,11 +271,11 @@
 		width: 100%;
 		min-width: 0;
 		border: 0;
-		padding: var(--bc-space-1);
+		padding: var(--bc-space-2) 0;
 		background: transparent;
 		color: var(--bc-ink);
 		font: inherit;
-		font-size: var(--bc-text-search-trigger);
+		font-size: var(--bc-text-control);
 	}
 	.inventory-all__search input::placeholder {
 		color: var(--bc-copy);
