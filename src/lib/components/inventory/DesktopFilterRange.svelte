@@ -114,10 +114,14 @@
 	}
 	.range-presets {
 		display: grid;
-		gap: var(--bc-space-1);
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: var(--bc-space-2);
 	}
 	@media (max-width: 899px) {
 		.range-fields {
+			grid-template-columns: 1fr;
+		}
+		.range-presets {
 			grid-template-columns: 1fr;
 		}
 	}

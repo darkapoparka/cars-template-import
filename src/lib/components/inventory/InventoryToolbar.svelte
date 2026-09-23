@@ -72,13 +72,6 @@
 		);
 	});
 	const currentFilter = $derived(draftFilters.find((filter) => filter.id === activeFilter?.id));
-	const filterDialogSize = $derived.by(() => {
-		if (!currentFilter) return 'compact';
-		if (currentFilter.modelCatalog || currentFilter.options.length > 8) return 'tall';
-		if (currentFilter.numericInput && currentFilter.options.length <= 5) return 'range';
-		if (currentFilter.numericInput || currentFilter.options.length > 5) return 'medium';
-		return 'compact';
-	});
 	const orderedFilters = $derived(
 		[...draftFilters].sort((a, b) => {
 			const order = [
@@ -331,8 +324,13 @@
 		(currentFilter?.numericInput ? rangePicker : picker)?.focusSearch();
 	}}
 	title={english ? 'Find a car' : 'Търсене на автомобили'}
+	description={
+		english
+			? 'Choose a few details to narrow down the cars in stock.'
+			: 'Изберете критерии, за да стесните наличните автомобили.'
+	}
 	wide
-	class="inventory-filters-dialog desktop-filter-dialog desktop-filter-dialog--{filterDialogSize}"
+	class="inventory-filters-dialog desktop-filter-dialog"
 >
 	<form
 		class="inventory-all__form"
@@ -557,23 +555,13 @@
 		background: var(--bc-surface);
 	}
 	:global(.site-dialog.inventory-filters-dialog) {
-		width: min(960px, calc(100vw - 2 * var(--bc-space-6)));
-		height: min(700px, calc(100dvh - 2 * var(--bc-space-6)));
+		width: min(1080px, calc(100vw - 2 * var(--bc-space-6)));
+		height: min(600px, calc(100dvh - 2 * var(--bc-space-6)));
 	}
 	@media (min-width: 900px) {
-		:global(.site-dialog.inventory-filters-dialog.desktop-filter-dialog--compact) {
-			height: min(600px, calc(100dvh - 2 * var(--bc-space-6)));
-		}
-		:global(.site-dialog.inventory-filters-dialog.desktop-filter-dialog--range) {
-			height: min(560px, calc(100dvh - 2 * var(--bc-space-6)));
-		}
-		:global(.site-dialog.inventory-filters-dialog.desktop-filter-dialog--medium) {
-			height: min(640px, calc(100dvh - 2 * var(--bc-space-6)));
-		}
-		:global(.site-dialog.inventory-filters-dialog.desktop-filter-dialog--tall) {
-			height: min(700px, calc(100dvh - 2 * var(--bc-space-6)));
-		}
 		:global(.site-dialog.inventory-filters-dialog .site-dialog__header) {
+			align-items: center;
+			padding-block: var(--bc-space-4);
 			border-bottom: 1px solid var(--bc-border);
 		}
 		:global(.site-dialog.inventory-filters-dialog .site-dialog__footer) {
@@ -581,12 +569,10 @@
 			background: var(--bc-surface-raised);
 		}
 		.inventory-all__navigation {
+			padding-inline: var(--bc-space-3);
 			border-right: 1px solid var(--bc-border);
 			scrollbar-color: var(--bc-border-strong) var(--bc-surface);
 			padding-block: var(--bc-space-2);
-		}
-		.inventory-all__navigation button {
-			padding-block: var(--bc-space-1);
 		}
 		.inventory-all__panel {
 			scrollbar-color: var(--bc-border-strong) var(--bc-surface-raised);
@@ -599,7 +585,7 @@
 	}
 	.inventory-all__form {
 		display: grid;
-		grid-template-columns: 224px minmax(0, 1fr);
+		grid-template-columns: 212px minmax(0, 1fr);
 		height: 100%;
 		min-height: 0;
 	}
@@ -676,7 +662,7 @@
 	}
 	@media (max-width: 899px) {
 		.inventory-all__form {
-			grid-template-columns: 190px minmax(0, 1fr);
+			grid-template-columns: 184px minmax(0, 1fr);
 		}
 		.inventory-all__panel {
 			padding-inline: var(--bc-space-4);
@@ -757,6 +743,79 @@
 			background: var(--bc-bg-strong);
 			border-radius: var(--bc-radius-md);
 			font-weight: var(--bc-weight-heading);
+		}
+	}
+	@media (max-width: 599px) {
+		:global(.site-dialog.inventory-filters-dialog) {
+			width: calc(100vw - 2 * var(--bc-space-4));
+			height: min(760px, calc(100dvh - 2 * var(--bc-space-4)));
+		}
+		.inventory-all__form {
+			grid-template-columns: minmax(0, 1fr);
+			grid-template-rows: auto minmax(0, 1fr);
+		}
+		.inventory-all__navigation {
+			display: grid;
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+			gap: var(--bc-space-1);
+			max-height: 156px;
+			overflow: auto;
+			border-right: 0;
+			border-bottom: 1px solid var(--bc-border);
+			padding: var(--bc-space-2);
+		}
+		.inventory-all__navigation button {
+			padding: var(--bc-space-1) var(--bc-space-2);
+			text-align: center;
+		}
+		.inventory-all__navigation button > span {
+			justify-content: center;
+		}
+		.inventory-all__navigation small {
+			display: none;
+		}
+		.inventory-all__panel {
+			padding: var(--bc-space-4);
+		}
+	}
+	@media (min-width: 900px) {
+		.inventory-all__navigation button {
+			position: relative;
+			min-height: var(--bc-control-height-compact);
+			border: 1px solid transparent;
+			padding-inline: var(--bc-space-3);
+			padding-block: var(--bc-space-1);
+			transition:
+				background-color 140ms ease,
+				border-color 140ms ease;
+		}
+		.inventory-all__navigation button:hover {
+			background: var(--bc-bg-strong);
+		}
+		.inventory-all__navigation button[aria-selected='true'] {
+			border-color: color-mix(in srgb, var(--bc-accent) 24%, var(--bc-border));
+			background: var(--bc-surface-raised);
+			color: var(--bc-ink);
+			box-shadow: var(--bc-shadow-subtle);
+		}
+		.inventory-all__navigation button[aria-selected='true']::before {
+			position: absolute;
+			inset-block: 9px;
+			left: -1px;
+			width: 3px;
+			border-radius: var(--bc-radius-pill);
+			background: var(--bc-accent);
+			content: '';
+		}
+		.inventory-all__navigation button[aria-selected='true'] small {
+			color: var(--bc-copy);
+		}
+		.inventory-all__navigation button[aria-selected='true'] .inventory-all__selected {
+			background: var(--bc-accent);
+		}
+		.inventory-all__navigation button:focus-visible {
+			outline: 2px solid var(--bc-focus);
+			outline-offset: 2px;
 		}
 	}
 </style>

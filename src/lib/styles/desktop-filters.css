@@ -48,3 +48,33 @@
 	-webkit-appearance: none;
 	margin: 0;
 }
+
+@media (min-width: 900px) {
+	.desktop-filter-dialog .filter-choice {
+		min-width: 0;
+		min-height: var(--bc-control-height-hero);
+		border: 1px solid var(--bc-border);
+		background: var(--bc-surface-raised);
+		transition:
+			border-color 140ms ease,
+			background-color 140ms ease;
+	}
+	.desktop-filter-dialog .filter-choice:hover {
+		border-color: var(--bc-border-strong);
+		background: var(--bc-surface);
+	}
+	.desktop-filter-dialog .filter-choice:has(:checked) {
+		border-color: var(--bc-accent);
+		background: var(--bc-accent-tint);
+	}
+	.desktop-filter-dialog .filter-choice__check:has(:checked) {
+		border-color: var(--bc-accent);
+		background: var(--bc-accent);
+	}
+	.desktop-filter-dialog .filter-choice > span:last-child {
+		min-width: 0;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+}
