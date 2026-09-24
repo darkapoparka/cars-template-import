@@ -522,7 +522,9 @@
 								<AuxeroCompareVehicleImage src={vehicle.image} title={vehicle.title} />
 							</a>
 							<p class="daynight-compare-mobile__mini-title">
-								<a href={resolve('/(site)/inventory/[slug]', { slug: vehicle.slug })}>{vehicle.title}</a>
+								<a href={resolve('/(site)/inventory/[slug]', { slug: vehicle.slug })}
+									>{vehicle.title}</a
+								>
 							</p>
 							<strong>{vehicle.priceLabel}</strong>
 						</article>
@@ -747,7 +749,9 @@
 								</button>
 								<p class="daynight-compare-car__brand text-center">{vehicle.brand}</p>
 								<p class="h4 daynight-compare-car__title text-center">
-									<a href={resolve('/(site)/inventory/[slug]', { slug: vehicle.slug })}>{vehicle.title}</a>
+									<a href={resolve('/(site)/inventory/[slug]', { slug: vehicle.slug })}
+										>{vehicle.title}</a
+									>
 								</p>
 								<button
 									class="daynight-compare-car__swap"
