@@ -132,7 +132,7 @@ jobs:
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git config core.autocrlf false
           git add -A
-          git diff --cached --check
+          git diff --cached --check -- . ':(exclude).template/recovery/**'
           if git diff --cached --quiet; then echo 'Publishing mirror already matches the requested Cars source.'; exit 0; fi
           git fetch origin main
           test "$(git rev-parse origin/main)" = "$MIRROR_HEAD" || { echo 'Mirror main changed during synchronization; refusing to overwrite concurrent work.' >&2; exit 1; }
