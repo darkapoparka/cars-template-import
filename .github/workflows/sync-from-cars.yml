@@ -64,7 +64,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          rm -rf "$RUNNER_TEMP/template-export"
+          rm -rf "$RUNNER_TEMP/template-export" "$RUNNER_TEMP/mirror-recovery"
           CARS_ROOT="$RUNNER_TEMP/cars-source" EXPORT_ROOT="$RUNNER_TEMP/template-export" node --input-type=module <<'NODE'
           import fs from 'node:fs';
           import path from 'node:path';
@@ -81,18 +81,15 @@ jobs:
           fs.mkdirSync(path.join(output, '.template'), { recursive: true });
           fs.writeFileSync(path.join(output, '.template/source-manifest.json'), JSON.stringify({ schemaVersion: 2, key, source: { repository: 'darkapoparka/cars', commit, path: `templates/${key}`, tree, digest: result.digest, exportPolicy: workflow.POLICY }, mirroredAt, files: result.files.length }, null, 2) + '\n');
           fs.appendFileSync(process.env.GITHUB_ENV, `SOURCE_TREE=${tree}\nSOURCE_DIGEST=${result.digest}\n`);
-          console.log(JSON.stringify({ key, commit, tree, digest: result.digest, files: result.files.length }));
           NODE
 
-      - name: Preserve mirror-only tracked files and install export
+      - name: Preserve mirror-only files outside validation tree
         shell: bash
         run: |
           set -euo pipefail
-          cars="$RUNNER_TEMP/cars-source"
-          export_root="$RUNNER_TEMP/template-export"
           canonical_paths="$RUNNER_TEMP/canonical-paths.txt"
-          git -C "$cars" ls-tree -r --name-only "$CARS_COMMIT:templates/$TEMPLATE_KEY" > "$canonical_paths"
-          recovery=".template/recovery/standalone-only/$MIRROR_HEAD"
+          git -C "$RUNNER_TEMP/cars-source" ls-tree -r --name-only "$CARS_COMMIT:templates/$TEMPLATE_KEY" > "$canonical_paths"
+          recovery="$RUNNER_TEMP/mirror-recovery"
           preserved=0
           while IFS= read -r -d '' file; do
             case "$file" in .github/*|.template/*) continue ;; esac
@@ -102,13 +99,13 @@ jobs:
               preserved=$((preserved + 1))
             fi
           done < <(git ls-files -z)
-          echo "Preserved $preserved mirror-only tracked files."
-          rsync -a --delete --exclude='.git/' --exclude='.github/' --exclude='.template/recovery/' "$export_root/" ./
+          echo "Preserved $preserved mirror-only tracked files outside the validation tree."
 
-      - name: Verify policy parity and application
+      - name: Install export and verify application
         shell: bash
         run: |
           set -euo pipefail
+          rsync -a --delete --exclude='.git/' --exclude='.github/' --exclude='.template/recovery/' "$RUNNER_TEMP/template-export/" ./
           CARS_ROOT="$RUNNER_TEMP/cars-source" node --input-type=module <<'NODE'
           import path from 'node:path';
           import { pathToFileURL } from 'node:url';
@@ -125,11 +122,15 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          if [ -d "$RUNNER_TEMP/mirror-recovery" ]; then
+            destination=".template/recovery/standalone-only/$MIRROR_HEAD"
+            mkdir -p "$destination"
+            cp -a "$RUNNER_TEMP/mirror-recovery/." "$destination/"
+          fi
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git config core.autocrlf false
           git add -A
-          git diff --cached --check
           if git diff --cached --quiet; then echo 'Publishing mirror already matches the requested Cars source.'; exit 0; fi
           git fetch origin main
           test "$(git rev-parse origin/main)" = "$MIRROR_HEAD" || { echo 'Mirror main changed during synchronization; refusing to overwrite concurrent work.' >&2; exit 1; }
