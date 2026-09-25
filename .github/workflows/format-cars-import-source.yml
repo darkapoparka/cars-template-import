@@ -1,0 +1,77 @@
+name: Format canonical Cars Import source
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/format-cars-import-source.yml
+
+permissions:
+  contents: read
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      CARS_COMMIT: 59a668bef3e9ef61f42c3d4b6f4cb516cf0e6a45
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.21.0'
+
+      - name: Fetch exact canonical Import source
+        shell: bash
+        run: |
+          set -euo pipefail
+          cars="$RUNNER_TEMP/cars-source"
+          git init "$cars"
+          git -C "$cars" remote add origin https://github.com/darkapoparka/cars.git
+          git -C "$cars" config core.sparseCheckout true
+          printf '%s\n' '/templates/import/' > "$cars/.git/info/sparse-checkout"
+          git -C "$cars" fetch --no-tags --filter=blob:none --depth=1 origin "$CARS_COMMIT"
+          git -C "$cars" checkout --detach FETCH_HEAD
+          test "$(git -C "$cars" rev-parse HEAD)" = "$CARS_COMMIT"
+          cp -a "$cars/templates/import" "$RUNNER_TEMP/formatted-import"
+
+      - name: Format only files rejected by the mirror gate
+        shell: bash
+        working-directory: ${{ runner.temp }}/formatted-import
+        run: |
+          set -euo pipefail
+          npm ci
+          npx prettier --write \
+            src/lib/components/common/ContactBanner.svelte \
+            src/lib/components/layout/CleanSiteHeader.svelte \
+            src/lib/components/layout/LocaleSettingsMenu.svelte \
+            src/lib/locale/LocaleTrigger.svelte
+          npx prettier --check \
+            src/lib/components/common/ContactBanner.svelte \
+            src/lib/components/layout/CleanSiteHeader.svelte \
+            src/lib/components/layout/LocaleSettingsMenu.svelte \
+            src/lib/locale/LocaleTrigger.svelte
+
+      - name: Package formatted canonical files
+        shell: bash
+        run: |
+          set -euo pipefail
+          source="$RUNNER_TEMP/formatted-import"
+          artifact="$RUNNER_TEMP/artifact/templates/import"
+          for file in \
+            src/lib/components/common/ContactBanner.svelte \
+            src/lib/components/layout/CleanSiteHeader.svelte \
+            src/lib/components/layout/LocaleSettingsMenu.svelte \
+            src/lib/locale/LocaleTrigger.svelte; do
+            mkdir -p "$artifact/$(dirname "$file")"
+            cp "$source/$file" "$artifact/$file"
+          done
+          printf 'Cars commit: %s\n' "$CARS_COMMIT" > "$RUNNER_TEMP/artifact/SOURCE.txt"
+          (cd "$RUNNER_TEMP/artifact" && sha256sum templates/import/src/lib/components/common/ContactBanner.svelte templates/import/src/lib/components/layout/CleanSiteHeader.svelte templates/import/src/lib/components/layout/LocaleSettingsMenu.svelte templates/import/src/lib/locale/LocaleTrigger.svelte) > "$RUNNER_TEMP/artifact/SHA256SUMS"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cars-import-formatted-59a668be
+          path: ${{ runner.temp }}/artifact
+          if-no-files-found: error
+          retention-days: 1
