@@ -890,7 +890,7 @@ export const homeFiveTypeCards: HomeFiveTypeCard[] = [
 	},
 	{
 		label: 'View all',
-		image: '/assets/daynight/megamenu/inventory-audi-sq5-cutout.webp',
+		image: '/assets/daynight/body-types/all-cars-front.webp',
 		bodyType: 'View all',
 		href: '/inventory'
 	}
@@ -1246,7 +1246,7 @@ const heroActionsForLocale = (locale: Locale): HomeFiveHeroAction[] =>
 					drawerKicker: 'Import from Europe',
 					drawerTitle: 'Send a listing link',
 					helper:
-						'Paste a Canadian listing URL or VIN. Day Night Auto will review history, photos, mileage, and estimated landed cost.',
+						'Paste a European listing URL or VIN. Day Night Auto will review history, photos, mileage, and estimated landed cost.',
 					inputName: 'vehicle',
 					label: 'Import',
 					mobileHeading: 'Import from Europe.',
