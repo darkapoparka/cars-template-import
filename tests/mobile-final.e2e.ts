@@ -83,14 +83,23 @@ test('visible mobile inventory photos load delivery renditions and Contact prior
 	);
 	await expect(preload).toHaveAttribute('media', '(max-width: 767px)');
 	await expect(preload).toHaveAttribute('fetchpriority', 'high');
+	await expect(preload).toHaveAttribute(
+		'imagesrcset',
+		/delivery\/services\/proof-studio-import-handoff/
+	);
 });
 
 test('mobile comparison supports adding, removing and clearing cars', async ({ page }) => {
 	await page.setViewportSize({ width: 320, height: 844 });
 	await visit(page, '/en/compare');
-	const choose = page.getByRole('combobox', { name: 'Add a car (up to four)' });
-	await choose.selectOption({ label: 'BMW X3 30e xDrive' });
-	await choose.selectOption({ label: 'BMW X4 M Competition' });
+	for (const title of ['BMW X3 30e xDrive', 'BMW X4 M Competition']) {
+		await page.getByRole('button', { name: /Add a car/ }).click();
+		const picker = page.getByRole('dialog', { name: 'Choose a car', exact: true });
+		await picker.getByRole('searchbox').fill(title);
+		await picker.getByRole('button', { name: 'Add ' + title, exact: true }).click();
+		await expect(picker).not.toBeVisible();
+		await expect(page.getByRole('link', { name: title, exact: true })).toBeVisible();
+	}
 	const table = page.getByRole('table', { name: 'Vehicle specifications' });
 	await expect(table.getByRole('columnheader')).toHaveCount(3);
 	const result = await new AxeBuilder({ page })
@@ -105,6 +114,32 @@ test('mobile comparison supports adding, removing and clearing cars', async ({ p
 	await expect(table.getByRole('columnheader')).toHaveCount(2);
 	await page.getByRole('button', { name: 'Clear comparison' }).click();
 	await expect(page.getByRole('heading', { name: 'Choose cars to compare' })).toBeVisible();
+});
+
+test('mobile service cards load delivery copies of every retained image', async ({ page }) => {
+	const oversizedOrDesktop: string[] = [];
+	page.on('request', (request) => {
+		if (
+			/\/services\/desktop\//.test(request.url()) ||
+			/\/(hero\/home-05-showroom-exterior|footer-premium-request-v2|cta\/premium-cars-banner-v2)\.webp$/.test(
+				request.url()
+			)
+		)
+			oversizedOrDesktop.push(request.url());
+	});
+	await visit(page, '/bg/services');
+	const photos = page.locator('.service-card img');
+	await expect(photos).toHaveCount(6);
+	for (const photo of await photos.all()) {
+		await photo.scrollIntoViewIfNeeded();
+		await expect
+			.poll(() => photo.evaluate((image: HTMLImageElement) => image.naturalWidth))
+			.toBeGreaterThan(0);
+		expect(await photo.evaluate((image: HTMLImageElement) => image.currentSrc)).toContain(
+			'/delivery/services/'
+		);
+	}
+	expect(oversizedOrDesktop).toEqual([]);
 });
 
 for (const width of [320, 390]) {

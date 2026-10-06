@@ -1,7 +1,21 @@
 <script lang="ts">
 	import { assetHref } from '$lib/utils/assets';
-	type Review = { avatar?: string; name: string; role: string; text: string };
-	let { review }: { review: Review } = $props();
+	import { reviewRoleCopy, type ReviewRoleKind } from '$lib/content/reviews';
+	type Review = {
+		avatar?: string;
+		name: string;
+		role: string;
+		roleKind?: ReviewRoleKind;
+		text: string;
+	};
+	let {
+		review,
+		compactRole,
+		english = false
+	}: { review: Review; compactRole?: string; english?: boolean } = $props();
+	const desktopRole = $derived(
+		reviewRoleCopy[english ? 'en' : 'bg'][review.roleKind ?? 'customer']
+	);
 	let failed = $state(false);
 	const initials = $derived(
 		review.name
@@ -30,7 +44,13 @@
 					use:recoverAvatar
 				/>{:else}{initials}{/if}
 		</span>
-		<span class="review-card__person"><strong>{review.name}</strong><span>{review.role}</span></span
+		<span class="review-card__person"
+			><strong>{review.name}</strong><span
+				class="review-card__role-original"
+				class:review-card__role-full={Boolean(compactRole)}>{review.role}</span
+			>{#if compactRole}<span class="review-card__role-compact">{compactRole}</span>{/if}<span
+				class="review-card__role-desktop">{desktopRole}</span
+			></span
 		>
 	</figcaption>
 	<blockquote>{review.text}</blockquote>
@@ -88,13 +108,46 @@
 		font-size: var(--bc-text-label);
 		line-height: var(--bc-leading-label);
 	}
+	.review-card__role-compact,
+	.review-card__role-desktop {
+		display: none;
+	}
 	blockquote {
 		margin: 0;
 		color: var(--bc-copy);
 		font-size: var(--bc-text-body-lg);
 		line-height: var(--bc-leading-body-lg);
 	}
+	@media (min-width: 768px) {
+		.review-card__role-original {
+			display: none;
+		}
+		.review-card__role-desktop {
+			display: block;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+		.review-card {
+			background: var(--bc-card-bg);
+			border-radius: var(--bc-desktop-card-radius);
+			box-shadow: var(--bc-editorial-shadow);
+		}
+		blockquote {
+			font-size: var(--bc-text-body);
+			line-height: var(--bc-leading-body);
+		}
+		.review-card__avatar {
+			background: var(--bc-bg-strong);
+		}
+	}
 	@media (max-width: 767.98px) {
+		.review-card__role-full {
+			display: none;
+		}
+		.review-card__role-compact {
+			display: block;
+		}
 		.review-card {
 			padding: var(--bc-space-5);
 		}

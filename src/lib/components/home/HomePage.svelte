@@ -1,21 +1,23 @@
 <script lang="ts">
+	import { homeBrowseArtwork, homeDiscoveryCopy } from '$lib/content/home-discovery';
 	import { assetHref } from '$lib/utils/assets';
 	import { MediaQuery } from 'svelte/reactivity';
 	import type { homePageData } from '$lib/server/home';
 	import { linkHref } from '$lib/utils/links';
 	import ArrowRight from '@lucide/svelte/icons/arrow-right';
 	import ReviewCard from '$lib/components/reviews/ReviewCard.svelte';
-	import Action from '$lib/components/common/Action.svelte';
+	import HomeBrowseCard from './HomeBrowseCard.svelte';
 	import VehicleCard from '$lib/components/inventory/VehicleCard.svelte';
 	import DesktopHero from './DesktopHomeHero.svelte';
 	import MobileHero from './HomeFiveHero.svelte';
 	import FeaturedMobile from './HomeFiveFeaturedVehicles.svelte';
 	import ActionBand from './HomeFiveActionBand.svelte';
 	import YouTubeSection from '$lib/components/common/YouTubeSection.svelte';
-	import { aboutVideos } from '$lib/data/about-videos';
+	import { aboutVideos, youtubeChannelHref } from '$lib/data/about-videos';
 	import ArticleCard from '$lib/components/blog/ArticleCard.svelte';
 	let { data }: { data: ReturnType<typeof homePageData> } = $props();
 	const mobile = new MediaQuery('(max-width: 767.98px)', false);
+	const copy = $derived(homeDiscoveryCopy[data.locale]);
 	const english = $derived(data.locale === 'en');
 	const localized = (url: string) =>
 		english ? url + (url.includes('?') ? '&' : '?') + 'lang=en' : url;
@@ -34,22 +36,32 @@
 				<h2 class="site-heading home-section-title">{data.copy.featuredTitle}</h2>
 			</header>
 			<div class="home-vehicles">
-				{#each data.featured.slice(0, 4) as card (card.slug)}<VehicleCard {card} {english} />{/each}
-			</div>
-			<div class="home-section-action">
-				<Action href={localized('/inventory')} variant="strong"
-					>{english ? 'View all' : 'Виж всички'}<ArrowRight size={18} aria-hidden="true" /></Action
-				>
+				{#each data.featured.slice(0, 3) as card (card.slug)}<VehicleCard {card} {english} />{/each}
+				<HomeBrowseCard
+					href={localized('/inventory')}
+					label={copy.viewAll}
+					context={data.copy.featuredTitle}
+					artwork={homeBrowseArtwork.inventory}
+					desktopOnly
+				/>
 			</div>
 		</section>
 	</div>
 	<ActionBand copy={data.copy} variant="ownership" />
 	<section class="site-section site-container site-stack">
 		<h2 class="site-heading home-section-title">
-			{english ? 'Browse by make' : mobile.current ? 'Марки' : 'Разгледай по марка'}
+			{mobile.current ? copy.mobileMakes : copy.browseMakes}
 		</h2>
 		<div class="home-brands">
-			{#each data.brands as brand (brand.query)}<a
+			{#each data.brands as brand (brand.query)}
+				{#if brand.allTile}<HomeBrowseCard
+						href={localized(brand.href ?? '/inventory')}
+						label={brand.name}
+						context={copy.browseMakes}
+						desktopOnly
+					/>{/if}
+				<a
+					class:home-mobile-browse={brand.allTile}
 					class:home-browse-all={brand.allTile}
 					aria-label={brand.allTile ? brand.name : undefined}
 					href={href(brand.href ?? '/inventory?brand=' + encodeURIComponent(brand.query))}
@@ -64,7 +76,7 @@
 							loading="lazy"
 						/>{/if}<strong
 						>{#if brand.allTile}<span class="browse-label-full">{brand.name}</span><span
-								class="browse-label-short">{english ? 'All' : 'Всички'}</span
+								class="browse-label-short">{copy.all}</span
 							>{:else}{brand.name}{/if}</strong
 					><span>{brand.count}</span></a
 				>{/each}
@@ -72,10 +84,18 @@
 	</section>
 	<section class="site-section site-container site-stack">
 		<h2 class="site-heading home-section-title">
-			{english ? 'Browse by type' : mobile.current ? 'Типове' : 'Разгледай по тип'}
+			{mobile.current ? copy.mobileTypes : copy.browseTypes}
 		</h2>
 		<div class="home-types">
-			{#each data.types as type (type.bodyType)}<a
+			{#each data.types as type (type.bodyType)}
+				{#if type.allTile}<HomeBrowseCard
+						href={localized(type.href)}
+						label={type.label}
+						context={copy.browseTypes}
+						desktopOnly
+					/>{/if}
+				<a
+					class:home-mobile-browse={type.allTile}
 					class:home-browse-all={!type.image}
 					href={href(type.href)}
 					>{#if type.image}<img
@@ -90,33 +110,23 @@
 				>{/each}
 		</div>
 	</section>
-	<YouTubeSection videos={aboutVideos} {english} />
+	<YouTubeSection videos={aboutVideos} {english} channelHref={youtubeChannelHref} />
 	{#if data.reviewItems.length}
 		<section class="site-section site-container site-stack">
 			<header class="home-section-heading">
 				<h2 class="site-heading home-section-title">
-					{english ? 'Customer reviews' : 'Клиентски отзиви'}
+					{copy.reviews}
 				</h2>
 			</header>
 			<!-- Keyboard focus lets readers scroll the review rail with arrow keys. -->
 			<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-			<div
-				class="home-reviews"
-				tabindex="0"
-				role="region"
-				aria-label={english ? 'Customer reviews' : 'Клиентски отзиви'}
-			>
-				{#each data.reviewItems as review (review.name)}<ReviewCard {review} />{/each}
-				<a class="home-rail-end" href={href('/reviews')}
-					><ArrowRight size={32} aria-hidden="true" /><strong
-						>{english ? 'View all' : 'Виж всички'}</strong
-					></a
-				>
-			</div>
-			<div class="home-section-action home-desktop-action">
-				<Action href={localized('/reviews')} variant="strong"
-					>{english ? 'View all' : 'Виж всички'}<ArrowRight size={18} aria-hidden="true" /></Action
-				>
+			<div class="home-reviews" tabindex="0" role="region" aria-label={copy.reviews}>
+				{#each data.reviewItems as review (review.name)}<ReviewCard
+						{review}
+						{english}
+						compactRole={copy.customer}
+					/>{/each}
+				<HomeBrowseCard href={localized('/reviews')} label={copy.viewAll} context={copy.reviews} />
 			</div>
 		</section>
 	{/if}
@@ -124,39 +134,19 @@
 	<section class="site-section site-container site-stack">
 		<header class="home-section-heading">
 			<h2 class="site-heading home-section-title">
-				{english ? 'Guides and advice' : 'Полезно за автомобила'}
+				{copy.guides}
 			</h2>
 		</header>
 		<!-- Keyboard focus lets readers scroll the article rail with arrow keys. -->
 		<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-		<div
-			class="home-news"
-			tabindex="0"
-			role="region"
-			aria-label={english ? 'Guides and advice' : 'Полезно за автомобила'}
-		>
-			{#each data.posts as post (post.slug)}<ArticleCard {post} {english} />{/each}
-			<a class="home-rail-end" href={href('/blog')}
-				><ArrowRight size={32} aria-hidden="true" /><strong
-					>{english ? 'All guides' : 'Всички статии'}</strong
-				></a
-			>
-		</div>
-		<div class="home-section-action home-desktop-action">
-			<Action href={localized('/blog')} variant="strong"
-				>{english ? 'All guides' : 'Всички статии'}<ArrowRight
-					size={18}
-					aria-hidden="true"
-				/></Action
-			>
+		<div class="home-news" tabindex="0" role="region" aria-label={copy.guides}>
+			{#each data.posts as post (post.slug)}<ArticleCard {post} {english} compact />{/each}
+			<HomeBrowseCard href={localized('/blog')} label={copy.allGuides} context={copy.guides} />
 		</div>
 	</section>
 </main>
 
 <style>
-	.home-rail-end {
-		display: none;
-	}
 	.home-mobile-entry,
 	.home-brands .browse-label-short {
 		display: none;
@@ -171,11 +161,6 @@
 	}
 	.home-section-title {
 		text-align: center;
-	}
-	.home-section-action {
-		display: flex;
-		justify-content: center;
-		padding-top: var(--bc-space-2);
 	}
 	.home-vehicles {
 		display: grid;
@@ -203,6 +188,10 @@
 		background: var(--bc-surface);
 		border-color: var(--bc-border-strong);
 	}
+	.home-brands .home-mobile-browse,
+	.home-types .home-mobile-browse {
+		display: none;
+	}
 	.home-brands img {
 		height: 60px;
 		width: 100px;
@@ -225,11 +214,32 @@
 	.home-reviews,
 	.home-news {
 		display: grid;
-		grid-template-columns: repeat(3, minmax(0, 1fr));
+		grid-template-columns: repeat(4, minmax(0, 1fr));
 		gap: var(--bc-space-5);
+	}
+	@media (min-width: 768px) {
+		.home-brands a,
+		.home-types a {
+			align-content: center;
+			gap: var(--bc-space-3);
+			padding: var(--bc-space-4);
+			border-radius: var(--bc-radius-panel);
+		}
+		.home-brands strong,
+		.home-types strong {
+			font: var(--bc-weight-control) var(--bc-text-control)/var(--bc-leading-control)
+				var(--bc-font-body);
+		}
+		.home-brands > a > span {
+			font-size: var(--bc-text-label);
+		}
 	}
 	@media (max-width: 1100px) {
 		.home-vehicles,
+		.home-reviews,
+		.home-news {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
 		.home-types {
 			grid-template-columns: repeat(3, minmax(0, 1fr));
 		}
@@ -238,33 +248,10 @@
 		}
 	}
 	@media (max-width: 767.98px) {
-		.home-desktop-action {
-			display: none;
+		.home-brands .home-mobile-browse,
+		.home-types .home-mobile-browse {
+			display: grid;
 		}
-		.home-rail-end {
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			justify-content: center;
-			gap: 16px;
-			min-width: 0;
-			padding: 24px;
-			border: 1px solid var(--bc-border);
-			border-radius: var(--bc-radius-panel);
-			background: var(--bc-surface-raised);
-			color: var(--bc-ink);
-			text-decoration: none;
-			scroll-snap-align: start;
-			font-size: 18px;
-		}
-		.home-rail-end:hover {
-			border-color: var(--bc-border-strong);
-		}
-		.home-rail-end:focus-visible {
-			outline: 2px solid var(--bc-accent);
-			outline-offset: -3px;
-		}
-
 		.site-section {
 			padding-block: 20px 12px;
 		}
@@ -280,9 +267,6 @@
 		}
 		.home-news :global(.article-card__body > p) {
 			display: none;
-		}
-		.home-section-action {
-			padding-top: 0;
 		}
 
 		.home-vehicles,

@@ -20,21 +20,30 @@ export const daynightContact = {
 } as const;
 
 export const daynightBrand = {
-	name: 'Day Night Auto Group',
-	displayName: 'DAY NIGHT AUTO GROUP',
-	bulgarianName: 'Ден и Нощ Ауто Груп',
-	domain: 'day-night-auto-group.demo',
-	tagline: 'Премиум автомобили в София с подреден процес за оглед и запитване',
+	name: 'Import',
+	displayName: 'IMPORT',
+	bulgarianName: 'Import',
+	domain: 'import.demo',
+	tagline: 'Демонстрационен шаблон за автомобилен търговец',
 	legalNote:
-		'Proposal build reflects public contact channels for Day Night Auto Group; verify final assets and inventory before outreach.'
+		'Reusable template preview with sample content; replace identity, contacts and inventory before creating a dealer proposal.'
 } as const;
 
+const contactVisitBanner = '/assets/daynight/banners/contact-visit-desktop-v3.webp';
+
 export const daynightAssets = {
-	logoDark: '/assets/daynight/brand/daynight-logo-generated-600.webp',
-	logoLight: '/assets/daynight/brand/daynight-logo-generated-600.webp',
+	// Dealer copies replace these paths once; shared headers, footers and banners reuse them.
+	// The suffix names the background: logoDark is for dark surfaces, logoLight for light ones.
+	logoDark: '/brand/import-logo-v2.webp',
+	logoLight: '/brand/import-logo-v2.webp',
 	hero: '/assets/daynight/hero/home-05-showroom-exterior.webp',
 	homeHeroSlides: [],
-	footerImage: '/assets/daynight/footer-premium-request-v2.webp'
+	footerImage: '/assets/daynight/footer-premium-request-v2.webp',
+	vehicleDealerBanner: contactVisitBanner,
+	contactVisitBanner,
+	contactPhoneBanner: '/assets/daynight/banners/contact-call-desktop-v3.webp',
+	contactMessageBanner: '/assets/daynight/banners/contact-message-desktop-v3.webp',
+	aboutProcessImage: '/assets/daynight/banners/about-process-desktop-v3.webp'
 } as const;
 
 export const mainNavigation = [
@@ -66,8 +75,8 @@ export const isPrimaryNavActive = (pathname: string, item: (typeof mainNavigatio
 	);
 
 export const dealerTheme = {
-	accent: '#b9161c',
-	accentHover: '#8f1016',
+	accent: '#17191c',
+	accentHover: '#34383d',
 	accentContrast: '#ffffff'
 } as const;
 

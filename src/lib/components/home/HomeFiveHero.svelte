@@ -26,6 +26,7 @@
 	import InventoryAdvancedFilters from '$lib/components/inventory/InventoryAdvancedFilters.svelte';
 	import InventoryMobilePage from '$lib/components/inventory/InventoryMobilePage.svelte';
 	import MobileSheet from '$lib/components/common/MobileSheet.svelte';
+	import MobileSearchControl from '$lib/components/common/MobileSearchControl.svelte';
 	import HeroFilterDialog from './HeroFilterDialog.svelte';
 
 	let { hero }: { hero?: HomeFiveHeroData } = $props();
@@ -445,26 +446,13 @@
 						{/each}
 					</div>
 
-					<div class="daynight-mobile-hero__search">
-						<button
-							type="button"
-							class="daynight-mobile-hero__search-label"
-							aria-haspopup="dialog"
-							aria-expanded={mobileSearchOpen || inventorySearchOpen}
-							onclick={openMobileSearch}
-						>
-							<span>{mobileSearchPlaceholder}</span>
-						</button>
-						<button
-							type="button"
-							class="daynight-mobile-hero__search-action"
-							aria-label={hero.searchSubmitPrefix}
-							aria-expanded={mobileSearchOpen || inventorySearchOpen}
-							onclick={openMobileSearch}
-						>
-							<Search size={20} strokeWidth={2.25} aria-hidden="true" />
-						</button>
-					</div>
+					<MobileSearchControl
+						mode="trigger"
+						label={hero.searchSubmitPrefix}
+						placeholder={mobileSearchPlaceholder}
+						expanded={mobileSearchOpen || inventorySearchOpen}
+						onclick={openMobileSearch}
+					/>
 				</div>
 
 				<div class="daynight-mobile-hero__all-row">
@@ -1003,7 +991,11 @@
 		left: 4%;
 		height: 118px;
 		border-radius: 999px;
-		background: radial-gradient(ellipse at center, rgb(227 6 47 / 0.32), transparent 68%);
+		background: radial-gradient(
+			ellipse at center,
+			color-mix(in srgb, var(--bc-accent) 32%, transparent),
+			transparent 68%
+		);
 		content: '';
 		filter: blur(2px);
 		opacity: 0.8;
@@ -1495,6 +1487,7 @@
 
 		.daynight-mobile-hero__search-module {
 			display: grid;
+			grid-template-columns: minmax(0, 1fr);
 			gap: var(--bc-mobile-entry-gap);
 			margin-bottom: var(--bc-mobile-entry-gap);
 			padding: 0;
@@ -1567,82 +1560,6 @@
 			gap: 13px;
 			grid-template-rows: max-content minmax(0, 1fr);
 			overflow: hidden;
-		}
-
-		.daynight-mobile-hero__search {
-			display: flex;
-			height: var(--bc-control-height-primary);
-			align-items: center;
-			gap: 10px;
-			padding: var(--bc-mobile-entry-inset) var(--bc-mobile-entry-inset)
-				var(--bc-mobile-entry-inset) var(--bc-space-4);
-			border: 0;
-			border-radius: 999px;
-			background: var(--daynight-mobile-surface, var(--bc-white));
-			color: var(--bc-ink);
-			box-shadow: none;
-		}
-
-		.daynight-mobile-hero__search :global(svg) {
-			flex: 0 0 auto;
-			color: currentColor;
-			stroke: currentColor;
-		}
-
-		.daynight-mobile-hero__search-label {
-			display: flex;
-			min-width: 0;
-			height: 100%;
-			flex: 1 1 auto;
-			align-items: center;
-			border: 0;
-			background: transparent;
-			color: var(--bc-ink);
-			cursor: pointer;
-			padding: 0;
-			text-align: left;
-		}
-
-		.daynight-mobile-hero__search-label span {
-			min-width: 0;
-			overflow: hidden;
-			color: var(--bc-ink);
-			font-size: var(--bc-text-search);
-			font-weight: var(--bc-weight-body);
-			line-height: var(--bc-leading-search);
-			text-overflow: ellipsis;
-			white-space: nowrap;
-		}
-
-		.daynight-mobile-hero__search-action {
-			display: flex;
-			width: var(--bc-control-height-standard);
-			height: var(--bc-control-height-standard);
-			align-items: center;
-			justify-content: center;
-			flex: 0 0 var(--bc-control-height-standard);
-			border: 4px solid transparent !important;
-			border-radius: 999px;
-			background: var(--daynight-mobile-action, var(--bc-accent));
-			background-clip: padding-box;
-			box-shadow: none !important;
-			color: var(--bc-white);
-			cursor: pointer;
-			padding: 0;
-		}
-
-		.daynight-mobile-hero__search-action:focus-visible {
-			background-color: var(--daynight-mobile-action-focus, var(--bc-ink));
-			color: var(--bc-white);
-			outline: 0;
-		}
-
-		.daynight-mobile-hero__search-action :global(svg),
-		.daynight-mobile-hero__search-action :global(path),
-		.daynight-mobile-hero__search-action :global(circle),
-		.daynight-mobile-hero__search-action :global(line) {
-			color: var(--bc-white);
-			stroke: var(--bc-white) !important;
 		}
 
 		.daynight-mobile-hero__all-row {
@@ -1721,7 +1638,12 @@
 			overflow: hidden;
 			border-radius: 12px;
 			background:
-				linear-gradient(135deg, rgb(185 22 28 / 0.16), rgb(5 5 5 / 0.08)), var(--bc-surface);
+				linear-gradient(
+					135deg,
+					color-mix(in srgb, var(--bc-accent) 16%, transparent),
+					rgb(5 5 5 / 0.08)
+				),
+				var(--bc-surface);
 		}
 
 		.daynight-mobile-location-map::before,
@@ -2186,7 +2108,7 @@
 			flex: 0 0 auto;
 			padding: 0 12px;
 			border: 0;
-			border-radius: 10px;
+			border-radius: var(--bc-radius-control);
 			background: var(--bc-card-bg);
 			box-shadow: none;
 			color: var(--bc-ink);

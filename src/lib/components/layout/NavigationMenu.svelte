@@ -44,8 +44,6 @@
 				</Popover.Content></Popover.Portal
 			>
 		</Popover.Root>
-	{:else}
-		<span class="site-nav-slot" aria-hidden="true"></span>
 	{/if}
 </div>
 
@@ -63,7 +61,7 @@
 		align-items: center;
 		min-height: var(--bc-control-height-standard);
 		padding-block: var(--bc-space-2);
-		color: var(--bc-dark-muted);
+		color: var(--bc-desktop-hero-copy, var(--bc-dark-muted));
 		font-size: var(--bc-text-navigation);
 		font-weight: var(--bc-weight-control);
 		line-height: 1.35;
@@ -71,14 +69,10 @@
 		white-space: nowrap;
 	}
 	.site-nav-item.active > a {
-		color: var(--bc-white);
+		color: var(--bc-desktop-hero-ink, var(--bc-white));
 	}
 	.site-nav-item > a:hover {
-		color: var(--bc-white);
-	}
-	.site-nav-slot {
-		width: 28px;
-		flex: 0 0 28px;
+		color: var(--bc-desktop-hero-ink, var(--bc-white));
 	}
 	:global(.site-nav-toggle) {
 		display: grid;
@@ -87,7 +81,7 @@
 		min-height: var(--bc-control-height-standard);
 		border: 0;
 		background: transparent;
-		color: var(--bc-dark-muted);
+		color: var(--bc-desktop-hero-copy, var(--bc-dark-muted));
 		padding: 0;
 	}
 	:global(.site-nav-popover) {
@@ -128,5 +122,11 @@
 	}
 	nav a {
 		font-size: var(--bc-text-body-lg);
+	}
+	@media (min-width: 768px) {
+		nav a:hover,
+		:global(.site-nav-toggle:hover) {
+			background: var(--bc-control-hover);
+		}
 	}
 </style>

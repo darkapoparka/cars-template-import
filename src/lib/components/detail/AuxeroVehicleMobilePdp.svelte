@@ -813,6 +813,9 @@
 			background: #ffffff;
 			color: #1c1c1c;
 			box-shadow: 0 -20px 46px rgba(0, 0, 0, 0.22);
+			/* Match the resting snap before Vaul has measured the viewport. Dragging
+			   and settled snap points use Vaul's inline transform after hydration. */
+			transform: translateY(34dvh);
 			outline: 0;
 			padding: 7px 14px
 				calc(var(--daynight-mobile-pdp-snap-offset, 40dvh) + 12px + env(safe-area-inset-bottom));
@@ -1146,15 +1149,17 @@
 
 		.daynight-mobile-pdp__cta {
 			display: inline-flex;
-			min-height: 44px;
+			min-width: 0;
+			min-height: var(--bc-control-height-standard);
 			align-items: center;
 			justify-content: center;
 			gap: 6px;
 			border: 0;
 			border-radius: var(--bc-radius-control);
-			font-size: var(--bc-text-control);
+			padding: 6px var(--bc-space-3);
+			font-size: var(--bc-mobile-label);
 			font-weight: var(--bc-weight-heading);
-			line-height: var(--bc-leading-control);
+			line-height: var(--bc-leading-label);
 			text-align: center;
 			text-decoration: none;
 			cursor: pointer;
@@ -1168,6 +1173,10 @@
 		.daynight-mobile-pdp__cta :global(svg),
 		.daynight-mobile-pdp__cta :global(svg *) {
 			color: inherit;
+		}
+
+		.daynight-mobile-pdp__cta :global(svg) {
+			flex-shrink: 0;
 		}
 
 		.daynight-mobile-pdp__cta--primary {
@@ -1285,14 +1294,14 @@
 		}
 
 		.daynight-mobile-pdp__inquiry-submit:focus-visible {
-			background: #b9161c;
-			outline: 0;
+			background: var(--bc-accent-hover);
+			outline: 3px solid var(--bc-focus);
+			outline-offset: 2px;
 		}
 
 		@media (hover: hover) and (pointer: fine) {
 			.daynight-mobile-pdp__inquiry-submit:hover {
-				background: #b9161c;
-				outline: 0;
+				background: var(--bc-accent-hover);
 			}
 		}
 
@@ -1314,7 +1323,7 @@
 		}
 
 		.daynight-mobile-pdp__inquiry-status :global(svg) {
-			color: #b9161c;
+			color: var(--bc-accent);
 		}
 
 		.daynight-mobile-pdp__inquiry-call {
