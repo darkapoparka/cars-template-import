@@ -1,6 +1,6 @@
 # Reuse guide
 
-`darkapoparka/cars-template-import` is the reusable master for `import`. Do not build a dealer by editing this repository's `main` branch in place.
+`darkapoparka/cars-template-import` contains the reusable `import` design. Check `.template/source.json` and the README for the current publication lineage. Do not build a dealer by editing this repository's `main` branch in place.
 
 For a lead, use the Cars workflow and canonical clients/<slug>/ source. This guide supplies technical personalization detail; Cars owns cloning, publication and project records.
 

@@ -1,13 +1,13 @@
 {
-  "schemaVersion": 1,
-  "kind": "standalone-template-publishing-mirror",
-  "candidate": true,
-  "editableSource": "darkapoparka/cars",
-  "sourceCommit": "686d195c33a29554c6f31f90b48b1be7dc96a16e",
-  "sourcePath": "templates/import",
-  "sourceTree": "e27c132c7d6fe8703642da6bdef2e65cd83b04c4",
-  "exportPolicy": "cars-source-v1",
-  "sourceDigest": "5282c2d1c0580c1e0c22090161ad9283a14fc445ce456443292e8e47f8b30cc1",
-  "publishingRepository": "darkapoparka/cars-template-import",
-  "preparedAt": "2026-10-08T17:26:25.214Z"
+	"schemaVersion": 1,
+	"kind": "standalone-template-publishing-mirror",
+	"candidate": true,
+	"editableSource": "darkapoparka/cars",
+	"sourceCommit": "686d195c33a29554c6f31f90b48b1be7dc96a16e",
+	"sourcePath": "templates/import",
+	"sourceTree": "e27c132c7d6fe8703642da6bdef2e65cd83b04c4",
+	"exportPolicy": "cars-source-v1",
+	"sourceDigest": "5282c2d1c0580c1e0c22090161ad9283a14fc445ce456443292e8e47f8b30cc1",
+	"publishingRepository": "darkapoparka/cars-template-import",
+	"preparedAt": "2026-10-08T17:26:25.214Z"
 }

@@ -68,3 +68,6 @@ dev*.log
 static/_previews/
 
 .vercel
+
+# Historical publication recovery copies belong in Git history, not the reusable source.
+/.template/recovery/

@@ -1,10 +1,12 @@
 # Import automotive template
 
-**Working branch: `main`.** Coordinate overlapping files and shared Git/build writes; independent files may be edited concurrently. Read [AGENTS.md](AGENTS.md) before starting; temporary branches/worktrees require an explicit request and a completed integration/cleanup handoff.
+This repository contains the reusable Import dealership design, not a dealer-specific project or evidence that sample business data is current. Preserve the existing desktop/mobile surfaces when making shared code improvements.
 
-Canonical standalone master: **`darkapoparka/cars-template-import`**. This repository is a reusable dealership design, not a dealer-specific project and not evidence that any sample business data is current.
+**Contributor entry point:** read `TEMPLATE.md`, `docs/ARCHITECTURE.md`, `docs/LEAD-BUILD.md`, and `docs/QA.md`. This published checkout does not contain a root `AGENTS.md`.
 
-**AI/agent entry point:** read `AGENTS.md`, then `TEMPLATE.md`, `docs/LEAD-BUILD.md`, and `docs/QA.md` before editing.
+**Publication lineage:** `.template/source.json` records the inherited Cars source commit and `templates/import` export. Check that metadata before synchronizing changes: older ownership notes predate this publication. Review-branch changes must be reconciled with the publisher's editable source before republishing; neither a branch push nor a passing build approves a dealer release.
+
+The owner-requested `pro` audit, checks, measurements, and local Codex handoff are in [PRO audit](docs/PRO-AUDIT.md). `main` and the separate Cars checkout are not modified by that review.
 
 ## Portfolio role
 

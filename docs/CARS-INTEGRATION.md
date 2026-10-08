@@ -1,5 +1,7 @@
 # Cars integration
 
+> Publication note (8 October 2026): this checkout now includes publisher metadata identifying `darkapoparka/cars`, `templates/import` as its editable source. The source-ownership and main-only workflow below describe the earlier arrangement; follow the current README and `.template/source.json` when reconciling changes. The owner explicitly requested the `pro` review branch; it remains available for review rather than being merged or removed automatically.
+
 This repository owns reusable Import source. Open it for shared frontend/code work. Open [Cars](https://github.com/darkapoparka/cars) for dealer builds, corrections, release promotion and publication. Canonical dealer source is clients/<slug>/ in Cars; dedicated dealer repositories are publishing mirrors.
 
 Cars snapshots use an approved immutable commit from this repository. Main is a development head, not automatic release approval. After shared polish is reviewed, use the [Cars release procedure](https://github.com/darkapoparka/cars/blob/main/docs/TEMPLATE-PROMOTION.md). New dealers consume the selected lock; existing dealers do not receive automatic updates. Cars-only refinements must be compared and ported upstream before replacing a snapshot.
